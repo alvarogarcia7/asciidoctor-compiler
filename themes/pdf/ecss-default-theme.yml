@@ -1,0 +1,321 @@
+# ECSS-Compliant PDF Theme for AsciiDoctor
+# Professional styling for Interface Control Documents (ICDs)
+
+# Page layout (A4 size)
+page:
+  background_color: ffffff
+  layout: portrait
+  margin: [2cm, 2.5cm, 2cm, 2.5cm]  # top, right, bottom, left
+  size: A4
+
+# Professional blue/gray color palette
+base:
+  font_color: 333333
+  font_family: Helvetica
+  font_size: 10
+  line_height_length: 12
+  line_height: $base_line_height_length / $base_font_size
+  font_size_large: 13
+  font_size_small: 8.5
+  font_size_min: 6
+  font_style: normal
+  border_color: dddddd
+  border_radius: 2
+  border_width: 0.5
+
+# Vertical spacing
+vertical_rhythm: $base_line_height_length
+vertical_spacing: $vertical_rhythm
+
+# Link styling
+link:
+  font_color: 1a5490
+  font_style: normal
+
+# Inline code (codespan replaces literal)
+codespan:
+  font_color: 555555
+  font_family: Courier
+
+# Professional heading styles
+heading:
+  font_color: 1a5490
+  font_family: $base_font_family
+  font_style: bold
+  h1_font_size: 24
+  h2_font_size: 18
+  h3_font_size: 14
+  h4_font_size: 12
+  h5_font_size: 11
+  h6_font_size: 10
+  line_height: 1.2
+  margin_top: $vertical_rhythm * 0.8
+  margin_bottom: $vertical_rhythm * 0.4
+
+# Title page styling
+title_page:
+  align: center
+  title:
+    font_size: 28
+    font_color: 1a5490
+    font_style: bold
+    line_height: 1.2
+  subtitle:
+    font_size: 16
+    font_color: 666666
+    font_style: normal
+    line_height: 1.2
+  authors:
+    margin_top: $base_font_size * 2
+    font_size: 12
+    font_color: 333333
+  revision:
+    margin_top: $base_font_size * 2
+    font_size: 11
+    font_color: 666666
+
+# Block elements
+block:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+
+# Code block styling
+code:
+  font_color: 333333
+  font_family: Courier
+  font_size: 9
+  padding: [8, 10, 8, 10]
+  line_height: 1.35
+  background_color: f5f5f5
+  border_color: cccccc
+  border_radius: $base_border_radius
+  border_width: 0.75
+
+# Conum styling (callout numbers in code)
+conum:
+  font_family: $base_font_family
+  font_color: 1a5490
+  font_size: $base_font_size_small
+  line_height: 4 / 3
+
+# Example block styling
+example:
+  background_color: f9f9f9
+  border_color: cccccc
+  border_radius: $base_border_radius
+  border_width: 0.75
+  padding: [8, 10, 8, 10]
+
+# Image settings
+image:
+  align: left
+
+# Admonition block colors (NOTE, TIP, IMPORTANT, WARNING, CAUTION)
+admonition:
+  column_rule_color: $base_border_color
+  column_rule_width: 0.5
+  padding: [8, 10, 8, 10]
+  border_width: 1
+  border_radius: $base_border_radius
+  label:
+    font_style: bold
+    font_color: 333333
+  icon:
+    note:
+      name: fa-info-circle
+      stroke_color: 5b9bd5
+      size: 24
+    tip:
+      name: fa-lightbulb-o
+      stroke_color: 70ad47
+      size: 24
+    important:
+      name: fa-exclamation-circle
+      stroke_color: ed7d31
+      size: 24
+    warning:
+      name: fa-exclamation-triangle
+      stroke_color: ffc000
+      size: 24
+    caution:
+      name: fa-fire
+      stroke_color: c00000
+      size: 24
+
+# Admonition-specific background colors
+admonition-note:
+  background_color: e7f3ff
+  border_color: 5b9bd5
+
+admonition-tip:
+  background_color: e9f5e9
+  border_color: 70ad47
+
+admonition-important:
+  background_color: fff3e6
+  border_color: ed7d31
+
+admonition-warning:
+  background_color: fff9e6
+  border_color: ffc000
+
+admonition-caution:
+  background_color: ffe6e6
+  border_color: c00000
+
+# Quote styling (replaces blockquote)
+quote:
+  font_color: 666666
+  font_size: $base_font_size
+  border_color: cccccc
+  border_width: 4
+  padding: [0, $base_font_size, 0, $base_font_size]
+  cite_font_size: $base_font_size_small
+  cite_font_color: 999999
+
+# Caption styling (for tables and figures)
+caption:
+  align: left
+  font_color: 666666
+  font_size: $base_font_size_small
+  font_style: italic
+  margin_inside: $vertical_rhythm / 4
+  margin_outside: 0
+
+# Description list styling
+description_list:
+  term_font_style: bold
+  term_spacing: $vertical_rhythm / 4
+  description_indent: $base_font_size * 1.5
+
+# Footer (page numbering)
+footer:
+  font_size: $base_font_size_small
+  font_color: 666666
+  border_color: dddddd
+  border_width: 0.5
+  height: $base_line_height_length * 2
+  line_height: 1
+  padding: [$base_line_height_length / 2, 0, 0, 0]
+  vertical_align: top
+  recto:
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{page-number}'
+
+# Header (document title and section)
+header:
+  font_size: $base_font_size_small
+  font_color: 666666
+  border_color: dddddd
+  border_width: 0.5
+  height: $base_line_height_length * 2
+  line_height: 1
+  padding: [0, 0, $base_line_height_length / 2, 0]
+  vertical_align: bottom
+  recto:
+    left:
+      content: '{document-title}'
+    right:
+      content: '{section-or-chapter-title}'
+  verso:
+    left:
+      content: '{section-or-chapter-title}'
+    right:
+      content: '{document-title}'
+
+# Indentation
+indent: $base_font_size * 1.5
+
+# Keyboard macro styling
+kbd:
+  background_color: f5f5f5
+  border_color: cccccc
+  border_offset: 2
+  border_radius: 2
+  border_width: 0.5
+  font_family: Courier
+  font_size: $base_font_size_small
+  separator: "+"
+
+# List styling (unified for both ordered and unordered)
+list:
+  indent: $base_font_size * 1.5
+  item_spacing: $vertical_rhythm / 2
+  marker_font_color: 1a5490
+
+# Prose (paragraph) styling
+prose:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+  text_indent: 0
+
+# Role-based styling
+role:
+  text-center:
+    align: center
+  text-left:
+    align: left
+  text-right:
+    align: right
+
+# Sidebar block styling
+sidebar:
+  background_color: f5f5f5
+  border_color: cccccc
+  border_radius: $base_border_radius
+  border_width: 0.75
+  padding: [10, 12, 10, 12]
+  title:
+    font_color: 1a5490
+    font_style: bold
+    font_size: $base_font_size
+    align: center
+
+# Table formatting with striped rows and borders
+table:
+  background_color: ffffff
+  border_color: cccccc
+  border_width: 0.5
+  cell_padding: [4, 6, 4, 6]
+  head:
+    font_style: bold
+    font_color: ffffff
+    background_color: 1a5490
+    border_bottom_width: 1
+  body:
+    stripe_background_color: f5f5f5
+    background_color: ffffff
+  foot:
+    font_style: bold
+    background_color: e9e9e9
+
+# Table of contents styling
+toc:
+  font_size: $base_font_size
+  font_color: 333333
+  indent: $base_font_size * 1.5
+  line_height: 1.4
+  dot_leader:
+    font_color: dddddd
+  h1_font_color: 1a5490
+  h1_font_style: bold
+  h2_font_style: normal
+
+# Thematic break (horizontal rule)
+thematic_break:
+  border_color: cccccc
+  border_style: solid
+  border_width: 0.5
+  margin_top: $vertical_rhythm
+  margin_bottom: $vertical_rhythm
+
+# Verse block styling
+verse:
+  font_color: 666666
+  font_size: $base_font_size
+  border_color: cccccc
+  border_width: 4
+  padding: [0, $base_font_size, 0, $base_font_size]
