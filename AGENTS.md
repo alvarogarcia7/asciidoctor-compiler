@@ -1,24 +1,27 @@
-1→# AGENTS.md
-2→
-3→## Setup
-4→```bash
-5→# Initial setup commands will be added based on project type
-6→# e.g., npm install, python -m venv .venv && source .venv/bin/activate, etc.
-7→```
-8→
-9→## Commands
-10→- **Build**: TBD
-11→- **Lint**: TBD
-12→- **Test**: TBD
-13→- **Dev Server**: TBD
-14→
-15→## Tech Stack
-16→- TBD
-17→
-18→## Architecture
-19→- TBD
-20→
-21→## Code Style
-22→- Follow existing conventions in codebase
-23→- TBD based on project setup
-24→
+# AGENTS.md
+
+## Setup
+```bash
+bundle install --path vendor/bundle
+```
+
+## Commands
+- **Build**: `make all` (or `make pdf` for PDF only, `make html` for HTML only)
+- **Lint**: N/A
+- **Test**: `make verify`
+- **Dev Server**: `make watch` (requires inotifywait or entr)
+
+## Tech Stack
+- AsciiDoc document format
+- Asciidoctor (Ruby gem) for HTML generation
+- Asciidoctor PDF (Ruby gem) for PDF generation
+- Bundler for Ruby dependency management
+
+## Architecture
+- Single AsciiDoc template file (`icd-template.adoc`) for Interface Control Document
+- Makefile-based build system
+- Outputs generated to `build/` directory
+
+## Code Style
+- Follow existing conventions in codebase
+- Standard AsciiDoc formatting

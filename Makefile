@@ -6,8 +6,8 @@ HTML_OUTPUT = icd-template.html
 BUILD_DIR = build
 VERIFY_SCRIPT = verify.sh
 
-ASCIIDOCTOR = asciidoctor
-ASCIIDOCTOR_PDF = asciidoctor-pdf
+ASCIIDOCTOR = bundle exec asciidoctor
+ASCIIDOCTOR_PDF = bundle exec asciidoctor-pdf
 
 all: pdf html
 
@@ -38,8 +38,8 @@ verify:
 		echo '#!/bin/bash' > $(VERIFY_SCRIPT); \
 		echo 'set -e' >> $(VERIFY_SCRIPT); \
 		echo 'echo "Verifying AsciiDoc syntax..."' >> $(VERIFY_SCRIPT); \
-		echo 'if command -v asciidoctor &> /dev/null; then' >> $(VERIFY_SCRIPT); \
-		echo '    asciidoctor -o /dev/null $(ASCIIDOC_FILE) && echo "✓ AsciiDoc syntax is valid"' >> $(VERIFY_SCRIPT); \
+		echo 'if command -v bundle &> /dev/null && bundle exec asciidoctor --version &> /dev/null; then' >> $(VERIFY_SCRIPT); \
+		echo '    bundle exec asciidoctor -o /dev/null $(ASCIIDOC_FILE) && echo "✓ AsciiDoc syntax is valid"' >> $(VERIFY_SCRIPT); \
 		echo 'else' >> $(VERIFY_SCRIPT); \
 		echo '    echo "✗ asciidoctor not found, skipping syntax check"' >> $(VERIFY_SCRIPT); \
 		echo '    exit 1' >> $(VERIFY_SCRIPT); \
