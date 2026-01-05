@@ -1,0 +1,321 @@
+# Dark PDF Theme for AsciiDoctor
+# Dark backgrounds optimized for screen reading with reduced eye strain
+
+# Page layout (A4 size)
+page:
+  background_color: 1e1e1e
+  layout: portrait
+  margin: [2cm, 2.5cm, 2cm, 2.5cm]
+  size: A4
+
+# Dark theme color palette
+base:
+  font_color: e0e0e0
+  font_family: Helvetica
+  font_size: 10
+  line_height_length: 13
+  line_height: $base_line_height_length / $base_font_size
+  font_size_large: 13
+  font_size_small: 8.5
+  font_size_min: 6
+  font_style: normal
+  border_color: 404040
+  border_radius: 2
+  border_width: 0.5
+
+# Vertical spacing
+vertical_rhythm: $base_line_height_length
+vertical_spacing: $vertical_rhythm
+
+# Link styling with bright accent
+link:
+  font_color: 66b3ff
+  font_style: normal
+
+# Inline code
+codespan:
+  font_color: d0d0d0
+  font_family: Courier
+
+# Heading hierarchy for dark theme
+heading:
+  font_color: 66b3ff
+  font_family: $base_font_family
+  font_style: bold
+  h1_font_size: 24
+  h2_font_size: 18
+  h3_font_size: 14
+  h4_font_size: 12
+  h5_font_size: 11
+  h6_font_size: 10
+  line_height: 1.2
+  margin_top: $vertical_rhythm * 0.8
+  margin_bottom: $vertical_rhythm * 0.4
+
+# Dark title page
+title_page:
+  align: center
+  title:
+    font_size: 28
+    font_color: 66b3ff
+    font_style: bold
+    line_height: 1.2
+  subtitle:
+    font_size: 16
+    font_color: b0b0b0
+    font_style: normal
+    line_height: 1.2
+  authors:
+    margin_top: $base_font_size * 2
+    font_size: 12
+    font_color: d0d0d0
+  revision:
+    margin_top: $base_font_size * 2
+    font_size: 11
+    font_color: a0a0a0
+
+# Block elements
+block:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+
+# Code block styling for dark theme
+code:
+  font_color: e0e0e0
+  font_family: Courier
+  font_size: 9
+  padding: [8, 10, 8, 10]
+  line_height: 1.35
+  background_color: 2a2a2a
+  border_color: 505050
+  border_radius: $base_border_radius
+  border_width: 0.75
+
+# Conum styling
+conum:
+  font_family: $base_font_family
+  font_color: 66b3ff
+  font_size: $base_font_size_small
+  line_height: 4 / 3
+
+# Example block styling
+example:
+  background_color: 2a2a2a
+  border_color: 505050
+  border_radius: $base_border_radius
+  border_width: 0.75
+  padding: [8, 10, 8, 10]
+
+# Image settings
+image:
+  align: left
+
+# Admonition blocks for dark theme
+admonition:
+  column_rule_color: 404040
+  column_rule_width: 0.5
+  padding: [8, 10, 8, 10]
+  border_width: 1
+  border_radius: $base_border_radius
+  label:
+    font_style: bold
+    font_color: e0e0e0
+  icon:
+    note:
+      name: fa-info-circle
+      stroke_color: 4d9fff
+      size: 24
+    tip:
+      name: fa-lightbulb-o
+      stroke_color: 66cc66
+      size: 24
+    important:
+      name: fa-exclamation-circle
+      stroke_color: ff9933
+      size: 24
+    warning:
+      name: fa-exclamation-triangle
+      stroke_color: ffcc33
+      size: 24
+    caution:
+      name: fa-fire
+      stroke_color: ff4444
+      size: 24
+
+# Admonition-specific backgrounds for dark theme
+admonition-note:
+  background_color: 1a2a3a
+  border_color: 4d9fff
+
+admonition-tip:
+  background_color: 1a2a1a
+  border_color: 66cc66
+
+admonition-important:
+  background_color: 2a2319
+  border_color: ff9933
+
+admonition-warning:
+  background_color: 2a2619
+  border_color: ffcc33
+
+admonition-caution:
+  background_color: 2a1919
+  border_color: ff4444
+
+# Quote styling
+quote:
+  font_color: b0b0b0
+  font_size: $base_font_size
+  border_color: 505050
+  border_width: 4
+  padding: [0, $base_font_size, 0, $base_font_size]
+  cite_font_size: $base_font_size_small
+  cite_font_color: 808080
+
+# Caption styling
+caption:
+  align: left
+  font_color: a0a0a0
+  font_size: $base_font_size_small
+  font_style: italic
+  margin_inside: $vertical_rhythm / 4
+  margin_outside: 0
+
+# Description list styling
+description_list:
+  term_font_style: bold
+  term_spacing: $vertical_rhythm / 4
+  description_indent: $base_font_size * 1.5
+
+# Footer for dark theme
+footer:
+  font_size: $base_font_size_small
+  font_color: a0a0a0
+  border_color: 404040
+  border_width: 0.5
+  height: $base_line_height_length * 2
+  line_height: 1
+  padding: [$base_line_height_length / 2, 0, 0, 0]
+  vertical_align: top
+  recto:
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{page-number}'
+
+# Header for dark theme
+header:
+  font_size: $base_font_size_small
+  font_color: a0a0a0
+  border_color: 404040
+  border_width: 0.5
+  height: $base_line_height_length * 2
+  line_height: 1
+  padding: [0, 0, $base_line_height_length / 2, 0]
+  vertical_align: bottom
+  recto:
+    left:
+      content: '{document-title}'
+    right:
+      content: '{section-or-chapter-title}'
+  verso:
+    left:
+      content: '{section-or-chapter-title}'
+    right:
+      content: '{document-title}'
+
+# Indentation
+indent: $base_font_size * 1.5
+
+# Keyboard macro styling
+kbd:
+  background_color: 2a2a2a
+  border_color: 505050
+  border_offset: 2
+  border_radius: 2
+  border_width: 0.5
+  font_family: Courier
+  font_size: $base_font_size_small
+  separator: "+"
+
+# List styling
+list:
+  indent: $base_font_size * 1.5
+  item_spacing: $vertical_rhythm / 2
+  marker_font_color: 66b3ff
+
+# Prose styling
+prose:
+  margin_top: 0
+  margin_bottom: $vertical_rhythm
+  text_indent: 0
+
+# Role-based styling
+role:
+  text-center:
+    align: center
+  text-left:
+    align: left
+  text-right:
+    align: right
+
+# Sidebar for dark theme
+sidebar:
+  background_color: 2a2a2a
+  border_color: 505050
+  border_radius: $base_border_radius
+  border_width: 0.75
+  padding: [10, 12, 10, 12]
+  title:
+    font_color: 66b3ff
+    font_style: bold
+    font_size: $base_font_size
+    align: center
+
+# Table styling for dark theme
+table:
+  background_color: 1e1e1e
+  border_color: 505050
+  border_width: 0.5
+  cell_padding: [4, 6, 4, 6]
+  head:
+    font_style: bold
+    font_color: e0e0e0
+    background_color: 2a3a4a
+    border_bottom_width: 1
+  body:
+    stripe_background_color: 252525
+    background_color: 1e1e1e
+  foot:
+    font_style: bold
+    background_color: 2a2a2a
+
+# Table of contents for dark theme
+toc:
+  font_size: $base_font_size
+  font_color: e0e0e0
+  indent: $base_font_size * 1.5
+  line_height: 1.4
+  dot_leader:
+    font_color: 404040
+  h1_font_color: 66b3ff
+  h1_font_style: bold
+  h2_font_style: normal
+
+# Thematic break
+thematic_break:
+  border_color: 505050
+  border_style: solid
+  border_width: 0.5
+  margin_top: $vertical_rhythm
+  margin_bottom: $vertical_rhythm
+
+# Verse block styling
+verse:
+  font_color: b0b0b0
+  font_size: $base_font_size
+  border_color: 505050
+  border_width: 4
+  padding: [0, $base_font_size, 0, $base_font_size]
