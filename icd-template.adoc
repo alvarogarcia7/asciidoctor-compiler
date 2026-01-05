@@ -2270,3 +2270,381 @@ This glossary defines technical terms used throughout this ICD. For data element
 |Two's complement
 |A mathematical operation on binary numbers and a binary signed number representation based on this operation
 |===
+
+<<<
+
+[appendix]
+[[appendix-code-samples]]
+== Appendix F: Code Samples and Implementation Examples
+
+This appendix provides code samples demonstrating common interface implementation patterns in various programming languages. These examples show how to implement message encoding, decoding, and data element handling according to the specifications in this ICD.
+
+=== Java Implementation Example
+
+The following Java code demonstrates message serialization and deserialization for the interface protocol.
+
+[source,java]
+----
+package com.example.icd;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
+/**
+ * Message encoder/decoder for ICD interface messages.
+ * Implements the message format specified in Section 4.1.2.
+ */
+public class MessageCodec {
+    
+    private static final int HEADER_SIZE = 4;
+    private static final int SYNC_PATTERN = 0xDEADBEEF;
+    
+    /**
+     * Encodes a message into a byte array.
+     * 
+     * @param messageId The message identifier (DE-004)
+     * @param timestamp The message timestamp (DE-005)
+     * @param payload The message payload data
+     * @return Encoded message as byte array
+     */
+    public byte[] encodeMessage(short messageId, long timestamp, byte[] payload) {
+        int totalLength = HEADER_SIZE + 2 + 2 + 8 + payload.length + 2;
+        ByteBuffer buffer = ByteBuffer.allocate(totalLength);
+        buffer.order(ByteOrder.BIG_ENDIAN);
+        
+        // Header
+        buffer.putInt(SYNC_PATTERN);
+        
+        // Length field
+        buffer.putShort((short) totalLength);
+        
+        // Message ID
+        buffer.putShort(messageId);
+        
+        // Timestamp
+        buffer.putLong(timestamp);
+        
+        // Payload
+        buffer.put(payload);
+        
+        // Calculate and append checksum (CRC-16)
+        short checksum = calculateCRC16(buffer.array(), 0, totalLength - 2);
+        buffer.putShort(checksum);
+        
+        return buffer.array();
+    }
+    
+    /**
+     * Calculates CRC-16-CCITT checksum.
+     */
+    private short calculateCRC16(byte[] data, int offset, int length) {
+        int crc = 0xFFFF;
+        for (int i = offset; i < offset + length; i++) {
+            crc ^= (data[i] & 0xFF) << 8;
+            for (int j = 0; j < 8; j++) {
+                if ((crc & 0x8000) != 0) {
+                    crc = (crc << 1) ^ 0x1021;
+                } else {
+                    crc = crc << 1;
+                }
+            }
+        }
+        return (short) (crc & 0xFFFF);
+    }
+}
+----
+
+=== JSON Configuration Example
+
+Interface configuration parameters can be specified using JSON format for system initialization and configuration management.
+
+[source,json]
+----
+{
+  "interface": {
+    "id": "IF-001",
+    "name": "Primary Data Interface",
+    "version": "1.0",
+    "enabled": true
+  },
+  "connection": {
+    "type": "TCP",
+    "host": "192.168.1.100",
+    "port": 8080,
+    "timeout": 5000,
+    "keepalive": true
+  },
+  "protocol": {
+    "version": 1,
+    "sync_pattern": "0xDEADBEEF",
+    "byte_order": "big-endian",
+    "checksum_algorithm": "CRC-16-CCITT"
+  },
+  "timing": {
+    "message_rate_hz": 10,
+    "max_latency_ms": 100,
+    "response_timeout_ms": 1000,
+    "max_jitter_ms": 5
+  },
+  "data_elements": {
+    "temperature": {
+      "id": "DE-002",
+      "type": "float32",
+      "units": "celsius",
+      "range": {
+        "min": -50.0,
+        "max": 85.0
+      },
+      "resolution": 0.1
+    },
+    "voltage": {
+      "id": "DE-003",
+      "type": "float32",
+      "units": "volts",
+      "range": {
+        "min": 0.0,
+        "max": 50.0
+      },
+      "resolution": 0.01
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "file": "/var/log/interface.log",
+    "max_size_mb": 100
+  }
+}
+----
+
+=== XML Message Schema Example
+
+The following XML schema defines the structure for interface configuration and message validation.
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/icd/schema"
+           xmlns:icd="http://example.com/icd/schema"
+           elementFormDefault="qualified">
+  
+  <!-- Interface Configuration Root Element -->
+  <xs:element name="InterfaceConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Interface" type="icd:InterfaceType"/>
+        <xs:element name="Protocols" type="icd:ProtocolsType"/>
+        <xs:element name="DataElements" type="icd:DataElementsType"/>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <!-- Interface Type Definition -->
+  <xs:complexType name="InterfaceType">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:string"/>
+      <xs:element name="Name" type="xs:string"/>
+      <xs:element name="Description" type="xs:string"/>
+      <xs:element name="Provider" type="xs:string"/>
+      <xs:element name="Consumer" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- Protocol Configuration Type -->
+  <xs:complexType name="ProtocolsType">
+    <xs:sequence>
+      <xs:element name="Protocol" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Type" type="xs:string"/>
+            <xs:element name="Version" type="xs:string"/>
+            <xs:element name="MessageRate" type="xs:positiveInteger"/>
+            <xs:element name="MaxLatency" type="xs:positiveInteger"/>
+          </xs:sequence>
+          <xs:attribute name="enabled" type="xs:boolean" default="true"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- Data Elements Type Definition -->
+  <xs:complexType name="DataElementsType">
+    <xs:sequence>
+      <xs:element name="DataElement" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ElementID" type="xs:string"/>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="DataType" type="icd:DataTypeEnum"/>
+            <xs:element name="Units" type="xs:string" minOccurs="0"/>
+            <xs:element name="Range" type="icd:RangeType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- Data Type Enumeration -->
+  <xs:simpleType name="DataTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="uint8"/>
+      <xs:enumeration value="int8"/>
+      <xs:enumeration value="uint16"/>
+      <xs:enumeration value="int16"/>
+      <xs:enumeration value="uint32"/>
+      <xs:enumeration value="int32"/>
+      <xs:enumeration value="float32"/>
+      <xs:enumeration value="float64"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!-- Range Type Definition -->
+  <xs:complexType name="RangeType">
+    <xs:sequence>
+      <xs:element name="Min" type="xs:double"/>
+      <xs:element name="Max" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>
+----
+
+=== SQL Database Schema Example
+
+Database schema for storing interface telemetry and logging data according to the data element definitions.
+
+[source,sql]
+----
+-- Interface Message Log Table
+CREATE TABLE interface_messages (
+    message_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    received_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    interface_id VARCHAR(20) NOT NULL,
+    msg_type_id SMALLINT NOT NULL,
+    msg_timestamp BIGINT NOT NULL,
+    sequence_number INT UNSIGNED NOT NULL,
+    payload_length SMALLINT NOT NULL,
+    checksum_valid BOOLEAN NOT NULL,
+    raw_data BLOB,
+    INDEX idx_interface (interface_id),
+    INDEX idx_timestamp (received_timestamp),
+    INDEX idx_msg_type (msg_type_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Data Element Values Table (DE-002 Temperature, DE-003 Voltage)
+CREATE TABLE telemetry_data (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    message_id BIGINT NOT NULL,
+    timestamp BIGINT NOT NULL,
+    device_id INT UNSIGNED NOT NULL,
+    temperature FLOAT DEFAULT NULL COMMENT 'DE-002: Temperature in Celsius',
+    voltage FLOAT DEFAULT NULL COMMENT 'DE-003: Voltage in Volts',
+    system_status TINYINT UNSIGNED DEFAULT NULL COMMENT 'DE-001: System Status',
+    operational_mode TINYINT UNSIGNED DEFAULT NULL COMMENT 'DE-009: Operational Mode',
+    position_x DOUBLE DEFAULT NULL COMMENT 'DE-010: X Position',
+    position_y DOUBLE DEFAULT NULL COMMENT 'DE-011: Y Position',
+    position_z DOUBLE DEFAULT NULL COMMENT 'DE-012: Z Position',
+    FOREIGN KEY (message_id) REFERENCES interface_messages(message_id)
+        ON DELETE CASCADE,
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_device (device_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Error Log Table
+CREATE TABLE error_log (
+    error_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    occurred_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    interface_id VARCHAR(20) NOT NULL,
+    error_code SMALLINT UNSIGNED NOT NULL COMMENT 'DE-008: Error Code',
+    severity ENUM('INFO', 'WARNING', 'ERROR', 'CRITICAL') NOT NULL,
+    description TEXT,
+    device_id INT UNSIGNED,
+    message_id BIGINT,
+    resolved BOOLEAN DEFAULT FALSE,
+    resolved_at TIMESTAMP NULL,
+    FOREIGN KEY (message_id) REFERENCES interface_messages(message_id)
+        ON DELETE SET NULL,
+    INDEX idx_interface_error (interface_id, error_code),
+    INDEX idx_occurred (occurred_at),
+    INDEX idx_unresolved (resolved, occurred_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- System Status View
+CREATE VIEW current_system_status AS
+SELECT 
+    t.device_id,
+    t.timestamp,
+    FROM_UNIXTIME(t.timestamp / 1000) AS readable_timestamp,
+    CASE t.system_status
+        WHEN 0 THEN 'OFFLINE'
+        WHEN 1 THEN 'INITIALIZING'
+        WHEN 2 THEN 'OPERATIONAL'
+        WHEN 3 THEN 'ERROR'
+        ELSE 'UNKNOWN'
+    END AS status_name,
+    CASE t.operational_mode
+        WHEN 0 THEN 'STANDBY'
+        WHEN 1 THEN 'NORMAL'
+        WHEN 2 THEN 'CALIBRATION'
+        WHEN 3 THEN 'DIAGNOSTIC'
+        WHEN 4 THEN 'SAFE'
+        ELSE 'RESERVED'
+    END AS mode_name,
+    t.temperature,
+    t.voltage,
+    t.position_x,
+    t.position_y,
+    t.position_z
+FROM telemetry_data t
+INNER JOIN (
+    SELECT device_id, MAX(timestamp) AS max_timestamp
+    FROM telemetry_data
+    GROUP BY device_id
+) latest ON t.device_id = latest.device_id 
+        AND t.timestamp = latest.max_timestamp;
+
+-- Stored Procedure for Message Validation
+DELIMITER //
+
+CREATE PROCEDURE validate_telemetry_data(
+    IN p_temperature FLOAT,
+    IN p_voltage FLOAT,
+    IN p_system_status TINYINT,
+    OUT p_valid BOOLEAN,
+    OUT p_error_message VARCHAR(255)
+)
+BEGIN
+    SET p_valid = TRUE;
+    SET p_error_message = NULL;
+    
+    -- Validate temperature range (DE-002: -50.0 to +85.0)
+    IF p_temperature IS NOT NULL THEN
+        IF p_temperature < -50.0 OR p_temperature > 85.0 THEN
+            SET p_valid = FALSE;
+            SET p_error_message = 'Temperature out of valid range';
+        END IF;
+    END IF;
+    
+    -- Validate voltage range (DE-003: 0.0 to 50.0)
+    IF p_voltage IS NOT NULL THEN
+        IF p_voltage < 0.0 OR p_voltage > 50.0 THEN
+            SET p_valid = FALSE;
+            SET p_error_message = 'Voltage out of valid range';
+        END IF;
+    END IF;
+    
+    -- Validate system status (DE-001: 0-3)
+    IF p_system_status IS NOT NULL THEN
+        IF p_system_status < 0 OR p_system_status > 3 THEN
+            SET p_valid = FALSE;
+            SET p_error_message = 'Invalid system status value';
+        END IF;
+    END IF;
+END //
+
+DELIMITER ;
+----
+
+NOTE: These code examples demonstrate the implementation patterns and data structures defined in this ICD. Actual implementations should include additional error handling, logging, and validation as appropriate for the specific application.

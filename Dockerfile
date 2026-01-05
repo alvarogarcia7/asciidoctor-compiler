@@ -33,6 +33,9 @@ RUN npm install -g @mermaid-js/mermaid-cli
 # Verify mmdc command is available
 RUN mmdc --version
 
+# Install syntax highlighter gems
+RUN gem install rouge --version '~> 3.30'
+
 # Install PlantUML
 RUN wget -O /usr/local/bin/plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2023.13/plantuml-1.2023.13.jar \
     && echo '#!/bin/sh' > /usr/local/bin/plantuml \
