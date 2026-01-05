@@ -16,8 +16,18 @@
 :imagesdir: images
 :icons: font
 :source-highlighter: rouge
-:pdf-theme: default
+:pdf-theme: themes/pdf/ecss-default-theme.yml
+:stylesheet: themes/html/ecss-default.css
 :experimental:
+
+// Theme Configuration
+// Uncomment one of the following to switch between themes:
+// For PDF theme:
+// :pdf-theme: themes/pdf/ecss-default-theme.yml
+// :pdf-theme: themes/pdf/ecss-alt-theme.yml
+// For HTML stylesheet:
+// :stylesheet: themes/html/ecss-default.css
+// :stylesheet: themes/html/ecss-alt.css
 
 // Document metadata
 :document-title: Interface Control Document
