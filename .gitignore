@@ -10,6 +10,11 @@ build/
 # Verification script (auto-generated if not present)
 verify.sh
 
+# Ruby/Bundler
+vendor/bundle/
+.bundle/
+Gemfile.lock
+
 # OS files
 .DS_Store
 Thumbs.db

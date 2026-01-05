@@ -254,6 +254,8 @@ This Interface Control Document (ICD) establishes the interface requirements, sp
 
 This document is intended for use by system engineers, software developers, integration teams, and verification personnel involved in the design, development, and testing of the interfacing systems.
 
+NOTE: This ICD establishes the authoritative interface baseline. All implementations must comply with the specifications defined herein to ensure interoperability.
+
 [[introduction-scope]]
 === Scope
 
@@ -277,18 +279,24 @@ This ICD defines the interfaces between [Provider System Name] and [Consumer Sys
 
 The interfaces described in this document apply to [specify applicable operational modes, phases, or conditions].
 
+IMPORTANT: Changes to interfaces defined in this document must follow the formal change control process described in <<interface-control-change>>.
+
 [[introduction-overview]]
 === Document Overview
 
 This document is organized into the following major sections:
 
-* *Section 1 - Introduction:* Provides the purpose, scope, and organization of this document
-* *Section 2 - Interface Overview:* Presents a high-level view of the system context and interface architecture
-* *Section 3 - Interface Requirements:* Defines functional, performance, and design requirements with traceability
-* *Section 4 - Detailed Interface Specifications:* Provides complete technical specifications for each interface
-* *Section 5 - Data Element Definitions:* Defines all data elements with types, ranges, and encoding
-* *Section 6 - Interface Control:* Describes change control, verification, and validation processes
+* *<<introduction>>:* Provides the purpose, scope, and organization of this document
+* *<<interface-overview>>:* Presents a high-level view of the system context and interface architecture
+* *<<interface-requirements>>:* Defines functional, performance, and design requirements with traceability
+* *<<interface-specifications>>:* Provides complete technical specifications for each interface
+* *<<data-elements>>:* Defines all data elements with types, ranges, and encoding
+* *<<interface-control>>:* Describes change control, verification, and validation processes
 * *Appendices:* Contains supplementary information including forms, diagrams, and test procedures
+
+For quick navigation, you can refer to specific sections using cross-references. For example, to review interface requirements, see xref:interface-requirements[Interface Requirements], or to find data element definitions, see xref:data-elements[Data Element Definitions].
+
+TIP: Use the table of contents on the left to navigate between sections. Cross-references are clickable links in PDF and HTML formats.
 
 <<<
 
@@ -299,6 +307,8 @@ This document is organized into the following major sections:
 === System Context
 
 [Provide a high-level description of the systems involved and their relationships. Include a context diagram showing the Provider System, Consumer System, and the interfaces between them. Describe the operational environment and the role of each system.]
+
+WARNING: System context changes may impact multiple interface specifications. Coordinate all changes with the Interface Control Working Group (ICWG) per the process in <<interface-control-change>>.
 
 .System Context Diagram
 [plantuml, system-context, svg]
@@ -321,11 +331,15 @@ Rel(consumer, external, "Output data")
 [[interface-overview-summary]]
 === Interface Summary
 
-The following table provides a summary of all interfaces covered in this document.
+The following table provides a summary of all interfaces covered in this document. Each interface is detailed further in the <<interface-requirements>> and <<interface-specifications>> sections.
 
-[cols="1,2,2,2,1"]
+[cols="1,2,2,2,1", options="header"]
 |===
-|*Interface ID*|*Interface Name*|*Provider System*|*Consumer System*|*Type*
+|Interface ID
+|Interface Name
+|Provider System
+|Consumer System
+|Type
 
 |IF-001
 |[Primary Data Interface]
@@ -344,19 +358,18 @@ The following table provides a summary of all interfaces covered in this documen
 |[Provider System Name]
 |[Consumer System Name]
 |Data
-
-|
-|
-|
-|
-|
-
 |===
+
+CAUTION: Interface identifiers (IF-001, IF-002, etc.) are referenced throughout this document. Ensure identifier consistency when adding or modifying interfaces.
 
 [[interface-overview-architecture]]
 === Interface Architecture
 
 [Describe the overall interface architecture, including communication pathways, protocol layers, and data flow patterns. Include architecture diagrams as needed.]
+
+The interface architecture follows a layered approach with clear separation between application, protocol, and transport layers. See <<interface-specifications-if001-protocol>> for detailed protocol specifications.
+
+NOTE: The architecture diagram below shows the conceptual layers. Physical implementation details are provided in the detailed specifications for each interface.
 
 .Interface Architecture Diagram
 [plantuml, interface-architecture, svg]
@@ -386,11 +399,14 @@ Rel(consumer_protocol, consumer_app, "Parsed messages")
 [[interface-requirements-general]]
 === General Requirements
 
-This section defines general requirements applicable to all interfaces described in this document.
+This section defines general requirements applicable to all interfaces described in this document. All data elements referenced in requirements are fully defined in <<data-elements>>.
 
-[cols="1,3,1,2"]
+[cols="1,3,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Priority*|*Traceability*
+|Requirement ID
+|Requirement Description
+|Priority
+|Traceability
 
 |GEN-REQ-001
 |All interfaces shall use the data formats and protocols defined in this document
@@ -416,13 +432,11 @@ This section defines general requirements applicable to all interfaces described
 |Interface documentation shall be maintained throughout the system lifecycle
 |Mandatory
 |[Parent Requirement ID]
-
-|
-|
-|
-|
-
 |===
+
+IMPORTANT: All general requirements are mandatory and apply to every interface defined in this ICD. Deviations require formal approval through the change control process described in <<interface-control-change>>.
+
+TIP: When implementing interfaces, review both the general requirements in this section and the interface-specific requirements (e.g., xref:interface-requirements-if001[IF-001 Requirements]).
 
 <<<
 
@@ -433,6 +447,10 @@ This section defines general requirements applicable to all interfaces described
 ==== Description
 
 [Provide a comprehensive description of the interface, including its purpose, usage scenarios, and operational context. Explain how this interface fits into the overall system architecture.]
+
+This interface is referenced in the system overview (see <<interface-overview-summary>>) and detailed specifications are provided in <<interface-specifications-if001>>.
+
+NOTE: Interface requirements defined here are derived from system-level requirements and are verified using the methods described in <<interface-control-verification>>.
 
 [[interface-requirements-if001-type]]
 ==== Interface Type
@@ -446,9 +464,10 @@ This section defines general requirements applicable to all interfaces described
 [[interface-requirements-if001-characteristics]]
 ==== Interface Characteristics
 
-[cols="1,3"]
+[cols="1,3", options="header"]
 |===
-|*Characteristic*|*Value/Description*
+|Characteristic
+|Value/Description
 
 |Protocol
 |[Protocol Name and Version]
@@ -467,18 +486,21 @@ This section defines general requirements applicable to all interfaces described
 
 |Data Direction
 |[Provider → Consumer / Bidirectional]
-
-|
-|
-
 |===
+
+WARNING: Changes to interface characteristics may require hardware modifications and impact system performance. All changes must be evaluated through the impact assessment process in xref:interface-control-change[Interface Change Control].
 
 [[interface-requirements-if001-functional]]
 ==== Functional Requirements
 
-[cols="1,3,1,2"]
+Functional requirements specify the behaviors and capabilities that the interface must provide. These requirements trace to the general requirements in <<interface-requirements-general>>.
+
+[cols="1,3,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Priority*|*Traceability*
+|Requirement ID
+|Requirement Description
+|Priority
+|Traceability
 
 |IF001-FREQ-001
 |The interface shall transmit [data type] at a rate of [value] messages per second
@@ -499,20 +521,19 @@ This section defines general requirements applicable to all interfaces described
 |The interface shall handle [error condition] by [response action]
 |Mandatory
 |GEN-REQ-002, [Parent ID]
-
-|
-|
-|
-|
-
 |===
 
 [[interface-requirements-if001-performance]]
 ==== Performance Requirements
 
-[cols="1,3,1,2"]
+Performance requirements define the quantitative metrics that the interface must achieve. Verification methods are specified in <<interface-control-verification>>.
+
+[cols="1,3,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Priority*|*Traceability*
+|Requirement ID
+|Requirement Description
+|Priority
+|Traceability
 
 |IF001-PREQ-001
 |The interface shall maintain a maximum latency of [value] milliseconds under nominal conditions
@@ -533,20 +554,21 @@ This section defines general requirements applicable to all interfaces described
 |The interface shall recover from transient errors within [value] seconds
 |Desirable
 |[Parent ID]
-
-|
-|
-|
-|
-
 |===
+
+CAUTION: Performance requirements must be verified under conditions representative of the operational environment. Test procedures are provided in xref:appendix-test[Appendix C].
 
 [[interface-requirements-if001-constraints]]
 ==== Design Constraints
 
-[cols="1,3,1,2"]
+Design constraints define limitations and restrictions that must be observed during interface design and implementation.
+
+[cols="1,3,1,2", options="header"]
 |===
-|*Constraint ID*|*Constraint Description*|*Type*|*Rationale*
+|Constraint ID
+|Constraint Description
+|Type
+|Rationale
 
 |IF001-CON-001
 |The interface shall use only [specific standard or protocol]
@@ -562,13 +584,9 @@ This section defines general requirements applicable to all interfaces described
 |The interface shall operate within [environmental conditions]
 |Environmental
 |[Operating environment specification]
-
-|
-|
-|
-|
-
 |===
+
+IMPORTANT: Design constraints are typically derived from system-level limitations or external standards. Violations of these constraints may invalidate system certifications or compatibility.
 
 <<<
 
@@ -588,39 +606,33 @@ This section defines general requirements applicable to all interfaces described
 [[interface-requirements-if002-functional]]
 ==== Functional Requirements
 
-[cols="1,3,1,2"]
+[cols="1,3,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Priority*|*Traceability*
+|Requirement ID
+|Requirement Description
+|Priority
+|Traceability
 
 |IF002-FREQ-001
 |[Requirement description]
 |Mandatory
 |[Parent ID]
-
-|
-|
-|
-|
-
 |===
 
 [[interface-requirements-if002-performance]]
 ==== Performance Requirements
 
-[cols="1,3,1,2"]
+[cols="1,3,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Priority*|*Traceability*
+|Requirement ID
+|Requirement Description
+|Priority
+|Traceability
 
 |IF002-PREQ-001
 |[Requirement description]
 |Mandatory
 |[Parent ID]
-
-|
-|
-|
-|
-
 |===
 
 <<<
@@ -643,6 +655,8 @@ This section defines general requirements applicable to all interfaces described
 *Protocol Version:* [Version Number]
 
 *Encapsulation:* [Frame/Packet structure]
+
+NOTE: The protocol specification implements the requirements defined in xref:interface-requirements-if001[IF-001 Requirements]. Data elements used in the protocol are defined in <<data-elements>>.
 
 ===== Connection Management
 
@@ -668,16 +682,23 @@ This section defines general requirements applicable to all interfaces described
 
 *Fault Tolerance:* [How system handles faults]
 
+WARNING: Proper error handling is critical for system reliability. Implementations must detect and report all error conditions specified in this section. Error codes are defined in xref:data-elements-enumerated[Enumerated Types].
+
+TIP: Test error handling thoroughly using the error injection procedures in <<appendix-test>> to ensure robust operation under fault conditions.
+
 [[interface-specifications-if001-message-format]]
 ==== Message Format Specification
 
 ===== Message Structure
 
-All messages on this interface shall conform to the following structure:
+All messages on this interface shall conform to the following structure. Field definitions reference the data elements in <<data-elements-definitions>>.
 
-[cols="1,1,1,3"]
+[cols="1,1,1,3", options="header"]
 |===
-|*Field Name*|*Offset (bytes)*|*Size (bytes)*|*Description*
+|Field Name
+|Offset (bytes)
+|Size (bytes)
+|Description
 
 |Header
 |0
@@ -687,7 +708,7 @@ All messages on this interface shall conform to the following structure:
 |Length
 |4
 |2
-|Total message length including header and checksum
+|Total message length including header and checksum (see DE-017)
 
 |Message ID
 |6
@@ -697,7 +718,7 @@ All messages on this interface shall conform to the following structure:
 |Timestamp
 |8
 |8
-|Message generation time (milliseconds since epoch)
+|Message generation time in milliseconds since epoch (see DE-005)
 
 |Payload
 |16
@@ -707,15 +728,21 @@ All messages on this interface shall conform to the following structure:
 |Checksum
 |Variable
 |2
-|CRC-16 checksum of entire message
-
+|CRC-16 checksum of entire message (see DE-016)
 |===
+
+IMPORTANT: All multi-byte fields use big-endian byte ordering as specified in <<data-elements-primitive>>. Implementers must ensure correct byte order conversion on little-endian systems.
 
 ===== Message Types
 
-[cols="1,2,1,3"]
+The following message types are supported on this interface. Each message type is described in detail in subsequent sections.
+
+[cols="1,2,1,3", options="header"]
 |===
-|*Message ID*|*Message Name*|*Direction*|*Description*
+|Message ID
+|Message Name
+|Direction
+|Description
 
 |0x0001
 |[Message Type 1]
@@ -731,13 +758,9 @@ All messages on this interface shall conform to the following structure:
 |[Message Type 3]
 |Consumer → Provider
 |[Purpose and content description]
-
-|
-|
-|
-|
-
 |===
+
+NOTE: Message IDs are allocated from the global message catalog. Contact the ICWG to reserve additional message IDs.
 
 ===== Example Message: [Message Type 1] (0x0001)
 
@@ -749,9 +772,13 @@ All messages on this interface shall conform to the following structure:
 
 *Payload Structure:*
 
-[cols="1,1,1,2,2"]
+[cols="1,1,1,2,2", options="header"]
 |===
-|*Field Name*|*Offset*|*Size*|*Data Type*|*Description*
+|Field Name
+|Offset
+|Size
+|Data Type
+|Description
 
 |Field1
 |0
@@ -776,21 +803,21 @@ All messages on this interface shall conform to the following structure:
 |8
 |double
 |[Field description]
-
-|
-|
-|
-|
-|
-
 |===
+
+TIP: When implementing message encoders and decoders, verify field alignment and padding to ensure proper byte boundaries. Use the test vectors in <<appendix-test>> for validation.
 
 [[interface-specifications-if001-timing]]
 ==== Timing Requirements
 
-[cols="1,2,1,3"]
+Timing requirements are critical for real-time system operation. These requirements implement the performance constraints defined in <<interface-requirements-if001-performance>>.
+
+[cols="1,2,1,3", options="header"]
 |===
-|*Timing Parameter*|*Description*|*Value*|*Notes*
+|Timing Parameter
+|Description
+|Value
+|Notes
 
 |Message Rate
 |Nominal transmission rate for periodic messages
@@ -811,22 +838,24 @@ All messages on this interface shall conform to the following structure:
 |Maximum timing variation
 |[X ms]
 |[Acceptable jitter range]
-
-|
-|
-|
-|
-
 |===
+
+WARNING: Timing violations may indicate system overload or communication faults. Implementations should monitor timing metrics and log violations for diagnostic purposes.
+
+CAUTION: System clock synchronization is assumed. Ensure all system clocks are synchronized to within [X ms] to maintain timing accuracy across interfaces.
 
 [[interface-specifications-if001-states]]
 ==== Interface States and Modes
 
 [Describe the operational states and modes of the interface]
 
-[cols="1,2,3"]
+The interface state machine manages connection lifecycle and error handling. State transitions must be implemented according to the following specification.
+
+[cols="1,2,3", options="header"]
 |===
-|*State*|*Description*|*Transitions*
+|State
+|Description
+|Transitions
 
 |Idle
 |No active communication
@@ -839,12 +868,11 @@ All messages on this interface shall conform to the following structure:
 |Error
 |Error condition detected
 |Error → Active on recovery, Error → Idle on reset
-
-|
-|
-|
-
 |===
+
+NOTE: Interface states are independent of system operational modes defined in xref:data-elements-enumerated[Enumerated Types (DE-009)]. Both state and mode must be tracked separately.
+
+TIP: Implement state timeout mechanisms to prevent indefinite blocking in transient states. See <<interface-specifications-if001-timing>> for recommended timeout values.
 
 <<<
 
@@ -871,14 +899,21 @@ All messages on this interface shall conform to the following structure:
 
 This section provides comprehensive definitions for all data elements used in the interfaces defined in this document. Each data element is defined with its identifier, name, data type, valid range, units, encoding, and usage notes.
 
+All interface specifications in <<interface-specifications>> reference data elements defined in this section. When implementing interfaces, use these definitions to ensure data consistency and interoperability.
+
+IMPORTANT: Data element definitions are under configuration control. Changes to data element types, ranges, or encoding require formal approval through the change control process in <<interface-control-change>>.
+
 [[data-elements-primitive]]
 === Primitive Data Types
 
-The following primitive data types are used as building blocks for data element definitions:
+The following primitive data types are used as building blocks for data element definitions. All composite data types and message structures are constructed from these primitive types.
 
-[cols="1,1,1,3"]
+[cols="1,1,1,3", options="header"]
 |===
-|*Type Name*|*Size (bits)*|*Encoding*|*Description*
+|Type Name
+|Size (bits)
+|Encoding
+|Description
 
 |uint8
 |8
@@ -939,17 +974,28 @@ The following primitive data types are used as building blocks for data element 
 |Variable
 |UTF-8 encoded
 |Character string, length-prefixed or null-terminated
-
 |===
+
+NOTE: All multi-byte numeric types use big-endian (network) byte order. Systems using little-endian architecture must perform byte order conversion.
+
+CAUTION: Floating-point arithmetic is subject to rounding errors. When exact decimal representation is required, consider using scaled integer types instead of float32/float64.
 
 <<<
 
 [[data-elements-definitions]]
 === Data Element Definitions
 
-[cols="1,2,1,1,1,2,2"]
+This section defines all data elements used in interface messages. Each element has a unique identifier (DE-XXX) that is referenced throughout the document.
+
+[cols="1,2,1,1,1,2,2", options="header"]
 |===
-|*Element ID*|*Element Name*|*Data Type*|*Units*|*Range*|*Resolution/Precision*|*Description*
+|Element ID
+|Element Name
+|Data Type
+|Units
+|Range
+|Resolution/Precision
+|Description
 
 |DE-001
 |System Status
@@ -1110,27 +1156,26 @@ The following primitive data types are used as building blocks for data element 
 |0x00000000-0xFFFFFFFF
 |1 bit
 |Bit field for configuration options
-
-|
-|
-|
-|
-|
-|
-|
-
 |===
+
+TIP: When implementing data validation, verify that all values fall within the specified ranges and maintain the required precision. Out-of-range values should be flagged as errors per xref:data-elements-enumerated[Error Codes].
 
 [[data-elements-enumerated]]
 === Enumerated Types
 
-The following enumerated types define specific sets of valid values for data elements:
+The following enumerated types define specific sets of valid values for data elements. Enumerated types restrict the valid values to a predefined set, enabling compact encoding while maintaining readability.
+
+IMPORTANT: Only the enumerated values defined in this section are valid. Undefined values must be treated as errors by receiving systems.
 
 ==== System Status (DE-001)
 
-[cols="1,2,3"]
+This enumeration defines the operational status of a system or subsystem. It is used in status messages to report the current state.
+
+[cols="1,2,3", options="header"]
 |===
-|*Value*|*Name*|*Description*
+|Value
+|Name
+|Description
 
 |0
 |OFFLINE
@@ -1147,14 +1192,19 @@ The following enumerated types define specific sets of valid values for data ele
 |3
 |ERROR
 |System has encountered an error condition
-
 |===
+
+NOTE: Transition from ERROR to OPERATIONAL state requires explicit error recovery and may require operator intervention depending on the error severity.
 
 ==== Operational Mode (DE-009)
 
-[cols="1,2,3"]
+This enumeration defines the operational mode of the system. The mode determines which functions are active and how the system responds to commands.
+
+[cols="1,2,3", options="header"]
 |===
-|*Value*|*Name*|*Description*
+|Value
+|Name
+|Description
 
 |0
 |STANDBY
@@ -1179,14 +1229,21 @@ The following enumerated types define specific sets of valid values for data ele
 |5-15
 |RESERVED
 |Reserved for future use
-
 |===
+
+WARNING: Mode transitions may affect system behavior and interface availability. Ensure proper synchronization when commanding mode changes.
+
+TIP: Request mode changes using the command interface described in xref:interface-requirements-if002[IF-002 Requirements]. Verify successful mode transition by monitoring status messages.
 
 ==== Error Codes (DE-008)
 
-[cols="1,2,3"]
+Error codes provide standardized identification of fault conditions. All errors must be logged and reported through the status interface.
+
+[cols="1,2,3", options="header"]
 |===
-|*Code*|*Name*|*Description*
+|Code
+|Name
+|Description
 
 |0x0000
 |NO_ERROR
@@ -1223,17 +1280,27 @@ The following enumerated types define specific sets of valid values for data ele
 |0x0008-0xFFFF
 |RESERVED
 |Reserved for system-specific errors
-
 |===
+
+CAUTION: Error conditions may require different recovery strategies. Critical errors (e.g., BUFFER_OVERFLOW) may necessitate interface reset, while transient errors (e.g., COMM_TIMEOUT) may be resolved by retry mechanisms.
+
+NOTE: System-specific error codes (0x0008-0xFFFF) must be documented in implementation-specific supplements to this ICD.
 
 [[data-elements-bitfields]]
 === Bit Field Definitions
 
+Bit fields provide compact representation of multiple boolean flags within a single integer value. Each bit position has a specific meaning and must be set or cleared according to its definition.
+
 ==== Configuration Flags (DE-020)
 
-[cols="1,1,2,3"]
+The configuration flags control various system behaviors and features. Multiple flags can be set simultaneously by performing bitwise OR operations.
+
+[cols="1,1,2,3", options="header"]
 |===
-|*Bit Position*|*Bit Mask*|*Flag Name*|*Description*
+|Bit Position
+|Bit Mask
+|Flag Name
+|Description
 
 |0
 |0x00000001
@@ -1269,19 +1336,29 @@ The following enumerated types define specific sets of valid values for data ele
 |0xFFFF0000
 |RESERVED
 |Reserved for future use (set to 0)
-
 |===
+
+IMPORTANT: Reserved bits must be set to 0 in transmitted messages and must be ignored on reception to ensure forward compatibility with future ICD versions.
+
+TIP: Use bitwise operations to manipulate individual flags. For example, to enable logging: `flags |= 0x00000001`. To disable logging: `flags &= ~0x00000001`. To test if logging is enabled: `if (flags & 0x00000001)`.
 
 [[data-elements-composite]]
 === Composite Data Types
 
+Composite data types combine multiple primitive data elements into structured units. These types are used in message payloads where related data elements are transmitted together.
+
+NOTE: Composite types are transmitted as a sequence of their component fields in the order specified. No padding or alignment bytes are inserted unless explicitly specified.
+
 ==== Position Vector
 
-Composite data type representing a 3D position.
+Composite data type representing a 3D position coordinate in Cartesian space.
 
-[cols="1,2,1,2"]
+[cols="1,2,1,2", options="header"]
 |===
-|*Field Name*|*Element ID*|*Data Type*|*Description*
+|Field Name
+|Element ID
+|Data Type
+|Description
 
 |X
 |DE-010
@@ -1297,18 +1374,24 @@ Composite data type representing a 3D position.
 |DE-012
 |float64
 |Z-axis position
-
 |===
 
-Total Size: 24 bytes
+*Total Size:* 24 bytes
+
+*Byte Offset:* X at +0, Y at +8, Z at +16
+
+TIP: Position vectors use float64 for high precision. For applications requiring lower precision, consider defining a compact position type using float32 to reduce bandwidth requirements.
 
 ==== Velocity Vector
 
-Composite data type representing a 3D velocity.
+Composite data type representing a 3D velocity vector in meters per second.
 
-[cols="1,2,1,2"]
+[cols="1,2,1,2", options="header"]
 |===
-|*Field Name*|*Element ID*|*Data Type*|*Description*
+|Field Name
+|Element ID
+|Data Type
+|Description
 
 |X
 |DE-013
@@ -1324,10 +1407,13 @@ Composite data type representing a 3D velocity.
 |DE-015
 |float32
 |Z-axis velocity
-
 |===
 
-Total Size: 12 bytes
+*Total Size:* 12 bytes
+
+*Byte Offset:* X at +0, Y at +4, Z at +8
+
+NOTE: Velocity vectors use float32 as the precision is sufficient for most velocity measurements. This reduces message size compared to using float64.
 
 <<<
 
@@ -1341,21 +1427,34 @@ Total Size: 12 bytes
 
 All changes to the interfaces defined in this document shall follow a formal change control process to ensure coordination between all affected parties.
 
+IMPORTANT: Interface changes affect multiple stakeholders and systems. Uncoordinated changes can lead to incompatibilities, integration failures, and operational problems. All changes must be reviewed and approved by the ICWG.
+
+The change control process described in this section applies to all interfaces in this ICD. For information on specific interface requirements, see <<interface-requirements>>.
+
 ===== Change Request Procedure
 
-1. *Initiation:* Any party may initiate an interface change request using the Interface Change Request (ICR) form (see Appendix A)
+1. *Initiation:* Any party may initiate an interface change request using the Interface Change Request (ICR) form (see xref:appendix-icr[Appendix A])
 2. *Submission:* Submit the ICR to the Interface Control Working Group (ICWG)
 3. *Review:* ICWG reviews the ICR for technical feasibility and impact assessment
 4. *Approval:* ICWG approves or rejects the ICR, or requests modifications
 5. *Implementation:* Approved changes are implemented by affected parties according to agreed schedule
-6. *Verification:* Changes are verified through testing and validation
+6. *Verification:* Changes are verified through testing and validation (see <<interface-control-verification>>)
 7. *Documentation:* This ICD is updated to reflect approved changes
+
+NOTE: The ICR form template is provided in <<appendix-icr>>. Complete all sections to expedite the review process.
+
+TIP: Engage with stakeholders early in the change process to identify potential impacts and gain consensus before formal submission.
 
 ===== Interface Change Classification
 
-[cols="1,2,3,2"]
+All interface changes are classified according to their impact level, which determines the required approval authority and review process.
+
+[cols="1,2,3,2", options="header"]
 |===
-|*Class*|*Type*|*Description*|*Approval Level*
+|Class
+|Type
+|Description
+|Approval Level
 
 |Class 1
 |Critical
@@ -1376,8 +1475,11 @@ All changes to the interfaces defined in this document shall follow a formal cha
 |Editorial
 |Typographical corrections and formatting changes
 |ICD Author
-
 |===
+
+WARNING: Class 1 changes require extensive coordination and may necessitate software updates, retesting, and revalidation of all affected systems. Plan adequate schedule and resources for Class 1 changes.
+
+CAUTION: Even Class 3 and Class 4 changes should be communicated to all stakeholders to maintain awareness of document updates.
 
 ===== Impact Assessment
 
@@ -1391,23 +1493,24 @@ All interface change requests shall include an assessment of the following impac
 
 ==== Configuration Management
 
-Interface baselines shall be maintained under configuration control. Each approved version of this ICD represents an interface baseline.
+Interface baselines shall be maintained under configuration control. Each approved version of this ICD represents an interface baseline. All implementations must comply with the baseline version specified in their configuration management plan.
 
-[cols="1,2,2,2"]
+[cols="1,2,2,2", options="header"]
 |===
-|*Baseline*|*Version*|*Date*|*Description*
+|Baseline
+|Version
+|Date
+|Description
 
 |Initial
 |1.0
 |{revdate}
 |Initial baseline release
-
-|
-|
-|
-|
-
 |===
+
+NOTE: The baseline table is updated with each approved ICD revision. Systems should clearly document which ICD baseline they implement to ensure compatibility during integration.
+
+TIP: When upgrading to a new ICD baseline, review the revision history in the document control section to understand what changed between versions.
 
 <<<
 
@@ -1423,11 +1526,23 @@ Interface verification ensures that the implemented interfaces comply with all r
 * *Demonstration:* Functional demonstration of interface capabilities
 * *Test:* Execution of formal test procedures
 
+Requirements to be verified are defined in <<interface-requirements>>. Test procedures are detailed in xref:appendix-test[Appendix C].
+
+IMPORTANT: Verification must be completed and documented before interfaces can be approved for operational use. All verification evidence must be retained for audit and certification purposes.
+
+NOTE: The verification method for each requirement is specified in the Requirements Compliance Matrix in <<appendix-compliance>>.
+
 ==== Verification Requirements Matrix
 
-[cols="1,2,1,1,2"]
+This matrix tracks the verification status of all interface requirements. It provides traceability from requirements to verification evidence.
+
+[cols="1,2,1,1,2", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Verification Method*|*Status*|*Verification Evidence*
+|Requirement ID
+|Requirement Description
+|Verification Method
+|Status
+|Verification Evidence
 
 |GEN-REQ-001
 |All interfaces shall use the data formats and protocols defined in this document
@@ -1452,20 +1567,20 @@ Interface verification ensures that the implemented interfaces comply with all r
 |Test
 |[TBV]
 |[Test Report Reference]
-
-|
-|
-|
-|
-|
-
 |===
+
+TIP: Update this matrix as verification activities progress. Use status codes: TBV (To Be Verified), InProgress, Verified, or Failed. Link to specific test reports or analysis documents in the Verification Evidence column.
 
 ==== Test Requirements
 
-[cols="1,2,2,1"]
+Test requirements define the specific tests that must be performed to verify interface compliance. Detailed test procedures for each test are provided in <<appendix-test>>.
+
+[cols="1,2,2,1", options="header"]
 |===
-|*Test ID*|*Test Description*|*Acceptance Criteria*|*Requirement Traceability*
+|Test ID
+|Test Description
+|Acceptance Criteria
+|Requirement Traceability
 
 |TEST-001
 |Verify message format compliance
@@ -1491,13 +1606,11 @@ Interface verification ensures that the implemented interfaces comply with all r
 |Verify protocol state transitions
 |State transitions occur as specified
 |IF001-FREQ-002
-
-|
-|
-|
-|
-
 |===
+
+WARNING: Test execution must be performed in a controlled environment that closely matches the operational environment to ensure representative results.
+
+TIP: Automate test execution where possible to enable regression testing when interface changes are implemented. Document test automation scripts and tools used.
 
 <<<
 
@@ -1514,11 +1627,22 @@ Interface validation ensures that the implemented interfaces meet the operationa
 * *Stress Testing:* Validation of behavior under extreme conditions
 * *Operational Scenario Testing:* Validation against operational use cases
 
+While verification confirms compliance with specifications (see <<interface-control-verification>>), validation confirms that the interfaces meet actual operational needs.
+
+NOTE: Validation is typically performed after successful verification and is conducted in a more realistic operational environment.
+
+TIP: Involve end users and operators in validation activities to ensure that interfaces support actual operational workflows and use cases.
+
 ==== Validation Requirements
 
-[cols="1,2,2,1"]
+Validation requirements define the operational scenarios and conditions under which interfaces must demonstrate correct behavior.
+
+[cols="1,2,2,1", options="header"]
 |===
-|*Validation ID*|*Validation Description*|*Acceptance Criteria*|*Requirement Traceability*
+|Validation ID
+|Validation Description
+|Acceptance Criteria
+|Requirement Traceability
 
 |VAL-001
 |Validate interface operation in nominal scenario
@@ -1539,23 +1663,23 @@ Interface validation ensures that the implemented interfaces meet the operationa
 |Validate interface in operational environment
 |Interface functions correctly in target environment
 |IF001-CON-003
-
-|
-|
-|
-|
-
 |===
+
+CAUTION: Validation in the operational environment may require special safety precautions and coordination with operations staff. Obtain proper approvals before conducting validation activities in operational systems.
 
 ==== Acceptance Criteria
 
 The interfaces defined in this document shall be considered validated and accepted when:
 
-* All verification tests have been successfully completed
+* All verification tests have been successfully completed (see xref:interface-control-verification[Interface Verification])
 * All validation activities have been successfully completed
 * All test and validation results have been reviewed and approved
 * All identified defects have been resolved or accepted as known limitations
 * Interface operation has been demonstrated in the operational environment
+
+IMPORTANT: Interface acceptance requires formal sign-off from all stakeholder organizations. Do not proceed to operational use until acceptance criteria are met and documented.
+
+NOTE: Known limitations and workarounds must be documented in release notes or operational procedures if they are accepted as part of the interface baseline.
 
 <<<
 
@@ -1786,11 +1910,18 @@ ___________________________________________________________________________
 
 === Requirements Compliance Matrix
 
-This matrix provides a comprehensive mapping of all interface requirements to their implementation status, verification method, and verification status.
+This matrix provides a comprehensive mapping of all interface requirements to their implementation status, verification method, and verification status. It serves as the primary tracking mechanism for interface compliance throughout the development lifecycle.
 
-[cols="1,2,1,1,1,1"]
+For detailed verification procedures, see xref:interface-control-verification[Interface Verification]. For validation approach, see <<interface-control-validation>>.
+
+[cols="1,2,1,1,1,1", options="header"]
 |===
-|*Requirement ID*|*Requirement Description*|*Implementation Status*|*Verification Method*|*Verification Status*|*Notes*
+|Requirement ID
+|Requirement Description
+|Implementation Status
+|Verification Method
+|Verification Status
+|Notes
 
 |GEN-REQ-001
 |All interfaces shall use defined data formats and protocols
@@ -1840,15 +1971,9 @@ This matrix provides a comprehensive mapping of all interface requirements to th
 |Test
 |[Status]
 |[Notes]
-
-|
-|
-|
-|
-|
-|
-
 |===
+
+TIP: This matrix should be maintained as a living document throughout the project lifecycle. Update regularly as implementation and verification progress.
 
 <<<
 
@@ -1856,9 +1981,12 @@ This matrix provides a comprehensive mapping of all interface requirements to th
 [[appendix-glossary]]
 == Appendix E: Glossary
 
-[cols="1,3"]
+This glossary defines technical terms used throughout this ICD. For data element definitions, see <<data-elements>>. For enumerated type definitions, see <<data-elements-enumerated>>.
+
+[cols="1,3", options="header"]
 |===
-|*Term*|*Definition*
+|Term
+|Definition
 
 |Big-endian
 |Byte ordering where the most significant byte is stored at the lowest memory address
@@ -1898,5 +2026,4 @@ This matrix provides a comprehensive mapping of all interface requirements to th
 
 |Two's complement
 |A mathematical operation on binary numbers and a binary signed number representation based on this operation
-
 |===
