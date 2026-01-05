@@ -93,6 +93,25 @@ When using Bundler, prefix all `make` commands with `bundle exec`:
 bundle exec make all
 ```
 
+### Option 4: Docker (No Local Installation Required)
+
+Use Docker to run asciidoctor without installing any dependencies on your host system:
+
+```bash
+# Build the Docker image
+make docker-build
+
+# Run commands in Docker container using docker-compose
+docker-compose run --rm asciidoctor make all
+docker-compose run --rm asciidoctor make verify
+docker-compose run --rm asciidoctor make watch
+
+# Or run interactively
+docker-compose run --rm asciidoctor bash
+```
+
+The Docker setup includes all required dependencies (asciidoctor, asciidoctor-pdf, grep, inotify-tools for watch mode).
+
 ### Verify Installation
 
 Run the setup script to verify everything is installed correctly:
@@ -123,13 +142,24 @@ make all    # Generates both PDF and HTML
 ### Available Commands
 
 ```bash
-make all       # Build both PDF and HTML (default)
-make pdf       # Build PDF only
-make html      # Build HTML only
-make verify    # Verify AsciiDoc syntax
-make clean     # Remove build artifacts
-make watch     # Auto-rebuild on changes (requires inotifywait or entr)
-make help      # Show all available commands
+make all          # Build both PDF and HTML (default)
+make pdf          # Build PDF only
+make html         # Build HTML only
+make verify       # Verify AsciiDoc syntax
+make clean        # Remove build artifacts
+make watch        # Auto-rebuild on changes (requires inotifywait or entr)
+make docker-build # Build Docker image
+make help         # Show all available commands
+```
+
+### Docker Commands
+
+If using Docker, prefix make commands with `docker-compose run --rm asciidoctor`:
+
+```bash
+docker-compose run --rm asciidoctor make all
+docker-compose run --rm asciidoctor make verify
+docker-compose run --rm asciidoctor make watch
 ```
 
 ### Manual Generation

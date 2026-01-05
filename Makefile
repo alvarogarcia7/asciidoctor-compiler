@@ -1,13 +1,21 @@
-.PHONY: all pdf html verify clean watch help
+.PHONY: all pdf html verify clean watch help docker-build
 
 ASCIIDOC_FILE = icd-template.adoc
 PDF_OUTPUT = icd-template.pdf
 HTML_OUTPUT = icd-template.html
 BUILD_DIR = build
 VERIFY_SCRIPT = verify.sh
+DOCKER_IMAGE_NAME = asciidoctor-icd
+DOCKER_IMAGE_TAG = latest
 
-ASCIIDOCTOR = bundle exec asciidoctor
-ASCIIDOCTOR_PDF = bundle exec asciidoctor-pdf
+# Detect if we're in Docker or using bundler
+ifeq ($(shell command -v bundle 2> /dev/null && [ -f Gemfile.lock ] && echo yes),yes)
+	ASCIIDOCTOR = bundle exec asciidoctor
+	ASCIIDOCTOR_PDF = bundle exec asciidoctor-pdf
+else
+	ASCIIDOCTOR = asciidoctor
+	ASCIIDOCTOR_PDF = asciidoctor-pdf
+endif
 
 all: pdf html
 
@@ -38,8 +46,10 @@ verify:
 		echo '#!/bin/bash' > $(VERIFY_SCRIPT); \
 		echo 'set -e' >> $(VERIFY_SCRIPT); \
 		echo 'echo "Verifying AsciiDoc syntax..."' >> $(VERIFY_SCRIPT); \
-		echo 'if command -v bundle &> /dev/null && bundle exec asciidoctor --version &> /dev/null; then' >> $(VERIFY_SCRIPT); \
-		echo '    bundle exec asciidoctor -o /dev/null $(ASCIIDOC_FILE) && echo "✓ AsciiDoc syntax is valid"' >> $(VERIFY_SCRIPT); \
+		echo 'if command -v bundle &> /dev/null && [ -f Gemfile.lock ] && bundle exec asciidoctor --version &> /dev/null; then' >> $(VERIFY_SCRIPT); \
+		echo '    bundle exec asciidoctor -o /dev/null icd-template.adoc && echo "✓ AsciiDoc syntax is valid"' >> $(VERIFY_SCRIPT); \
+		echo 'elif command -v asciidoctor &> /dev/null; then' >> $(VERIFY_SCRIPT); \
+		echo '    asciidoctor -o /dev/null icd-template.adoc && echo "✓ AsciiDoc syntax is valid"' >> $(VERIFY_SCRIPT); \
 		echo 'else' >> $(VERIFY_SCRIPT); \
 		echo '    echo "✗ asciidoctor not found, skipping syntax check"' >> $(VERIFY_SCRIPT); \
 		echo '    exit 1' >> $(VERIFY_SCRIPT); \
@@ -73,12 +83,18 @@ watch:
 		exit 1; \
 	fi
 
+docker-build:
+	@echo "Building Docker image..."
+	@docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) .
+	@echo "Docker image built: $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
+
 help:
 	@echo "Available targets:"
-	@echo "  make all       - Compile both PDF and HTML (default)"
-	@echo "  make pdf       - Compile PDF only"
-	@echo "  make html      - Compile HTML only"
-	@echo "  make verify    - Run verification script"
-	@echo "  make clean     - Remove build artifacts"
-	@echo "  make watch     - Auto-compile on changes (requires inotifywait or entr)"
-	@echo "  make help      - Show this help message"
+	@echo "  make all          - Compile both PDF and HTML (default)"
+	@echo "  make pdf          - Compile PDF only"
+	@echo "  make html         - Compile HTML only"
+	@echo "  make verify       - Run verification script"
+	@echo "  make clean        - Remove build artifacts"
+	@echo "  make watch        - Auto-compile on changes (requires inotifywait or entr)"
+	@echo "  make docker-build - Build Docker image"
+	@echo "  make help         - Show this help message"

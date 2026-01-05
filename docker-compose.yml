@@ -1,0 +1,12 @@
+services:
+  asciidoctor:
+    image: asciidoctor-icd:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/documents
+    working_dir: /documents
+    stdin_open: true
+    tty: true
+    command: /bin/bash
