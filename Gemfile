@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
+# Ruby 2.6 compatible - asciidoctor and asciidoctor-diagram
 gem 'asciidoctor', '~> 2.0'
-gem 'asciidoctor-pdf', '~> 2.3'
+gem 'asciidoctor-diagram', '~> 2.2'
+
+# PDF generation requires Ruby >= 2.7, install separately or use Docker
+# gem 'asciidoctor-pdf', '~> 2.3'

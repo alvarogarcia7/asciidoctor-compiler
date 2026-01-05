@@ -7,6 +7,9 @@ build/
 *.xml
 *.epub
 
+# AsciiDoctor diagram cache
+.asciidoctor/
+
 # Ruby/Bundler
 vendor/bundle/
 .bundle/

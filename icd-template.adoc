@@ -19,6 +19,8 @@
 :pdf-theme: themes/pdf/ecss-default-theme.yml
 :stylesheet: themes/html/ecss-default.css
 :experimental:
+:diagram-cachedir: .asciidoctor/diagram
+:diagram-svg-type: inline
 
 // Theme Configuration
 // Uncomment one of the following to switch between themes:

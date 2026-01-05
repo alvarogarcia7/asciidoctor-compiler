@@ -109,6 +109,7 @@ compile_pdf() {
     fi
     
     local cmd="asciidoctor-pdf"
+    cmd="${cmd} -r asciidoctor-diagram"
     cmd="${cmd} -a pdf-theme=${theme}"
     cmd="${cmd}${attr_args}"
     cmd="${cmd} -o \"${output_file}\""
@@ -141,6 +142,7 @@ compile_html() {
     fi
     
     local cmd="asciidoctor"
+    cmd="${cmd} -r asciidoctor-diagram"
     cmd="${cmd}${attr_args}"
     cmd="${cmd} -o \"${output_file}\""
     cmd="${cmd} \"${input_file}\""

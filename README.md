@@ -34,7 +34,7 @@ This template provides a production-ready structure for Interface Control Docume
 - Test and verification procedures
 - Data element definitions with primitive and composite types
 - Protocol specifications and message format templates
-- State machine and timing diagrams support (PlantUML integration)
+- **Full PlantUML diagram support** with integrated rendering (diagrams included in template)
 - Professional document formatting with table of contents, cross-references, and page breaks
 
 ## Prerequisites
@@ -45,13 +45,16 @@ This template provides a production-ready structure for Interface Control Docume
 |------|---------|---------|
 | **asciidoctor** | 2.0+ | HTML generation from AsciiDoc |
 | **asciidoctor-pdf** | 2.3+ | PDF generation from AsciiDoc |
+| **asciidoctor-diagram** | 2.2+ | Diagram rendering (PlantUML, Graphviz, etc.) |
 | **Ruby** | 2.5+ | Required for asciidoctor gems |
 | **Bundler** | 2.0+ | Optional, for project-local gem management |
+| **PlantUML** | Latest | UML diagram generation (required for diagram rendering) |
+| **Graphviz** | Latest | Graph rendering (required dependency for PlantUML) |
+| **Java** | 8+ | Required to run PlantUML |
 
 ### Optional Tools
 
 - **inotify-tools** or **entr** - For auto-rebuild on file changes (`make watch`)
-- **PlantUML** - For rendering UML diagrams (if using diagram features)
 
 ## Installation
 
@@ -66,13 +69,26 @@ This installs both `asciidoctor` and `asciidoctor-pdf` globally on your system.
 ### Option 2: RubyGems (All Platforms)
 
 ```bash
-gem install asciidoctor asciidoctor-pdf
+gem install asciidoctor asciidoctor-pdf asciidoctor-diagram
 ```
 
 You may need `sudo` on some systems:
 
 ```bash
-sudo gem install asciidoctor asciidoctor-pdf
+sudo gem install asciidoctor asciidoctor-pdf asciidoctor-diagram
+```
+
+For PlantUML diagram support, also install:
+
+```bash
+# macOS
+brew install plantuml graphviz
+
+# Ubuntu/Debian
+sudo apt-get install plantuml graphviz default-jre
+
+# Or download PlantUML manually and ensure Java is installed
+# Download from: https://plantuml.com/download
 ```
 
 ### Option 3: Bundler (Project-local Installation)
@@ -110,7 +126,7 @@ docker-compose run --rm asciidoctor make watch
 docker-compose run --rm asciidoctor bash
 ```
 
-The Docker setup includes all required dependencies (asciidoctor, asciidoctor-pdf, grep, inotify-tools for watch mode).
+The Docker setup includes all required dependencies (asciidoctor, asciidoctor-pdf, asciidoctor-diagram, PlantUML, Graphviz, Java, grep, inotify-tools for watch mode).
 
 ### Verify Installation
 
@@ -169,20 +185,20 @@ If you prefer to run `asciidoctor` commands directly:
 #### Generate HTML
 
 ```bash
-asciidoctor icd-template.adoc -o build/icd-template.html
+asciidoctor -r asciidoctor-diagram icd-template.adoc -o build/icd-template.html
 ```
 
 #### Generate PDF
 
 ```bash
-asciidoctor-pdf icd-template.adoc -o build/icd-template.pdf
+asciidoctor-pdf -r asciidoctor-diagram icd-template.adoc -o build/icd-template.pdf
 ```
 
 #### With Bundler
 
 ```bash
-bundle exec asciidoctor icd-template.adoc -o build/icd-template.html
-bundle exec asciidoctor-pdf icd-template.adoc -o build/icd-template.pdf
+bundle exec asciidoctor -r asciidoctor-diagram icd-template.adoc -o build/icd-template.html
+bundle exec asciidoctor-pdf -r asciidoctor-diagram icd-template.adoc -o build/icd-template.pdf
 ```
 
 ### Advanced Options
@@ -664,18 +680,33 @@ bundle install
 
 #### PlantUML diagrams not rendering
 
-**Problem**: PlantUML is not configured.
+**Problem**: PlantUML or required dependencies are not installed.
 
-**Solution**: Either:
-1. **Remove PlantUML diagrams** (comment out or delete diagram blocks)
-2. **Install PlantUML**:
-   ```bash
-   brew install plantuml
-   ```
-   And use `asciidoctor-diagram`:
+**Solution**: 
+1. **Install asciidoctor-diagram gem**:
    ```bash
    gem install asciidoctor-diagram
+   # Or with Bundler
+   bundle install
+   ```
+
+2. **Install PlantUML and dependencies**:
+   ```bash
+   # macOS
+   brew install plantuml graphviz
+   
+   # Ubuntu/Debian
+   sudo apt-get install plantuml graphviz default-jre
+   
+   # Or use Docker (includes everything)
+   docker-compose run --rm asciidoctor make all
+   ```
+
+3. **Build with diagram support**:
+   ```bash
    asciidoctor -r asciidoctor-diagram icd-template.adoc
+   # Or simply use the Makefile which includes the flag
+   make all
    ```
 
 ### Output Issues
