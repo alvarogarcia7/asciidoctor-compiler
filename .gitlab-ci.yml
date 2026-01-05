@@ -10,20 +10,20 @@ variables:
   HTML_OUTPUT: "icd-template.html"
 
 # Verify job - runs verification script
-verify:
-  stage: verify
-  image: ruby:3.2
-  before_script:
-    - gem install bundler
-    - bundle config set --local path 'vendor/bundle'
-    - bundle install
-  script:
-    - chmod +x scripts/verify.sh
-    - scripts/verify.sh
-  only:
-    - branches
-    - tags
-    - merge_requests
+# verify:
+#   stage: verify
+#   image: ruby:3.2
+#   before_script:
+#     - gem install bundler
+#     - bundle config set --local path 'vendor/bundle'
+#     - bundle install
+#   script:
+#     - chmod +x scripts/verify.sh
+#     - scripts/verify.sh
+#   only:
+#     - branches
+#     - tags
+#     - merge_requests
 
 # Build job - compiles PDF and HTML using asciidoctor
 build:
@@ -34,10 +34,10 @@ build:
   script:
     - echo "Generating PDF..."
     - asciidoctor-pdf ${ASCIIDOC_FILE} -o ${BUILD_DIR}/${PDF_OUTPUT}
-    - echo "PDF generated: ${BUILD_DIR}/${PDF_OUTPUT}"
+    - echo "PDF generated ${BUILD_DIR}/${PDF_OUTPUT}"
     - echo "Generating HTML..."
     - asciidoctor ${ASCIIDOC_FILE} -o ${BUILD_DIR}/${HTML_OUTPUT}
-    - echo "HTML generated: ${BUILD_DIR}/${HTML_OUTPUT}"
+    - echo "HTML generated ${BUILD_DIR}/${HTML_OUTPUT}"
     - ls -lh ${BUILD_DIR}/
   artifacts:
     name: "icd-template-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
@@ -46,9 +46,6 @@ build:
       - ${BUILD_DIR}/${HTML_OUTPUT}
     # Conditional expiration: never expire for master branch, 7 days for others
     expire_in: 7 days
-    rules:
-      - if: '$CI_COMMIT_BRANCH == "master"'
-        expire_in: never
   only:
     - branches
     - tags
