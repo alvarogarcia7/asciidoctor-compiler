@@ -1,0 +1,7 @@
+# Makefile build artifacts
+build/
+*.pdf
+*.html
+
+# Verification script (auto-generated if not present)
+verify.sh
