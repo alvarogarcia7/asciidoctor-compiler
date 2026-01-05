@@ -7,9 +7,6 @@ build/
 *.xml
 *.epub
 
-# Verification script (auto-generated if not present)
-verify.sh
-
 # Ruby/Bundler
 vendor/bundle/
 .bundle/
@@ -25,8 +22,3 @@ Thumbs.db
 *~
 .vscode/
 .idea/
-
-# Bundler
-vendor/bundle
-Gemfile.lock
-.bundle
