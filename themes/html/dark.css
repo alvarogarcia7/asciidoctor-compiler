@@ -1,0 +1,902 @@
+/* ==========================================================================
+   Dark Theme for ICD HTML Output
+   High-contrast dark mode for reduced eye strain
+   ========================================================================== */
+
+/* ==========================================================================
+   Root Variables - Dark Palette
+   ========================================================================== */
+
+:root {
+  --color-primary: #64b5f6;
+  --color-secondary: #81c784;
+  --color-accent: #ffb74d;
+  --color-text: #e0e0e0;
+  --color-text-light: #b0b0b0;
+  --color-background: #1e1e1e;
+  --color-background-alt: #2a2a2a;
+  --color-border: #3a3a3a;
+  --color-border-light: #333333;
+  --color-table-header: #2a2a2a;
+  --color-table-row-odd: #242424;
+  --color-table-row-even: #1e1e1e;
+  --color-note: #1e3a5f;
+  --color-note-border: #64b5f6;
+  --color-important: #3d3d1e;
+  --color-important-border: #ffeb3b;
+  --color-warning: #3d1e1e;
+  --color-warning-border: #ef5350;
+  --color-tip: #1e3d1e;
+  --color-tip-border: #81c784;
+  --color-caution: #3d2a1e;
+  --color-caution-border: #ffb74d;
+  --color-code-bg: #2a2a2a;
+  --color-code-border: #3a3a3a;
+  
+  --font-family-base: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-heading: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+  
+  --font-size-base: 11pt;
+  --font-size-small: 9pt;
+  --font-size-h1: 20pt;
+  --font-size-h2: 16pt;
+  --font-size-h3: 14pt;
+  --font-size-h4: 12pt;
+  --font-size-h5: 11pt;
+  --font-size-h6: 11pt;
+  
+  --line-height-base: 1.6;
+  --line-height-heading: 1.3;
+  
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  --max-width-content: 1200px;
+  --sidebar-width: 280px;
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+#header {
+  background-color: #121212;
+  color: var(--color-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 2px solid var(--color-border);
+}
+
+#header h1 {
+  margin: 0;
+  font-size: var(--font-size-h1);
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #121212;
+  border-right: 1px solid var(--color-border);
+  padding: var(--spacing-lg);
+  z-index: 100;
+}
+
+#toc.toc2 {
+  margin-left: 0;
+}
+
+#content {
+  margin-left: var(--sidebar-width);
+  padding: var(--spacing-xl);
+  max-width: calc(var(--max-width-content) + var(--spacing-xl) * 2);
+}
+
+@media screen and (max-width: 768px) {
+  #toc {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  #content {
+    margin-left: 0;
+    padding: var(--spacing-md);
+  }
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: bold;
+  line-height: var(--line-height-heading);
+  color: var(--color-primary);
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--spacing-sm);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+  color: var(--color-primary);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  color: var(--color-secondary);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+  color: var(--color-secondary);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-text);
+}
+
+.sect1 > h2::before,
+.sect2 > h3::before,
+.sect3 > h4::before,
+.sect4 > h5::before {
+  margin-right: var(--spacing-sm);
+  color: var(--color-accent);
+}
+
+p {
+  margin: 0 0 var(--spacing-md) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #90caf9;
+}
+
+strong, b {
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+em, i {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  background-color: var(--color-code-bg);
+  color: var(--color-accent);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+}
+
+pre {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 4px;
+  overflow-x: auto;
+  page-break-inside: avoid;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   Table of Contents (TOC)
+   ========================================================================== */
+
+#toctitle {
+  font-size: var(--font-size-h3);
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+#toc ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#toc li {
+  margin: var(--spacing-xs) 0;
+}
+
+#toc ul ul {
+  padding-left: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+#toc a {
+  color: var(--color-text);
+  display: block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+#toc a:hover {
+  background-color: var(--color-background-alt);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+#toc .sectlevel1 > li > a {
+  font-weight: 600;
+}
+
+#toc .sectlevel2 > li > a {
+  font-size: 0.95em;
+}
+
+#toc .sectlevel3 > li > a {
+  font-size: 0.9em;
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+table {
+  width: 100%;
+  margin: var(--spacing-md) 0;
+  border-collapse: collapse;
+  page-break-inside: avoid;
+  background-color: var(--color-background);
+  font-size: var(--font-size-small);
+  border: 1px solid var(--color-border);
+}
+
+table caption {
+  font-weight: bold;
+  text-align: left;
+  padding: var(--spacing-sm) 0;
+  caption-side: top;
+  color: var(--color-primary);
+}
+
+thead {
+  background-color: var(--color-table-header);
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+th {
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: bold;
+  border: 1px solid var(--color-border);
+}
+
+td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: var(--color-table-row-odd);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--color-table-row-even);
+}
+
+tbody tr:hover {
+  background-color: var(--color-background-alt);
+}
+
+table.tableblock {
+  border: 1px solid var(--color-border);
+}
+
+table.frame-all {
+  border: 1px solid var(--color-border);
+}
+
+table.frame-sides {
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+table.frame-topbot {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+table.grid-all th,
+table.grid-all td {
+  border: 1px solid var(--color-border);
+}
+
+table.grid-rows th,
+table.grid-rows td {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+table.grid-cols th,
+table.grid-cols td {
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
+   Lists
+   ========================================================================== */
+
+ul, ol {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-xl);
+}
+
+li {
+  margin: var(--spacing-xs) 0;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+  margin: var(--spacing-xs) 0;
+}
+
+dt {
+  font-weight: bold;
+  margin-top: var(--spacing-sm);
+  color: var(--color-primary);
+}
+
+dd {
+  margin-left: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   Admonition Blocks
+   ========================================================================== */
+
+.admonitionblock {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md);
+  border-left: 4px solid;
+  border-radius: 4px;
+  page-break-inside: avoid;
+}
+
+.admonitionblock table {
+  margin: 0;
+  border: none;
+}
+
+.admonitionblock td.icon {
+  width: 80px;
+  text-align: center;
+  vertical-align: top;
+  padding-right: var(--spacing-md);
+}
+
+.admonitionblock td.content {
+  padding: 0;
+  border: none;
+}
+
+.admonitionblock .icon .title {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.admonitionblock.note {
+  background-color: var(--color-note);
+  border-left-color: var(--color-note-border);
+}
+
+.admonitionblock.note .icon .title {
+  color: var(--color-note-border);
+}
+
+.admonitionblock.tip {
+  background-color: var(--color-tip);
+  border-left-color: var(--color-tip-border);
+}
+
+.admonitionblock.tip .icon .title {
+  color: var(--color-tip-border);
+}
+
+.admonitionblock.important {
+  background-color: var(--color-important);
+  border-left-color: var(--color-important-border);
+}
+
+.admonitionblock.important .icon .title {
+  color: var(--color-important-border);
+}
+
+.admonitionblock.warning {
+  background-color: var(--color-warning);
+  border-left-color: var(--color-warning-border);
+}
+
+.admonitionblock.warning .icon .title {
+  color: var(--color-warning-border);
+}
+
+.admonitionblock.caution {
+  background-color: var(--color-caution);
+  border-left-color: var(--color-caution-border);
+}
+
+.admonitionblock.caution .icon .title {
+  color: var(--color-caution-border);
+}
+
+/* ==========================================================================
+   Code Blocks
+   ========================================================================== */
+
+.listingblock {
+  margin: var(--spacing-md) 0;
+}
+
+.listingblock .title {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.9em;
+}
+
+.listingblock .content {
+  position: relative;
+}
+
+.listingblock pre {
+  margin: 0;
+  border-radius: 4px;
+}
+
+.literalblock .content pre {
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  padding: var(--spacing-md);
+  border-radius: 4px;
+}
+
+.listingblock pre.highlight {
+  background-color: var(--color-code-bg);
+}
+
+.listingblock pre.highlight code {
+  background-color: transparent;
+}
+
+/* ==========================================================================
+   Images and Figures
+   ========================================================================== */
+
+.imageblock {
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+.imageblock img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.imageblock .title {
+  display: block;
+  margin-top: var(--spacing-sm);
+  font-style: italic;
+  color: var(--color-text-light);
+  font-size: 0.9em;
+}
+
+/* ==========================================================================
+   Quotes and Verses
+   ========================================================================== */
+
+.quoteblock,
+.verseblock {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-background-alt);
+  border-left: 4px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.quoteblock blockquote,
+.verseblock pre {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.quoteblock .attribution,
+.verseblock .attribution {
+  margin-top: var(--spacing-sm);
+  text-align: right;
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Sections and Divisions
+   ========================================================================== */
+
+.sect1 {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+}
+
+.sect1:first-of-type {
+  margin-top: 0;
+}
+
+.sectionbody {
+  margin-top: var(--spacing-md);
+}
+
+.openblock,
+.paragraph {
+  margin-bottom: var(--spacing-md);
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+/* ==========================================================================
+   Document Header and Metadata
+   ========================================================================== */
+
+#preamble {
+  margin-bottom: var(--spacing-xl);
+}
+
+.details {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-alt);
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.details .title {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Cross References and Links
+   ========================================================================== */
+
+.xref {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.xref:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.xref::before {
+  content: "§ ";
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Footnotes
+   ========================================================================== */
+
+#footnotes {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+  border-top: 2px solid var(--color-border);
+}
+
+#footnotes .title {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.footnote {
+  font-size: 0.85em;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   Appendices
+   ========================================================================== */
+
+.appendix h1::before {
+  content: "Appendix ";
+}
+
+/* ==========================================================================
+   Text Alignment Helpers
+   ========================================================================== */
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+/* ==========================================================================
+   Scrollbar Styling for Dark Theme
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}
+
+/* ==========================================================================
+   Selection Styling
+   ========================================================================== */
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+/* ==========================================================================
+   Print Media Queries
+   ========================================================================== */
+
+@media print {
+  :root {
+    font-size: 10pt;
+    --color-text: #000000;
+    --color-background: #ffffff;
+    --color-background-alt: #f5f5f5;
+    --color-border: #cccccc;
+    --color-primary: #000000;
+    --color-secondary: #333333;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  #toc {
+    position: static;
+    width: auto;
+    height: auto;
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xl);
+    page-break-after: always;
+    background: white;
+  }
+  
+  #content {
+    margin-left: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    color: black;
+  }
+  
+  table, figure, .imageblock, .admonitionblock {
+    page-break-inside: avoid;
+  }
+  
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    font-style: italic;
+  }
+  
+  .sect1 {
+    page-break-before: auto;
+  }
+  
+  .sect1:not(:first-child) h2 {
+    page-break-before: always;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr, img {
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+  }
+  
+  .admonitionblock,
+  pre,
+  code,
+  .quoteblock,
+  .details {
+    background-color: transparent !important;
+    border: 1px solid #cccccc;
+  }
+  
+  table thead {
+    display: table-header-group;
+    background: #f0f0f0;
+    color: black;
+  }
+  
+  table tfoot {
+    display: table-footer-group;
+  }
+  
+  table tbody tr {
+    background: white;
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+  :root {
+    --sidebar-width: 250px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --font-size-base: 10pt;
+    --font-size-h1: 18pt;
+    --font-size-h2: 15pt;
+    --font-size-h3: 13pt;
+    --font-size-h4: 11pt;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+  }
+  
+  table {
+    font-size: 0.85em;
+  }
+  
+  th, td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  :root {
+    --font-size-base: 9pt;
+  }
+  
+  #content {
+    padding: var(--spacing-sm);
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
