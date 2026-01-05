@@ -1,7 +1,22 @@
 # Makefile build artifacts
 build/
-*.pdf
+
+# AsciiDoc build outputs
 *.html
+*.pdf
+*.xml
+*.epub
 
 # Verification script (auto-generated if not present)
 verify.sh
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
