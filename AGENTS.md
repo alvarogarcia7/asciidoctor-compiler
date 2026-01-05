@@ -4,7 +4,9 @@
 
 - **Docker**: Not running in Docker container
 - **Bundler**: Available (version 1.17.2) with local dependencies installed in `vendor/bundle`
+- **Ruby**: Version 2.6.10 (system Ruby)
 - **Ruby Dependencies**: Managed via Bundler with local installation
+- **Limitation**: PDF generation requires Ruby >= 2.7. With Ruby 2.6, only HTML generation is available via `bundle exec asciidoctor`. For PDF generation, use Docker or upgrade Ruby to 2.7+.
 
 ## Setup Instructions
 
@@ -60,6 +62,10 @@ bundle install
 - **AsciiDoc**: Documentation markup language
 - **asciidoctor**: Ruby-based AsciiDoc processor for HTML generation
 - **asciidoctor-pdf**: PDF generation from AsciiDoc
+- **asciidoctor-diagram**: Diagram rendering support (PlantUML, Graphviz, etc.)
+- **PlantUML**: UML diagram generation tool
+- **Graphviz**: Graph visualization software (required dependency for PlantUML)
+- **Java**: Runtime environment for PlantUML
 - **Make**: Build automation
 - **Bundler**: Ruby dependency management (configured for local installation)
 - **Ruby**: Runtime environment for asciidoctor tools
@@ -121,10 +127,14 @@ bundle install
 ```ruby
 gem 'asciidoctor', '~> 2.0'
 gem 'asciidoctor-pdf', '~> 2.3'
+gem 'asciidoctor-diagram', '~> 2.2'
 ```
 
 ### System Requirements
 - Ruby (for running asciidoctor)
+- Java (for running PlantUML)
+- PlantUML (for diagram rendering)
+- Graphviz (required dependency for PlantUML)
 - Make (for build automation)
 - Optional: `inotifywait` or `entr` (for file watching)
 
