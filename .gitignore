@@ -1,7 +1,8 @@
 # Makefile build artifacts
 build/
 
-# AsciiDoc build outputs (except in build/ directory)
+# AsciiDoc build outputs
+# Note: Ignore generated files in root, but allow templates/ to track template files
 /*.html
 /*.pdf
 /*.xml
@@ -25,3 +26,11 @@ Thumbs.db
 *~
 .vscode/
 .idea/
+
+# Temporary files (can be removed after migration)
+create_dirs.sh
+Makefile.old
+old_structure/
+
+# Keep framework/ and templates/ directories (they should be tracked)
+# Note: Do NOT add framework/ or templates/ to .gitignore
