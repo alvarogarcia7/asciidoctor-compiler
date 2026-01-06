@@ -35,6 +35,15 @@ old_structure/
 # Keep framework/ and templates/ directories (they should be tracked)
 # Note: Do NOT add framework/ or templates/ to .gitignore
 
+# Examples directory build artifacts
+examples/*/build/
+examples/*/*/build/
+
 # init-project.sh generated backup files
 *.bak
 *.tmp
+
+# Temporary setup files
+create_example_dirs.py
+tmp_framework_makefile.txt
+test_framework_file.txt
