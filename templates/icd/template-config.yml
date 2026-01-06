@@ -1,0 +1,357 @@
+# Interface Control Document (ICD) Template Configuration
+# This file defines the configuration options and metadata requirements for the ICD template
+
+# =============================================================================
+# Required Metadata Fields
+# =============================================================================
+# These fields must be defined when instantiating a new document from this template
+
+metadata:
+  # Unique identifier for the document (e.g., ICD-PROJ-001)
+  document-id:
+    type: string
+    required: true
+    description: "Unique document identifier following project naming conventions"
+    pattern: "^[A-Z]{3,5}-[A-Z0-9]+-[0-9]{3,5}$"
+    example: "ICD-PROJ-001"
+
+  # Name of the project this document belongs to
+  project-name:
+    type: string
+    required: true
+    description: "Official project name"
+    example: "Satellite Ground Station Interface"
+
+  # Primary author of the document
+  author:
+    type: string
+    required: true
+    description: "Primary author name or team"
+    example: "Systems Engineering Team"
+
+  # Security classification level
+  classification:
+    type: string
+    required: true
+    description: "Document security classification"
+    allowed-values:
+      - "Public"
+      - "Internal"
+      - "Confidential"
+      - "Restricted"
+      - "Secret"
+      - "Top Secret"
+    default: "Internal"
+    example: "Internal"
+
+  # Additional optional metadata
+  distribution:
+    type: string
+    required: false
+    description: "Distribution statement or restrictions"
+    example: "Approved for public release; distribution unlimited"
+
+  contract-number:
+    type: string
+    required: false
+    description: "Contract or purchase order number"
+    example: "FA8750-21-C-0001"
+
+  organization:
+    type: string
+    required: false
+    description: "Organization or company name"
+    example: "Acme Aerospace Corporation"
+
+  revision:
+    type: string
+    required: false
+    description: "Document revision number"
+    default: "1.0"
+    pattern: "^[0-9]+\\.[0-9]+$"
+    example: "1.0"
+
+# =============================================================================
+# Build Options
+# =============================================================================
+# Configuration for document generation and compilation
+
+build:
+  # Output formats to generate
+  output-formats:
+    - format: pdf
+      enabled: true
+      description: "Generate PDF output using asciidoctor-pdf"
+      
+    - format: html
+      enabled: true
+      description: "Generate HTML output using asciidoctor"
+      
+    - format: docbook
+      enabled: false
+      description: "Generate DocBook XML output"
+
+  # Theme configuration
+  theme:
+    # PDF theme file (relative to project root)
+    pdf-theme: "themes/pdf/ecss-default-theme.yml"
+    pdf-theme-alt: "themes/pdf/ecss-alt-theme.yml"
+    
+    # HTML stylesheet (relative to project root)
+    html-stylesheet: "themes/html/ecss-default.css"
+    html-stylesheet-alt: "themes/html/ecss-alt.css"
+    
+    # Allow theme customization per document
+    customizable: true
+
+  # Custom AsciiDoc attributes
+  custom-attributes:
+    # Document structure attributes
+    doctype: book
+    toc: left
+    toclevels: 3
+    sectnums: true
+    sectnumlevels: 4
+    
+    # Visual attributes
+    icons: font
+    figure-caption: "Figure"
+    table-caption: "Table"
+    appendix-caption: "Appendix"
+    chapter-label: ""
+    xrefstyle: short
+    
+    # Source code highlighting
+    source-highlighter: rouge
+    
+    # Experimental features
+    experimental: true
+    
+    # Diagram support
+    diagram-support: true
+    diagram-cachedir: ".asciidoctor/diagram"
+    diagram-svg-type: inline
+    
+    # Images directory
+    imagesdir: "images"
+    
+    # Custom ICD-specific attributes
+    document-type: "ICD"
+
+  # Diagram rendering options
+  diagrams:
+    enabled: true
+    formats:
+      - plantuml
+      - graphviz
+      - ditaa
+      - mermaid
+    java-required: true
+    graphviz-required: true
+
+  # Validation options
+  validation:
+    # Run syntax validation before build
+    validate-syntax: true
+    
+    # Run structure validation (ECSS compliance)
+    validate-structure: true
+    
+    # Check for broken cross-references
+    check-xrefs: true
+    
+    # Validate required sections exist
+    required-sections:
+      - "Revision History"
+      - "Applicable Documents"
+      - "Terms, Definitions and Abbreviations"
+      - "Introduction"
+      - "Interface Overview"
+      - "Interface Requirements"
+      - "Detailed Interface Specifications"
+      - "Data Element Definitions"
+      - "Interface Control"
+
+  # Build artifacts
+  artifacts:
+    # Output directory (relative to project root)
+    output-dir: "build"
+    
+    # Log directory
+    log-dir: "build/logs"
+    
+    # Keep intermediate files
+    keep-artifacts: false
+
+# =============================================================================
+# CI/CD Configuration
+# =============================================================================
+# Settings for continuous integration and deployment
+
+ci-cd:
+  # Artifact retention policy
+  artifact-retention:
+    # Number of days to retain build artifacts
+    retention-days: 90
+    
+    # Retain artifacts from tagged releases indefinitely
+    retain-releases: true
+    
+    # Maximum number of artifacts to keep
+    max-artifacts: 50
+
+  # Deployment targets
+  deployment-targets:
+    # Development environment
+    - name: development
+      enabled: true
+      description: "Development document server"
+      auto-deploy: true
+      branches:
+        - develop
+        - feature/*
+      url: "https://docs-dev.example.com"
+      
+    # Staging environment
+    - name: staging
+      enabled: true
+      description: "Staging document server for review"
+      auto-deploy: true
+      branches:
+        - main
+        - release/*
+      url: "https://docs-staging.example.com"
+      requires-approval: false
+      
+    # Production environment
+    - name: production
+      enabled: true
+      description: "Production document repository"
+      auto-deploy: false
+      branches:
+        - main
+      tags:
+        - v*
+      url: "https://docs.example.com"
+      requires-approval: true
+      approvers:
+        - "project-manager"
+        - "lead-engineer"
+
+  # Build triggers
+  triggers:
+    # Build on push to these branches
+    push-branches:
+      - main
+      - develop
+      - release/*
+      - feature/*
+    
+    # Build on pull requests to these branches
+    pull-request-branches:
+      - main
+      - develop
+    
+    # Build on tag creation
+    tags: true
+    
+    # Schedule periodic builds
+    schedule:
+      enabled: false
+      cron: "0 2 * * 1"  # Weekly on Monday at 2 AM
+
+  # Notification settings
+  notifications:
+    # Notify on build status
+    on-success: true
+    on-failure: true
+    
+    # Notification channels
+    channels:
+      - type: email
+        enabled: true
+        recipients:
+          - "team@example.com"
+          
+      - type: slack
+        enabled: false
+        webhook-url: "${SLACK_WEBHOOK_URL}"
+        channel: "#document-builds"
+        
+      - type: teams
+        enabled: false
+        webhook-url: "${TEAMS_WEBHOOK_URL}"
+
+  # Quality gates
+  quality-gates:
+    # Fail build if validation errors occur
+    fail-on-validation-error: true
+    
+    # Fail build if warnings exceed threshold
+    fail-on-warnings: false
+    max-warnings: 10
+    
+    # Require all cross-references to be valid
+    require-valid-xrefs: true
+
+  # Pipeline stages
+  pipeline:
+    stages:
+      - name: validate
+        description: "Validate document syntax and structure"
+        commands:
+          - "bundle exec make verify"
+          
+      - name: build
+        description: "Build document outputs"
+        commands:
+          - "bundle exec make all"
+          
+      - name: test
+        description: "Run document tests"
+        enabled: false
+        commands:
+          - "./scripts/test-doc.sh"
+          
+      - name: package
+        description: "Package artifacts for deployment"
+        commands:
+          - "tar -czf icd-artifacts.tar.gz build/"
+          
+      - name: deploy
+        description: "Deploy to target environment"
+        enabled: true
+        manual: true
+
+# =============================================================================
+# Template Metadata
+# =============================================================================
+# Information about this template
+
+template:
+  name: "ICD Template"
+  version: "2.0"
+  description: "Interface Control Document template following ECSS standards"
+  
+  maintainer:
+    name: "Documentation Team"
+    email: "docs@example.com"
+  
+  # Template file reference
+  source-file: "icd-template.adoc"
+  
+  # Required dependencies
+  dependencies:
+    asciidoctor: "~> 2.0"
+    asciidoctor-pdf: "~> 2.3"
+    asciidoctor-diagram: "~> 2.2"
+    plantuml: "latest"
+    graphviz: "latest"
+    
+  # Standards compliance
+  standards:
+    - "ECSS-E-ST-10C"
+    - "ECSS-E-ST-40C"
+    - "ECSS-Q-ST-80C"
+  
+  last-updated: "2024-01-15"
