@@ -34,3 +34,7 @@ old_structure/
 
 # Keep framework/ and templates/ directories (they should be tracked)
 # Note: Do NOT add framework/ or templates/ to .gitignore
+
+# init-project.sh generated backup files
+*.bak
+*.tmp
