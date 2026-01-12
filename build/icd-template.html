@@ -1535,17 +1535,47 @@ System context changes may impact multiple interface specifications. Coordinate 
 </tr>
 </table>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">System Context Diagram (PlantUML)</div>
 <div class="content">
-<img src="images/system-context-fbc51b53d850d315417d2f1fc0f1767fdae91c85fc27abbf64b6bccc559818fe.svg" alt="System Context Diagram (PlantUML)">
+<pre>@startuml
+
+actor User as "User\nSystem operator"
+rectangle "Provider System" as provider {
+}
+rectangle "Consumer System" as consumer {
+}
+rectangle "External System" as external {
+}
+
+User --&gt; provider : Configures and monitors
+provider --&gt; consumer : Interface data\nvia Protocol
+consumer --&gt; external : Output data
+
+@enduml</pre>
 </div>
-<div class="title">Figure 1. System Context Diagram (PlantUML)</div>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">System Context Diagram (Mermaid C4)</div>
 <div class="content">
-<img src="images/diag-14f89eadd3d9f219539cfdbcf09d269744a71ab2416cc57436e00bb623801106.svg" alt="System Context Diagram (Mermaid C4)">
+<pre>graph TB
+    User[User&lt;br/&gt;System operator]
+    Provider[Provider System&lt;br/&gt;Generates and transmits&lt;br/&gt;interface data]
+    Consumer[Consumer System&lt;br/&gt;Receives and processes&lt;br/&gt;interface data]
+    External[External System&lt;br/&gt;External dependencies]
+
+    User --&gt;|Configures and monitors| Provider
+    Provider --&gt;|Interface data via Protocol| Consumer
+    Consumer --&gt;|Output data| External
+
+    classDef userClass fill:#08427b,stroke:#052e56,color:#fff
+    classDef systemClass fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef externalClass fill:#999,stroke:#666,color:#fff
+
+    class User userClass
+    class Provider,Consumer systemClass
+    class External externalClass</pre>
 </div>
-<div class="title">Figure 2. System Context Diagram (Mermaid C4)</div>
 </div>
 </div>
 <div class="sect2">
@@ -1624,17 +1654,56 @@ The architecture diagram below shows the conceptual layers. Physical implementat
 </tr>
 </table>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Interface Architecture Diagram (PlantUML)</div>
 <div class="content">
-<img src="images/interface-architecture-c0fa6739fea173468baf94d39cefd27fc199648c6dc9788729bacb9a1ecd426b.svg" alt="Interface Architecture Diagram (PlantUML)">
+<pre>@startuml
+
+package "Application Layer" {
+  [Provider Application] as PA
+  [Consumer Application] as CA
+}
+
+package "Protocol Layer" {
+  [Protocol Handler] as PP
+  [Protocol Handler] as CP
+}
+
+package "Transport Layer" {
+  [TCP/UDP/Serial] as TL
+}
+
+PA --&gt; PP : Data messages
+PP --&gt; TL : Encoded packets
+TL --&gt; CP : Transmitted packets
+CP --&gt; CA : Parsed messages
+
+@enduml</pre>
 </div>
-<div class="title">Figure 3. Interface Architecture Diagram (PlantUML)</div>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Interface Architecture Diagram (Mermaid)</div>
 <div class="content">
-<img src="images/diag-6f06907964d765c355ebca20738b048c69e33bdc4e81eefee2a951892d5b5682.svg" alt="Interface Architecture Diagram (Mermaid)">
+<pre>flowchart LR
+    PA[Provider Application&lt;br/&gt;Application Layer]
+    PP[Protocol Handler&lt;br/&gt;Protocol Layer]
+    TL[Transport Layer&lt;br/&gt;TCP/UDP/Serial]
+    CP[Protocol Handler&lt;br/&gt;Protocol Layer]
+    CA[Consumer Application&lt;br/&gt;Application Layer]
+
+    PA --&gt;|Data messages| PP
+    PP --&gt;|Encoded packets| TL
+    TL --&gt;|Transmitted packets| CP
+    CP --&gt;|Parsed messages| CA
+
+    classDef appLayer fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef protocolLayer fill:#438dd5,stroke:#2e6295,color:#fff
+    classDef transportLayer fill:#85bbf0,stroke:#5a8abd,color:#000
+
+    class PA,CA appLayer
+    class PP,CP protocolLayer
+    class TL transportLayer</pre>
 </div>
-<div class="title">Figure 4. Interface Architecture Diagram (Mermaid)</div>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -4053,17 +4122,67 @@ Known limitations and workarounds must be documented in release notes or operati
 <div class="paragraph">
 <p>The following sequence diagram illustrates the message exchange pattern between Provider and Consumer systems during a typical operational cycle.</p>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Message Exchange Sequence (PlantUML)</div>
 <div class="content">
-<img src="images/message-sequence-538717db987899f1263a2c621f214b61e8593480564f17b17c8464bb9678f9bd.svg" alt="Message Exchange Sequence (PlantUML)">
+<pre>@startuml
+participant "Provider System" as Provider
+participant "Transport Layer" as Transport
+participant "Consumer System" as Consumer
+
+Provider -&gt; Transport: Connect Request
+Transport -&gt; Consumer: Forward Connect Request
+Consumer -&gt; Transport: Connect Acknowledgment
+Transport -&gt; Provider: Forward Connect Ack
+
+Provider -&gt; Transport: Status Message (0x0001)
+Transport -&gt; Consumer: Forward Status Message
+Consumer -&gt; Transport: Acknowledgment
+Transport -&gt; Provider: Forward Ack
+
+Provider -&gt; Transport: Data Message (0x0002)
+Transport -&gt; Consumer: Forward Data Message
+Consumer -&gt; Consumer: Process Data
+Consumer -&gt; Transport: Response Message (0x0003)
+Transport -&gt; Provider: Forward Response
+
+Provider -&gt; Transport: Disconnect Request
+Transport -&gt; Consumer: Forward Disconnect
+Consumer -&gt; Transport: Disconnect Ack
+Transport -&gt; Provider: Forward Disconnect Ack
+
+@enduml</pre>
 </div>
-<div class="title">Figure 5. Message Exchange Sequence (PlantUML)</div>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Message Exchange Sequence (Mermaid)</div>
 <div class="content">
-<img src="images/diag-09d619b4319a57a30d17a2587598aa3f53e7fe5d30eafa222cd2ef08670e067e.svg" alt="Message Exchange Sequence (Mermaid)">
+<pre>sequenceDiagram
+    participant Provider as Provider System
+    participant Transport as Transport Layer
+    participant Consumer as Consumer System
+
+    Provider-&gt;&gt;Transport: Connect Request
+    Transport-&gt;&gt;Consumer: Forward Connect Request
+    Consumer-&gt;&gt;Transport: Connect Acknowledgment
+    Transport-&gt;&gt;Provider: Forward Connect Ack
+
+    Provider-&gt;&gt;Transport: Status Message (0x0001)
+    Transport-&gt;&gt;Consumer: Forward Status Message
+    Consumer-&gt;&gt;Transport: Acknowledgment
+    Transport-&gt;&gt;Provider: Forward Ack
+
+    Provider-&gt;&gt;Transport: Data Message (0x0002)
+    Transport-&gt;&gt;Consumer: Forward Data Message
+    Consumer-&gt;&gt;Consumer: Process Data
+    Consumer-&gt;&gt;Transport: Response Message (0x0003)
+    Transport-&gt;&gt;Provider: Forward Response
+
+    Provider-&gt;&gt;Transport: Disconnect Request
+    Transport-&gt;&gt;Consumer: Forward Disconnect
+    Consumer-&gt;&gt;Transport: Disconnect Ack
+    Transport-&gt;&gt;Provider: Forward Disconnect Ack</pre>
 </div>
-<div class="title">Figure 6. Message Exchange Sequence (Mermaid)</div>
 </div>
 </div>
 <div class="sect2">
@@ -4071,17 +4190,69 @@ Known limitations and workarounds must be documented in release notes or operati
 <div class="paragraph">
 <p>The following state diagram shows the operational states of an interface and the conditions that trigger state transitions.</p>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Interface State Machine (PlantUML)</div>
 <div class="content">
-<img src="images/interface-states-50866b739615735224f4e4737e260a66fec524bcc1ea2c30197e8720f2b9ca06.svg" alt="Interface State Machine (PlantUML)">
+<pre>@startuml
+[*] --&gt; Idle
+
+Idle --&gt; Active: Connection Request
+Active --&gt; Idle: Disconnect
+Active --&gt; Error: Fault Detected
+Error --&gt; Active: Recovery Successful
+Error --&gt; Idle: Reset Command
+Active --&gt; Transmitting: Data Available
+Transmitting --&gt; Active: Transmission Complete
+Transmitting --&gt; Error: Transmission Failure
+
+note right of Idle
+  No active communication
+  Waiting for connection
+end note
+
+note right of Active
+  Connection established
+  Ready to transmit/receive
+end note
+
+note right of Error
+  Fault condition detected
+  Attempting recovery
+end note
+
+@enduml</pre>
 </div>
-<div class="title">Figure 7. Interface State Machine (PlantUML)</div>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Interface State Machine (Mermaid)</div>
 <div class="content">
-<img src="images/diag-949445310999830e7ada27aeaf6cf621335c104d4bf6e413d8571e6e26248557.svg" alt="Interface State Machine (Mermaid)">
+<pre>stateDiagram-v2
+    [*] --&gt; Idle
+
+    Idle --&gt; Active: Connection Request
+    Active --&gt; Idle: Disconnect
+    Active --&gt; Error: Fault Detected
+    Error --&gt; Active: Recovery Successful
+    Error --&gt; Idle: Reset Command
+    Active --&gt; Transmitting: Data Available
+    Transmitting --&gt; Active: Transmission Complete
+    Transmitting --&gt; Error: Transmission Failure
+
+    note right of Idle
+        No active communication
+        Waiting for connection
+    end note
+
+    note right of Active
+        Connection established
+        Ready to transmit/receive
+    end note
+
+    note right of Error
+        Fault condition detected
+        Attempting recovery
+    end note</pre>
 </div>
-<div class="title">Figure 8. Interface State Machine (Mermaid)</div>
 </div>
 </div>
 <div class="sect2">
@@ -4089,11 +4260,47 @@ Known limitations and workarounds must be documented in release notes or operati
 <div class="paragraph">
 <p>The following diagram shows how data flows through the system components and is transformed at each stage.</p>
 </div>
-<div class="imageblock kroki">
+<div class="listingblock">
+<div class="title">Data Flow Through System (Mermaid)</div>
 <div class="content">
-<img src="images/diag-56d5b869e0f942ca93f98d2e846cc42fdacf8536bef2799281cf9608b243734e.svg" alt="Data Flow Through System (Mermaid)">
+<pre>flowchart TD
+    Start([Data Generation])
+    Format[Format Data&lt;br/&gt;into Message]
+    Encode[Encode Message&lt;br/&gt;with Protocol]
+    AddHeader[Add Header &amp;&lt;br/&gt;Checksum]
+    Transmit[Transmit via&lt;br/&gt;Transport Layer]
+    Receive[Receive Message]
+    Validate[Validate Checksum&lt;br/&gt;&amp; Format]
+    Decode[Decode Protocol]
+    Parse[Parse Message&lt;br/&gt;Contents]
+    Process[Process Data&lt;br/&gt;in Application]
+    End([Data Processing Complete])
+
+    Error[Error Handler]
+    Log[Log Error]
+
+    Start --&gt; Format
+    Format --&gt; Encode
+    Encode --&gt; AddHeader
+    AddHeader --&gt; Transmit
+    Transmit --&gt; Receive
+    Receive --&gt; Validate
+    Validate --&gt;|Valid| Decode
+    Validate --&gt;|Invalid| Error
+    Decode --&gt; Parse
+    Parse --&gt; Process
+    Process --&gt; End
+    Error --&gt; Log
+    Log --&gt; End
+
+    classDef processNode fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef errorNode fill:#d62728,stroke:#9a1d1f,color:#fff
+    classDef terminalNode fill:#2ca02c,stroke:#1e7a1e,color:#fff
+
+    class Format,Encode,AddHeader,Transmit,Receive,Validate,Decode,Parse,Process processNode
+    class Error,Log errorNode
+    class Start,End terminalNode</pre>
 </div>
-<div class="title">Figure 9. Data Flow Through System (Mermaid)</div>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -4535,7 +4742,7 @@ This matrix should be maintained as a living document throughout the project lif
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2026-01-12 11:46:18 +0400
+Last updated 2026-01-12 12:00:41 +0400
 </div>
 </div>
 </body>

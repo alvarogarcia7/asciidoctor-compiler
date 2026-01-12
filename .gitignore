@@ -1,5 +1,5 @@
 # Makefile build artifacts
-# build/ - Keep build directory for committing sample outputs
+build/
 
 # AsciiDoc build outputs (except in build/ directory)
 /*.html
