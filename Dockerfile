@@ -9,7 +9,29 @@ RUN apk add --no-cache \
     graphviz \
     openjdk11-jre \
     wget \
+    nodejs \
+    npm \
     && rm -rf /var/cache/apk/*
+
+# Install Chromium and dependencies for Puppeteer/mermaid-cli
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    && rm -rf /var/cache/apk/*
+
+# Set Puppeteer environment variables to use system Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Install mermaid-cli globally
+RUN npm install -g @mermaid-js/mermaid-cli
+
+# Verify mmdc command is available
+RUN mmdc --version
 
 # Install PlantUML
 RUN wget -O /usr/local/bin/plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2023.13/plantuml-1.2023.13.jar \
