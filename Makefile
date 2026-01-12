@@ -85,7 +85,7 @@ watch:
 
 docker-build:
 	@echo "Building Docker image..."
-	@docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) .
+	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) .
 	@echo "Docker image built: $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 
 help:
