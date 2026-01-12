@@ -28,12 +28,12 @@ $(BUILD_DIR):
 
 $(BUILD_DIR)/$(PDF_OUTPUT): $(ASCIIDOC_FILE) | $(BUILD_DIR)
 	@echo "Generating PDF..."
-	@$(ASCIIDOCTOR_PDF) -r asciidoctor-kroki $(ASCIIDOC_FILE) -o $(BUILD_DIR)/$(PDF_OUTPUT)
+	@$(ASCIIDOCTOR_PDF) -r asciidoctor-kroki -a source-highlighter=rouge $(ASCIIDOC_FILE) -o $(BUILD_DIR)/$(PDF_OUTPUT)
 	@echo "PDF generated: $(BUILD_DIR)/$(PDF_OUTPUT)"
 
 $(BUILD_DIR)/$(HTML_OUTPUT): $(ASCIIDOC_FILE) | $(BUILD_DIR)
 	@echo "Generating HTML..."
-	@$(ASCIIDOCTOR) -r asciidoctor-kroki $(ASCIIDOC_FILE) -o $(BUILD_DIR)/$(HTML_OUTPUT)
+	@$(ASCIIDOCTOR) -r asciidoctor-kroki -a source-highlighter=rouge $(ASCIIDOC_FILE) -o $(BUILD_DIR)/$(HTML_OUTPUT)
 	@echo "HTML generated: $(BUILD_DIR)/$(HTML_OUTPUT)"
 
 verify:
