@@ -21,6 +21,10 @@
 :experimental:
 :diagram-cachedir: .asciidoctor/diagram
 :diagram-svg-type: inline
+:kroki-fetch-diagram: true
+:kroki-server-url: https://kroki.io
+:plantuml-server-url: https://kroki.io
+:mermaid-server-url: https://kroki.io
 
 // Theme Configuration
 // Uncomment one of the following to switch between themes:
@@ -323,19 +327,21 @@ TIP: Use the table of contents on the left to navigate between sections. Cross-r
 WARNING: System context changes may impact multiple interface specifications. Coordinate all changes with the Interface Control Working Group (ICWG) per the process in <<interface-control-change>>.
 
 .System Context Diagram (PlantUML)
-[plantuml, system-context, svg]
+[plantuml, system-context]
 ----
 @startuml
-!include <C4/C4_Context>
 
-Person(user, "User", "System operator")
-System(provider, "Provider System", "Generates and transmits interface data")
-System(consumer, "Consumer System", "Receives and processes interface data")
-System_Ext(external, "External System", "External dependencies")
+actor User as "User\nSystem operator"
+rectangle "Provider System" as provider {
+}
+rectangle "Consumer System" as consumer {
+}
+rectangle "External System" as external {
+}
 
-Rel(user, provider, "Configures and monitors")
-Rel(provider, consumer, "Interface data", "Protocol")
-Rel(consumer, external, "Output data")
+User --> provider : Configures and monitors
+provider --> consumer : Interface data\nvia Protocol
+consumer --> external : Output data
 
 @enduml
 ----
@@ -406,21 +412,28 @@ The interface architecture follows a layered approach with clear separation betw
 NOTE: The architecture diagram below shows the conceptual layers. Physical implementation details are provided in the detailed specifications for each interface.
 
 .Interface Architecture Diagram (PlantUML)
-[plantuml, interface-architecture, svg]
+[plantuml, interface-architecture]
 ----
 @startuml
-!include <C4/C4_Component>
 
-Component(provider_app, "Provider Application", "Application Layer")
-Component(provider_protocol, "Protocol Handler", "Protocol Layer")
-Component(transport, "Transport Layer", "TCP/UDP/Serial")
-Component(consumer_protocol, "Protocol Handler", "Protocol Layer")
-Component(consumer_app, "Consumer Application", "Application Layer")
+package "Application Layer" {
+  [Provider Application] as PA
+  [Consumer Application] as CA
+}
 
-Rel(provider_app, provider_protocol, "Data messages")
-Rel(provider_protocol, transport, "Encoded packets")
-Rel(transport, consumer_protocol, "Transmitted packets")
-Rel(consumer_protocol, consumer_app, "Parsed messages")
+package "Protocol Layer" {
+  [Protocol Handler] as PP
+  [Protocol Handler] as CP
+}
+
+package "Transport Layer" {
+  [TCP/UDP/Serial] as TL
+}
+
+PA --> PP : Data messages
+PP --> TL : Encoded packets
+TL --> CP : Transmitted packets
+CP --> CA : Parsed messages
 
 @enduml
 ----
@@ -543,7 +556,7 @@ NOTE: Interface requirements defined here are derived from system-level requirem
 |[Cable type, connector, wireless, etc.]
 
 |Data Direction
-|[Provider → Consumer / Bidirectional]
+|[Provider -> Consumer / Bidirectional]
 |===
 
 WARNING: Changes to interface characteristics may require hardware modifications and impact system performance. All changes must be evaluated through the impact assessment process in xref:interface-control-change[Interface Change Control].
@@ -804,17 +817,17 @@ The following message types are supported on this interface. Each message type i
 
 |0x0001
 |[Message Type 1]
-|Provider → Consumer
+|Provider -> Consumer
 |[Purpose and content description]
 
 |0x0002
 |[Message Type 2]
-|Provider → Consumer
+|Provider -> Consumer
 |[Purpose and content description]
 
 |0x0003
 |[Message Type 3]
-|Consumer → Provider
+|Consumer -> Provider
 |[Purpose and content description]
 |===
 
@@ -917,15 +930,15 @@ The interface state machine manages connection lifecycle and error handling. Sta
 
 |Idle
 |No active communication
-|Idle → Active on connection request
+|Idle -> Active on connection request
 
 |Active
 |Normal operational state
-|Active → Error on fault detection, Active → Idle on disconnect
+|Active -> Error on fault detection, Active -> Idle on disconnect
 
 |Error
 |Error condition detected
-|Error → Active on recovery, Error → Idle on reset
+|Error -> Active on recovery, Error -> Idle on reset
 |===
 
 NOTE: Interface states are independent of system operational modes defined in xref:data-elements-enumerated[Enumerated Types (DE-009)]. Both state and mode must be tracked separately.
@@ -1066,9 +1079,9 @@ This section defines all data elements used in interface messages. Each element 
 |DE-002
 |Temperature
 |float32
-|°C
+|degC
 |-50.0 to +85.0
-|0.1°C
+|0.1 degC
 |System temperature measurement
 
 |DE-003
@@ -1841,7 +1854,7 @@ ___________________________________________________________________________
 The following sequence diagram illustrates the message exchange pattern between Provider and Consumer systems during a typical operational cycle.
 
 .Message Exchange Sequence (PlantUML)
-[plantuml, message-sequence, svg]
+[plantuml, message-sequence]
 ----
 @startuml
 participant "Provider System" as Provider
@@ -1907,7 +1920,7 @@ sequenceDiagram
 The following state diagram shows the operational states of an interface and the conditions that trigger state transitions.
 
 .Interface State Machine (PlantUML)
-[plantuml, interface-states, svg]
+[plantuml, interface-states]
 ----
 @startuml
 [*] --> Idle
