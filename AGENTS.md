@@ -62,8 +62,9 @@ bundle install
 - **AsciiDoc**: Documentation markup language
 - **asciidoctor**: Ruby-based AsciiDoc processor for HTML generation
 - **asciidoctor-pdf**: PDF generation from AsciiDoc
-- **asciidoctor-diagram**: Diagram rendering support (PlantUML, Graphviz, etc.)
+- **asciidoctor-diagram**: Diagram rendering support (PlantUML, Mermaid, Graphviz, etc.)
 - **PlantUML**: UML diagram generation tool
+- **Mermaid**: Modern diagram and flowchart tool
 - **Graphviz**: Graph visualization software (required dependency for PlantUML)
 - **Java**: Runtime environment for PlantUML
 - **Make**: Build automation
@@ -133,7 +134,8 @@ gem 'asciidoctor-diagram', '~> 2.2'
 ### System Requirements
 - Ruby (for running asciidoctor)
 - Java (for running PlantUML)
-- PlantUML (for diagram rendering)
+- PlantUML (for PlantUML diagram rendering)
+- Mermaid CLI (for Mermaid diagram rendering)
 - Graphviz (required dependency for PlantUML)
 - Make (for build automation)
 - Optional: `inotifywait` or `entr` (for file watching)
@@ -180,3 +182,120 @@ jobs:
 ### Permission issues
 - Bundler may use temporary home directory if user home is not writable
 - This is normal and doesn't affect functionality
+
+## Diagram Support
+
+The project supports multiple diagram types through asciidoctor-diagram, which automatically detects and renders diagrams based on the block type.
+
+### PlantUML Diagrams
+
+PlantUML diagrams use the `[plantuml]` block type and support UML diagrams, sequence diagrams, component diagrams, and more.
+
+**Syntax Example:**
+
+```asciidoc
+[plantuml, diagram-name, format=svg]
+----
+@startuml
+actor User
+participant "System A" as A
+participant "System B" as B
+
+User -> A: Request
+A -> B: Forward Request
+B --> A: Response
+A --> User: Final Response
+@enduml
+----
+```
+
+**Requirements:**
+- Java runtime (8+)
+- PlantUML jar or system package
+- Graphviz (for certain diagram types)
+
+### Mermaid Diagrams
+
+Mermaid diagrams use the `[mermaid]` block type and provide a modern syntax for flowcharts, sequence diagrams, Gantt charts, and more.
+
+**Syntax Example:**
+
+```asciidoc
+[mermaid, diagram-name, format=svg]
+----
+sequenceDiagram
+    participant User
+    participant SystemA
+    participant SystemB
+    
+    User->>SystemA: Request
+    SystemA->>SystemB: Forward Request
+    SystemB-->>SystemA: Response
+    SystemA-->>User: Final Response
+----
+```
+
+**Additional Mermaid Examples:**
+
+Flowchart:
+```asciidoc
+[mermaid]
+----
+flowchart TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+    C --> E[End]
+    D --> E
+----
+```
+
+Class Diagram:
+```asciidoc
+[mermaid]
+----
+classDiagram
+    class Interface {
+        +String name
+        +String type
+        +connect()
+        +disconnect()
+    }
+    class DataElement {
+        +String id
+        +String dataType
+        +validate()
+    }
+    Interface --> DataElement : uses
+----
+```
+
+**Requirements:**
+- Mermaid CLI (`npm install -g @mermaid-js/mermaid-cli` or `mmdc` command available)
+- Node.js (for running Mermaid CLI)
+
+### Automatic Detection
+
+The asciidoctor-diagram extension automatically:
+1. Detects the diagram type from the block attribute (`[plantuml]`, `[mermaid]`, etc.)
+2. Invokes the appropriate rendering tool
+3. Generates the diagram image (SVG, PNG, etc.)
+4. Embeds the result in the output document
+
+**Format Options:**
+- `format=svg` - Scalable Vector Graphics (recommended)
+- `format=png` - Portable Network Graphics
+
+**Block Attributes:**
+- First positional parameter: diagram name/ID (used for caching)
+- `format` parameter: output format (svg, png, etc.)
+
+### Using Diagrams in Documents
+
+Simply include diagram blocks in your AsciiDoc file and run the build commands:
+
+```bash
+bundle exec make all
+```
+
+The diagrams will be automatically rendered during document generation.

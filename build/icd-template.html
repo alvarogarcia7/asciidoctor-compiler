@@ -1,0 +1,4749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.26">
+<meta name="author" content="[Author Name]">
+<title>Interface Control Document</title>
+<style>
+/* ==========================================================================
+   ECSS Default Theme for ICD HTML Output
+   European Cooperation for Space Standardization (ECSS) Compliant Styling
+   ========================================================================== */
+
+/* ==========================================================================
+   Root Variables
+   ========================================================================== */
+
+:root {
+  --color-primary: #003366;
+  --color-secondary: #0066cc;
+  --color-accent: #cc0000;
+  --color-text: #1a1a1a;
+  --color-text-light: #4d4d4d;
+  --color-background: #ffffff;
+  --color-background-alt: #f5f5f5;
+  --color-border: #cccccc;
+  --color-border-light: #e0e0e0;
+  --color-table-header: #003366;
+  --color-table-row-odd: #f9f9f9;
+  --color-table-row-even: #ffffff;
+  --color-note: #e8f4f8;
+  --color-note-border: #0066cc;
+  --color-important: #fff3cd;
+  --color-important-border: #ffc107;
+  --color-warning: #ffe6e6;
+  --color-warning-border: #cc0000;
+  --color-tip: #e8f5e9;
+  --color-tip-border: #4caf50;
+  --color-caution: #fff0e6;
+  --color-caution-border: #ff9800;
+  --color-code-bg: #f5f5f5;
+  --color-code-border: #cccccc;
+  
+  --font-family-base: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-heading: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-mono: 'Courier New', Courier, monospace;
+  
+  --font-size-base: 11pt;
+  --font-size-small: 9pt;
+  --font-size-h1: 20pt;
+  --font-size-h2: 16pt;
+  --font-size-h3: 14pt;
+  --font-size-h4: 12pt;
+  --font-size-h5: 11pt;
+  --font-size-h6: 11pt;
+  
+  --line-height-base: 1.6;
+  --line-height-heading: 1.3;
+  
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  --max-width-content: 1200px;
+  --sidebar-width: 280px;
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+#header {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 3px solid var(--color-secondary);
+}
+
+#header h1 {
+  margin: 0;
+  font-size: var(--font-size-h1);
+  font-weight: bold;
+}
+
+#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--color-background-alt);
+  border-right: 1px solid var(--color-border);
+  padding: var(--spacing-lg);
+  z-index: 100;
+}
+
+#toc.toc2 {
+  margin-left: 0;
+}
+
+#content {
+  margin-left: var(--sidebar-width);
+  padding: var(--spacing-xl);
+  max-width: calc(var(--max-width-content) + var(--spacing-xl) * 2);
+}
+
+@media screen and (max-width: 768px) {
+  #toc {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  #content {
+    margin-left: 0;
+    padding: var(--spacing-md);
+  }
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: bold;
+  line-height: var(--line-height-heading);
+  color: var(--color-primary);
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--spacing-sm);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  font-weight: 600;
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  font-weight: 600;
+  font-style: italic;
+}
+
+.sect1 > h2::before,
+.sect2 > h3::before,
+.sect3 > h4::before,
+.sect4 > h5::before {
+  margin-right: var(--spacing-sm);
+  color: var(--color-secondary);
+}
+
+p {
+  margin: 0 0 var(--spacing-md) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--color-primary);
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+em, i {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+  background-color: var(--color-code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-light);
+}
+
+pre {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 4px;
+  overflow-x: auto;
+  page-break-inside: avoid;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Table of Contents (TOC)
+   ========================================================================== */
+
+#toctitle {
+  font-size: var(--font-size-h3);
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+#toc ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#toc li {
+  margin: var(--spacing-xs) 0;
+}
+
+#toc ul ul {
+  padding-left: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+#toc a {
+  color: var(--color-text);
+  display: block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+#toc a:hover {
+  background-color: var(--color-border-light);
+  text-decoration: none;
+}
+
+#toc .sectlevel1 > li > a {
+  font-weight: 600;
+}
+
+#toc .sectlevel2 > li > a {
+  font-size: 0.95em;
+}
+
+#toc .sectlevel3 > li > a {
+  font-size: 0.9em;
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+table {
+  width: 100%;
+  margin: var(--spacing-md) 0;
+  border-collapse: collapse;
+  page-break-inside: avoid;
+  background-color: var(--color-background);
+  font-size: var(--font-size-small);
+}
+
+table caption {
+  font-weight: bold;
+  text-align: left;
+  padding: var(--spacing-sm) 0;
+  caption-side: top;
+  color: var(--color-primary);
+}
+
+thead {
+  background-color: var(--color-table-header);
+  color: var(--color-background);
+}
+
+th {
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: bold;
+  border: 1px solid var(--color-border);
+}
+
+td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: var(--color-table-row-odd);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--color-table-row-even);
+}
+
+tbody tr:hover {
+  background-color: var(--color-background-alt);
+}
+
+table.tableblock {
+  border: 2px solid var(--color-border);
+}
+
+table.frame-all {
+  border: 2px solid var(--color-border);
+}
+
+table.frame-sides {
+  border-left: 2px solid var(--color-border);
+  border-right: 2px solid var(--color-border);
+}
+
+table.frame-topbot {
+  border-top: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+}
+
+table.grid-all th,
+table.grid-all td {
+  border: 1px solid var(--color-border);
+}
+
+table.grid-rows th,
+table.grid-rows td {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+table.grid-cols th,
+table.grid-cols td {
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
+   Lists
+   ========================================================================== */
+
+ul, ol {
+  margin: var(--spacing-md) 0;
+  padding-left: var(--spacing-xl);
+}
+
+li {
+  margin: var(--spacing-xs) 0;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+  margin: var(--spacing-xs) 0;
+}
+
+dt {
+  font-weight: bold;
+  margin-top: var(--spacing-sm);
+}
+
+dd {
+  margin-left: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   Admonition Blocks
+   ========================================================================== */
+
+.admonitionblock {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md);
+  border-left: 4px solid;
+  border-radius: 4px;
+  page-break-inside: avoid;
+}
+
+.admonitionblock table {
+  margin: 0;
+  border: none;
+}
+
+.admonitionblock td.icon {
+  width: 80px;
+  text-align: center;
+  vertical-align: top;
+  padding-right: var(--spacing-md);
+}
+
+.admonitionblock td.content {
+  padding: 0;
+  border: none;
+}
+
+.admonitionblock .icon .title {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.admonitionblock.note {
+  background-color: var(--color-note);
+  border-left-color: var(--color-note-border);
+}
+
+.admonitionblock.note .icon .title {
+  color: var(--color-note-border);
+}
+
+.admonitionblock.tip {
+  background-color: var(--color-tip);
+  border-left-color: var(--color-tip-border);
+}
+
+.admonitionblock.tip .icon .title {
+  color: var(--color-tip-border);
+}
+
+.admonitionblock.important {
+  background-color: var(--color-important);
+  border-left-color: var(--color-important-border);
+}
+
+.admonitionblock.important .icon .title {
+  color: var(--color-important-border);
+}
+
+.admonitionblock.warning {
+  background-color: var(--color-warning);
+  border-left-color: var(--color-warning-border);
+}
+
+.admonitionblock.warning .icon .title {
+  color: var(--color-warning-border);
+}
+
+.admonitionblock.caution {
+  background-color: var(--color-caution);
+  border-left-color: var(--color-caution-border);
+}
+
+.admonitionblock.caution .icon .title {
+  color: var(--color-caution-border);
+}
+
+/* ==========================================================================
+   Code Blocks
+   ========================================================================== */
+
+.listingblock {
+  margin: var(--spacing-md) 0;
+}
+
+.listingblock .title {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: 0.9em;
+}
+
+.listingblock .content {
+  position: relative;
+}
+
+.listingblock pre {
+  margin: 0;
+  border-radius: 4px;
+}
+
+.literalblock .content pre {
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  padding: var(--spacing-md);
+  border-radius: 4px;
+}
+
+/* Source code highlighting */
+.listingblock pre.highlight {
+  background-color: var(--color-code-bg);
+}
+
+.listingblock pre.highlight code {
+  background-color: transparent;
+}
+
+/* ==========================================================================
+   Images and Figures
+   ========================================================================== */
+
+.imageblock {
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+.imageblock img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border-light);
+  border-radius: 4px;
+}
+
+.imageblock .title {
+  display: block;
+  margin-top: var(--spacing-sm);
+  font-style: italic;
+  color: var(--color-text-light);
+  font-size: 0.9em;
+}
+
+/* ==========================================================================
+   Quotes and Verses
+   ========================================================================== */
+
+.quoteblock,
+.verseblock {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-background-alt);
+  border-left: 4px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.quoteblock blockquote,
+.verseblock pre {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.quoteblock .attribution,
+.verseblock .attribution {
+  margin-top: var(--spacing-sm);
+  text-align: right;
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Sections and Divisions
+   ========================================================================== */
+
+.sect1 {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+}
+
+.sect1:first-of-type {
+  margin-top: 0;
+}
+
+.sectionbody {
+  margin-top: var(--spacing-md);
+}
+
+.openblock,
+.paragraph {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Page breaks for printing */
+.page-break {
+  page-break-after: always;
+}
+
+/* ==========================================================================
+   Document Header and Metadata
+   ========================================================================== */
+
+#preamble {
+  margin-bottom: var(--spacing-xl);
+}
+
+.details {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-alt);
+  border-radius: 4px;
+}
+
+.details .title {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   Cross References and Links
+   ========================================================================== */
+
+.xref {
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.xref:hover {
+  text-decoration: underline;
+}
+
+.xref::before {
+  content: "§ ";
+  color: var(--color-text-light);
+}
+
+/* ==========================================================================
+   Footnotes
+   ========================================================================== */
+
+#footnotes {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+  border-top: 2px solid var(--color-border);
+}
+
+#footnotes .title {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.footnote {
+  font-size: 0.85em;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   Appendices
+   ========================================================================== */
+
+.appendix h1::before {
+  content: "Appendix ";
+}
+
+/* ==========================================================================
+   Text Alignment Helpers
+   ========================================================================== */
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+/* ==========================================================================
+   Print Media Queries
+   ========================================================================== */
+
+@media print {
+  :root {
+    font-size: 10pt;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  #toc {
+    position: static;
+    width: auto;
+    height: auto;
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xl);
+    page-break-after: always;
+  }
+  
+  #content {
+    margin-left: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  
+  table, figure, .imageblock, .admonitionblock {
+    page-break-inside: avoid;
+  }
+  
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  a {
+    color: black;
+    text-decoration: none;
+  }
+  
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    font-style: italic;
+  }
+  
+  .sect1 {
+    page-break-before: auto;
+  }
+  
+  .sect1:not(:first-child) h2 {
+    page-break-before: always;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr, img {
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+  }
+  
+  /* Remove backgrounds for better print quality */
+  .admonitionblock,
+  pre,
+  code,
+  .quoteblock,
+  .details {
+    background-color: transparent !important;
+    border: 1px solid #cccccc;
+  }
+  
+  /* Ensure table headers print on each page */
+  table thead {
+    display: table-header-group;
+  }
+  
+  table tfoot {
+    display: table-footer-group;
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+  :root {
+    --sidebar-width: 250px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --font-size-base: 10pt;
+    --font-size-h1: 18pt;
+    --font-size-h2: 15pt;
+    --font-size-h3: 13pt;
+    --font-size-h4: 11pt;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+  }
+  
+  table {
+    font-size: 0.85em;
+  }
+  
+  th, td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  :root {
+    --font-size-base: 9pt;
+  }
+  
+  #content {
+    padding: var(--spacing-sm);
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Interface Control Document (ICD)</h1>
+<div class="details">
+<span id="author" class="author">[Author Name]</span><br>
+<span id="revnumber">version 1.0,</span>
+<span id="revdate">2026-01-12</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_cover_page">1. Cover Page</a></li>
+<li><a href="#_document_status">2. Document Status</a></li>
+<li><a href="#_abstract">3. Abstract</a></li>
+<li><a href="#_document_control">4. Document Control</a>
+<ul class="sectlevel2">
+<li><a href="#_revision_history">4.1. Revision History</a></li>
+<li><a href="#_applicable_documents">4.2. Applicable Documents</a></li>
+<li><a href="#_reference_documents">4.3. Reference Documents</a></li>
+<li><a href="#_terms_definitions_and_abbreviations">4.4. Terms, Definitions and Abbreviations</a>
+<ul class="sectlevel3">
+<li><a href="#_terms_and_definitions">4.4.1. Terms and Definitions</a></li>
+<li><a href="#_abbreviations_and_acronyms">4.4.2. Abbreviations and Acronyms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#introduction">5. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#introduction-purpose">5.1. Purpose</a></li>
+<li><a href="#introduction-scope">5.2. Scope</a></li>
+<li><a href="#introduction-overview">5.3. Document Overview</a></li>
+</ul>
+</li>
+<li><a href="#interface-overview">6. Interface Overview</a>
+<ul class="sectlevel2">
+<li><a href="#interface-overview-context">6.1. System Context</a></li>
+<li><a href="#interface-overview-summary">6.2. Interface Summary</a></li>
+<li><a href="#interface-overview-architecture">6.3. Interface Architecture</a></li>
+</ul>
+</li>
+<li><a href="#interface-requirements">7. Interface Requirements</a>
+<ul class="sectlevel2">
+<li><a href="#interface-requirements-general">7.1. General Requirements</a></li>
+<li><a href="#interface-requirements-if001">7.2. Interface [IF-001]: [Interface Name]</a>
+<ul class="sectlevel3">
+<li><a href="#interface-requirements-if001-description">7.2.1. Description</a></li>
+<li><a href="#interface-requirements-if001-type">7.2.2. Interface Type</a></li>
+<li><a href="#interface-requirements-if001-characteristics">7.2.3. Interface Characteristics</a></li>
+<li><a href="#interface-requirements-if001-functional">7.2.4. Functional Requirements</a></li>
+<li><a href="#interface-requirements-if001-performance">7.2.5. Performance Requirements</a></li>
+<li><a href="#interface-requirements-if001-constraints">7.2.6. Design Constraints</a></li>
+</ul>
+</li>
+<li><a href="#interface-requirements-if002">7.3. Interface [IF-002]: [Interface Name]</a>
+<ul class="sectlevel3">
+<li><a href="#interface-requirements-if002-description">7.3.1. Description</a></li>
+<li><a href="#interface-requirements-if002-type">Interface Type</a></li>
+<li><a href="#interface-requirements-if002-functional">Functional Requirements</a></li>
+<li><a href="#interface-requirements-if002-performance">7.3.2. Performance Requirements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#interface-specifications">8. Detailed Interface Specifications</a>
+<ul class="sectlevel2">
+<li><a href="#interface-specifications-if001">8.1. Interface [IF-001]: [Interface Name] - Detailed Specification</a>
+<ul class="sectlevel3">
+<li><a href="#interface-specifications-if001-protocol">8.1.1. Protocol Specification</a></li>
+<li><a href="#interface-specifications-if001-message-format">8.1.2. Message Format Specification</a></li>
+<li><a href="#interface-specifications-if001-timing">8.1.3. Timing Requirements</a></li>
+<li><a href="#interface-specifications-if001-states">8.1.4. Interface States and Modes</a></li>
+</ul>
+</li>
+<li><a href="#interface-specifications-if002">8.2. Interface [IF-002]: [Interface Name] - Detailed Specification</a>
+<ul class="sectlevel3">
+<li><a href="#interface-specifications-if002-protocol">8.2.1. Protocol Specification</a></li>
+<li><a href="#interface-specifications-if002-message-format">Message Format Specification</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#data-elements">9. Data Element Definitions</a>
+<ul class="sectlevel2">
+<li><a href="#data-elements-introduction">9.1. Data Element Overview</a></li>
+<li><a href="#data-elements-primitive">9.2. Primitive Data Types</a></li>
+<li><a href="#data-elements-definitions">9.3. Data Element Definitions</a></li>
+<li><a href="#data-elements-enumerated">9.4. Enumerated Types</a>
+<ul class="sectlevel3">
+<li><a href="#_system_status_de_001">9.4.1. System Status (DE-001)</a></li>
+<li><a href="#_operational_mode_de_009">9.4.2. Operational Mode (DE-009)</a></li>
+<li><a href="#_error_codes_de_008">9.4.3. Error Codes (DE-008)</a></li>
+</ul>
+</li>
+<li><a href="#data-elements-bitfields">9.5. Bit Field Definitions</a>
+<ul class="sectlevel3">
+<li><a href="#_configuration_flags_de_020">9.5.1. Configuration Flags (DE-020)</a></li>
+</ul>
+</li>
+<li><a href="#data-elements-composite">9.6. Composite Data Types</a>
+<ul class="sectlevel3">
+<li><a href="#_position_vector">9.6.1. Position Vector</a></li>
+<li><a href="#_velocity_vector">9.6.2. Velocity Vector</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#interface-control">10. Interface Control</a>
+<ul class="sectlevel2">
+<li><a href="#interface-control-change">10.1. Interface Change Control</a>
+<ul class="sectlevel3">
+<li><a href="#_change_control_process">10.1.1. Change Control Process</a></li>
+<li><a href="#_configuration_management">10.1.2. Configuration Management</a></li>
+</ul>
+</li>
+<li><a href="#interface-control-verification">10.2. Interface Verification</a>
+<ul class="sectlevel3">
+<li><a href="#_verification_approach">10.2.1. Verification Approach</a></li>
+<li><a href="#_verification_requirements_matrix">10.2.2. Verification Requirements Matrix</a></li>
+<li><a href="#_test_requirements">10.2.3. Test Requirements</a></li>
+</ul>
+</li>
+<li><a href="#interface-control-validation">10.3. Interface Validation</a>
+<ul class="sectlevel3">
+<li><a href="#_validation_approach">10.3.1. Validation Approach</a></li>
+<li><a href="#_validation_requirements">10.3.2. Validation Requirements</a></li>
+<li><a href="#_acceptance_criteria">10.3.3. Acceptance Criteria</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendices">11. Appendices</a></li>
+<li><a href="#appendix-icr">Appendix A: Appendix A: Interface Change Request Form</a>
+<ul class="sectlevel2">
+<li><a href="#_interface_change_request_icr">A.1. Interface Change Request (ICR)</a>
+<ul class="sectlevel3">
+<li><a href="#_change_description">A.1.1. Change Description</a></li>
+<li><a href="#_impact_assessment_2">A.1.2. Impact Assessment</a></li>
+<li><a href="#_approval">A.1.3. Approval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendix-diagrams">Appendix B: Appendix B: Interface Diagrams</a>
+<ul class="sectlevel2">
+<li><a href="#_signal_flow_diagram">B.1. Signal Flow Diagram</a></li>
+<li><a href="#_timing_diagram">Timing Diagram</a></li>
+<li><a href="#_sequence_diagram">Sequence Diagram</a></li>
+<li><a href="#_state_diagram">B.2. State Diagram</a></li>
+<li><a href="#_data_flow_diagram">B.3. Data Flow Diagram</a></li>
+</ul>
+</li>
+<li><a href="#appendix-test">Appendix C: Appendix C: Test Procedures</a>
+<ul class="sectlevel2">
+<li><a href="#_interface_verification_test_procedure">C.1. Interface Verification Test Procedure</a>
+<ul class="sectlevel3">
+<li><a href="#_test_setup">C.1.1. Test Setup</a></li>
+<li><a href="#_test_cases">C.1.2. Test Cases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendix-compliance">Appendix D: Appendix D: Compliance Matrix</a>
+<ul class="sectlevel2">
+<li><a href="#_requirements_compliance_matrix">D.1. Requirements Compliance Matrix</a></li>
+</ul>
+</li>
+<li><a href="#appendix-glossary">Appendix E: Appendix E: Glossary</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cover_page">1. Cover Page</h2>
+<div class="sectionbody">
+<div class="openblock text-center">
+<div class="content">
+<div class="paragraph">
+<p><strong>[Organization Name]</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>[Project Name]</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Interface Control Document</strong></p>
+</div>
+<div class="paragraph">
+<p>Document ID: [Document ID]</p>
+</div>
+<div class="paragraph">
+<p>Revision: 1.0</p>
+</div>
+<div class="paragraph">
+<p>Date: 2026-01-12</p>
+</div>
+<div class="paragraph">
+<p>Classification: [Classification Level]</p>
+</div>
+<div class="paragraph">
+<p>Distribution: [Distribution Statement]</p>
+</div>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_document_status">2. Document Status</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Document ID</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Revision</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Date</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-01-12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Status</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Draft/Review/Approved/Released]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Classification</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Classification Level]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Distribution</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Distribution Statement]</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_abstract">3. Abstract</h2>
+<div class="sectionbody">
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_document_control">4. Document Control</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_revision_history">4.1. Revision History</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Revision</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Date</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Author</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Description of Changes</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Approved By</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Date]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Author]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial draft</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Approver]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-01-12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Author Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">First release</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Approver]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="_applicable_documents">4.2. Applicable Documents</h3>
+<div class="paragraph">
+<p>The following documents are applicable to the extent specified herein. In case of conflict between the documents referenced and the contents of this document, the contents of this document shall be considered superseding requirements.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Reference ID</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Document Title</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Document Number</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Revision</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[AD1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Title]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Number]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Revision]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[AD2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Title]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Number]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Revision]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="_reference_documents">4.3. Reference Documents</h3>
+<div class="paragraph">
+<p>The following documents are referenced in this document.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Reference ID</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Document Title</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Document Number</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Revision</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[RD1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECSS-E-ST-70-41C Space engineering - Telemetry and telecommand packet utilization</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECSS-E-ST-70-41C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rev. C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[RD2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECSS-E-ST-70C Space engineering - Ground systems and operations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECSS-E-ST-70C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rev. C</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[RD3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Title]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Document Number]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Revision]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="_terms_definitions_and_abbreviations">4.4. Terms, Definitions and Abbreviations</h3>
+<div class="sect3">
+<h4 id="_terms_and_definitions">4.4.1. Terms and Definitions</h4>
+<div class="paragraph">
+<p>The following terms and definitions apply to this document.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Term</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A shared boundary across which information is passed between systems, subsystems, or components</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface Control Document</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A document that describes the interface(s) between systems or subsystems</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provider</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The system or component that generates or transmits data across an interface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Consumer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The system or component that receives or processes data from an interface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data Element</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A basic unit of information with a unique meaning and distinct units or values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A set of rules and conventions that govern the communication between systems</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_abbreviations_and_acronyms">4.4.2. Abbreviations and Acronyms</h4>
+<div class="paragraph">
+<p>The following abbreviations and acronyms apply to this document.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Acronym</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Definition</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application Programming Interface</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECSS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">European Cooperation for Space Standardization</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface Control Document</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Identifier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I/O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Input/Output</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most Significant Bit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LSB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Least Significant Bit</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TBC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To Be Confirmed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TBD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To Be Defined</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="introduction">5. Introduction</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="introduction-purpose">5.1. Purpose</h3>
+<div class="paragraph">
+<p>This Interface Control Document (ICD) establishes the interface requirements, specifications, and control mechanisms for [describe the interfaces]. The purpose of this document is to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Define the technical characteristics and requirements for all interfaces between [System A] and [System B]</p>
+</li>
+<li>
+<p>Provide detailed specifications for data formats, protocols, and communication mechanisms</p>
+</li>
+<li>
+<p>Establish a baseline for interface design, development, and testing</p>
+</li>
+<li>
+<p>Serve as the authoritative reference for interface implementation and verification</p>
+</li>
+<li>
+<p>Enable coordinated development and integration of interfacing systems</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This document is intended for use by system engineers, software developers, integration teams, and verification personnel involved in the design, development, and testing of the interfacing systems.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This ICD establishes the authoritative interface baseline. All implementations must comply with the specifications defined herein to ensure interoperability.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="introduction-scope">5.2. Scope</h3>
+<div class="paragraph">
+<p>This ICD defines the interfaces between [Provider System Name] and [Consumer System Name]. The scope of this document includes:</p>
+</div>
+<div class="paragraph">
+<p><strong>In Scope:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Data interfaces and message structures</p>
+</li>
+<li>
+<p>Communication protocols and timing requirements</p>
+</li>
+<li>
+<p>Data element definitions and encoding schemes</p>
+</li>
+<li>
+<p>Interface performance requirements</p>
+</li>
+<li>
+<p>Error handling and fault tolerance mechanisms</p>
+</li>
+<li>
+<p>Interface verification and validation criteria</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Out of Scope:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Internal design and implementation details of individual systems</p>
+</li>
+<li>
+<p>Hardware specifications beyond interface connection requirements</p>
+</li>
+<li>
+<p>System-level requirements not directly related to interfaces</p>
+</li>
+<li>
+<p>Operational procedures and user manuals</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The interfaces described in this document apply to [specify applicable operational modes, phases, or conditions].</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Changes to interfaces defined in this document must follow the formal change control process described in <a href="#interface-control-change">Section 10.1</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="introduction-overview">5.3. Document Overview</h3>
+<div class="paragraph">
+<p>This document is organized into the following major sections:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="#introduction">Chapter 5</a>:</strong> Provides the purpose, scope, and organization of this document</p>
+</li>
+<li>
+<p><strong><a href="#interface-overview">Chapter 6</a>:</strong> Presents a high-level view of the system context and interface architecture</p>
+</li>
+<li>
+<p><strong><a href="#interface-requirements">Chapter 7</a>:</strong> Defines functional, performance, and design requirements with traceability</p>
+</li>
+<li>
+<p><strong><a href="#interface-specifications">Chapter 8</a>:</strong> Provides complete technical specifications for each interface</p>
+</li>
+<li>
+<p><strong><a href="#data-elements">Chapter 9</a>:</strong> Defines all data elements with types, ranges, and encoding</p>
+</li>
+<li>
+<p><strong><a href="#interface-control">Chapter 10</a>:</strong> Describes change control, verification, and validation processes</p>
+</li>
+<li>
+<p><strong>Appendices:</strong> Contains supplementary information including forms, diagrams, and test procedures</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For quick navigation, you can refer to specific sections using cross-references. For example, to review interface requirements, see <a href="#interface-requirements">Interface Requirements</a>, or to find data element definitions, see <a href="#data-elements">Data Element Definitions</a>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Use the table of contents on the left to navigate between sections. Cross-references are clickable links in PDF and HTML formats.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="interface-overview">6. Interface Overview</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="interface-overview-context">6.1. System Context</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+System context changes may impact multiple interface specifications. Coordinate all changes with the Interface Control Working Group (ICWG) per the process in <a href="#interface-control-change">Section 10.1</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">System Context Diagram (PlantUML)</div>
+<div class="content">
+<pre>@startuml
+
+actor User as "User\nSystem operator"
+rectangle "Provider System" as provider {
+}
+rectangle "Consumer System" as consumer {
+}
+rectangle "External System" as external {
+}
+
+User --&gt; provider : Configures and monitors
+provider --&gt; consumer : Interface data\nvia Protocol
+consumer --&gt; external : Output data
+
+@enduml</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">System Context Diagram (Mermaid C4)</div>
+<div class="content">
+<pre>graph TB
+    User[User&lt;br/&gt;System operator]
+    Provider[Provider System&lt;br/&gt;Generates and transmits&lt;br/&gt;interface data]
+    Consumer[Consumer System&lt;br/&gt;Receives and processes&lt;br/&gt;interface data]
+    External[External System&lt;br/&gt;External dependencies]
+
+    User --&gt;|Configures and monitors| Provider
+    Provider --&gt;|Interface data via Protocol| Consumer
+    Consumer --&gt;|Output data| External
+
+    classDef userClass fill:#08427b,stroke:#052e56,color:#fff
+    classDef systemClass fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef externalClass fill:#999,stroke:#666,color:#fff
+
+    class User userClass
+    class Provider,Consumer systemClass
+    class External externalClass</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-overview-summary">6.2. Interface Summary</h3>
+<div class="paragraph">
+<p>The following table provides a summary of all interfaces covered in this document. Each interface is detailed further in the <a href="#interface-requirements">Chapter 7</a> and <a href="#interface-specifications">Chapter 8</a> sections.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Interface ID</th>
+<th class="tableblock halign-left valign-top">Interface Name</th>
+<th class="tableblock halign-left valign-top">Provider System</th>
+<th class="tableblock halign-left valign-top">Consumer System</th>
+<th class="tableblock halign-left valign-top">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Primary Data Interface]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Provider System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Consumer System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Command Interface]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Consumer System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Provider System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status Interface]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Provider System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Consumer System Name]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Interface identifiers (IF-001, IF-002, etc.) are referenced throughout this document. Ensure identifier consistency when adding or modifying interfaces.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-overview-architecture">6.3. Interface Architecture</h3>
+<div class="paragraph">
+<p>The interface architecture follows a layered approach with clear separation between application, protocol, and transport layers. See <a href="#interface-specifications-if001-protocol">Section 8.1.1</a> for detailed protocol specifications.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The architecture diagram below shows the conceptual layers. Physical implementation details are provided in the detailed specifications for each interface.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Interface Architecture Diagram (PlantUML)</div>
+<div class="content">
+<pre>@startuml
+
+package "Application Layer" {
+  [Provider Application] as PA
+  [Consumer Application] as CA
+}
+
+package "Protocol Layer" {
+  [Protocol Handler] as PP
+  [Protocol Handler] as CP
+}
+
+package "Transport Layer" {
+  [TCP/UDP/Serial] as TL
+}
+
+PA --&gt; PP : Data messages
+PP --&gt; TL : Encoded packets
+TL --&gt; CP : Transmitted packets
+CP --&gt; CA : Parsed messages
+
+@enduml</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Interface Architecture Diagram (Mermaid)</div>
+<div class="content">
+<pre>flowchart LR
+    PA[Provider Application&lt;br/&gt;Application Layer]
+    PP[Protocol Handler&lt;br/&gt;Protocol Layer]
+    TL[Transport Layer&lt;br/&gt;TCP/UDP/Serial]
+    CP[Protocol Handler&lt;br/&gt;Protocol Layer]
+    CA[Consumer Application&lt;br/&gt;Application Layer]
+
+    PA --&gt;|Data messages| PP
+    PP --&gt;|Encoded packets| TL
+    TL --&gt;|Transmitted packets| CP
+    CP --&gt;|Parsed messages| CA
+
+    classDef appLayer fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef protocolLayer fill:#438dd5,stroke:#2e6295,color:#fff
+    classDef transportLayer fill:#85bbf0,stroke:#5a8abd,color:#000
+
+    class PA,CA appLayer
+    class PP,CP protocolLayer
+    class TL transportLayer</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="interface-requirements">7. Interface Requirements</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="interface-requirements-general">7.1. General Requirements</h3>
+<div class="paragraph">
+<p>This section defines general requirements applicable to all interfaces described in this document. All data elements referenced in requirements are fully defined in <a href="#data-elements">Chapter 9</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All interfaces shall use the data formats and protocols defined in this document</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent Requirement ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All interfaces shall implement error detection and reporting mechanisms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent Requirement ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface implementations shall be backwards compatible with the previous ICD revision unless otherwise specified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent Requirement ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All timing requirements shall be met under nominal operating conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent Requirement ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface documentation shall be maintained throughout the system lifecycle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent Requirement ID]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+All general requirements are mandatory and apply to every interface defined in this ICD. Deviations require formal approval through the change control process described in <a href="#interface-control-change">Section 10.1</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When implementing interfaces, review both the general requirements in this section and the interface-specific requirements (e.g., <a href="#interface-requirements-if001">IF-001 Requirements</a>).
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="interface-requirements-if001">7.2. Interface [IF-001]: [Interface Name]</h3>
+<div class="sect3">
+<h4 id="interface-requirements-if001-description">7.2.1. Description</h4>
+<div class="paragraph">
+<p>This interface is referenced in the system overview (see <a href="#interface-overview-summary">Section 6.2</a>) and detailed specifications are provided in <a href="#interface-specifications-if001">Section 8.1</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Interface requirements defined here are derived from system-level requirements and are verified using the methods described in <a href="#interface-control-verification">Section 10.2</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if001-type">7.2.2. Interface Type</h4>
+<div class="paragraph">
+<p><strong>Interface Classification:</strong> [Data/Electrical/Mechanical/Software]</p>
+</div>
+<div class="paragraph">
+<p><strong>Communication Pattern:</strong> [Unidirectional/Bidirectional]</p>
+</div>
+<div class="paragraph">
+<p><strong>Communication Method:</strong> [Serial/Ethernet/USB/Message Queue/API]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if001-characteristics">7.2.3. Interface Characteristics</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Characteristic</th>
+<th class="tableblock halign-left valign-top">Value/Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Protocol Name and Version]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data Rate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Nominal data rate with units]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update Rate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Message frequency or update interval]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latency</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Maximum acceptable latency]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Physical Medium</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Cable type, connector, wireless, etc.]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data Direction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Provider &#8594; Consumer / Bidirectional]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Changes to interface characteristics may require hardware modifications and impact system performance. All changes must be evaluated through the impact assessment process in <a href="#interface-control-change">Interface Change Control</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if001-functional">7.2.4. Functional Requirements</h4>
+<div class="paragraph">
+<p>Functional requirements specify the behaviors and capabilities that the interface must provide. These requirements trace to the general requirements in <a href="#interface-requirements-general">Section 7.1</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall transmit [data type] at a rate of [value] messages per second</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001, [Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall support [specific functionality]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001, [Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall provide [capability description]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall handle [error condition] by [response action]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002, [Parent ID]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if001-performance">7.2.5. Performance Requirements</h4>
+<div class="paragraph">
+<p>Performance requirements define the quantitative metrics that the interface must achieve. Verification methods are specified in <a href="#interface-control-verification">Section 10.2</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall maintain a maximum latency of [value] milliseconds under nominal conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-004, [Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall support a data throughput of at least [value] [units]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall achieve a bit error rate of less than [value]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall recover from transient errors within [value] seconds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Desirable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Performance requirements must be verified under conditions representative of the operational environment. Test procedures are provided in <a href="#appendix-test">Appendix C</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if001-constraints">7.2.6. Design Constraints</h4>
+<div class="paragraph">
+<p>Design constraints define limitations and restrictions that must be observed during interface design and implementation.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Constraint ID</th>
+<th class="tableblock halign-left valign-top">Constraint Description</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-CON-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall use only [specific standard or protocol]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Technical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Reason for constraint]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-CON-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum message size shall not exceed [value] bytes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Technical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Hardware or protocol limitation]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-CON-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall operate within [environmental conditions]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Environmental</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Operating environment specification]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Design constraints are typically derived from system-level limitations or external standards. Violations of these constraints may invalidate system certifications or compatibility.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-requirements-if002">7.3. Interface [IF-002]: [Interface Name]</h3>
+<div class="sect3">
+<h4 id="interface-requirements-if002-description">7.3.1. Description</h4>
+
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if002-type">Interface Type</h4>
+
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if002-functional">Functional Requirements</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF002-FREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Requirement description]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="interface-requirements-if002-performance">7.3.2. Performance Requirements</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 42.8571%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF002-PREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Requirement description]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Parent ID]</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="interface-specifications">8. Detailed Interface Specifications</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="interface-specifications-if001">8.1. Interface [IF-001]: [Interface Name] - Detailed Specification</h3>
+<div class="sect3">
+<h4 id="interface-specifications-if001-protocol">8.1.1. Protocol Specification</h4>
+<div class="sect4">
+<h5 id="_protocol_overview">8.1.1.1. Protocol Overview</h5>
+<div class="paragraph">
+<p><strong>Protocol Type:</strong> [Protocol Name/Standard]</p>
+</div>
+<div class="paragraph">
+<p><strong>Protocol Version:</strong> [Version Number]</p>
+</div>
+<div class="paragraph">
+<p><strong>Encapsulation:</strong> [Frame/Packet structure]</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The protocol specification implements the requirements defined in <a href="#interface-requirements-if001">IF-001 Requirements</a>. Data elements used in the protocol are defined in <a href="#data-elements">Chapter 9</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_connection_management">8.1.1.2. Connection Management</h5>
+<div class="paragraph">
+<p><strong>Connection Type:</strong> [Persistent/Session-based/Connectionless]</p>
+</div>
+<div class="paragraph">
+<p><strong>Initialization Sequence:</strong> [Steps to establish connection]</p>
+</div>
+<div class="paragraph">
+<p><strong>Heartbeat/Keepalive:</strong> [Mechanism and interval if applicable]</p>
+</div>
+<div class="paragraph">
+<p><strong>Termination Process:</strong> [Steps to close connection gracefully]</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_error_handling">8.1.1.3. Error Handling</h5>
+<div class="paragraph">
+<p><strong>Error Detection:</strong> [Checksum/CRC/Parity methods]</p>
+</div>
+<div class="paragraph">
+<p><strong>Error Reporting:</strong> [How errors are communicated]</p>
+</div>
+<div class="paragraph">
+<p><strong>Retry Mechanism:</strong> [Retry policy and limits]</p>
+</div>
+<div class="paragraph">
+<p><strong>Fault Tolerance:</strong> [How system handles faults]</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Proper error handling is critical for system reliability. Implementations must detect and report all error conditions specified in this section. Error codes are defined in <a href="#data-elements-enumerated">Enumerated Types</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Test error handling thoroughly using the error injection procedures in <a href="#appendix-test">Appendix C</a> to ensure robust operation under fault conditions.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-specifications-if001-message-format">8.1.2. Message Format Specification</h4>
+<div class="sect4">
+<h5 id="_message_structure">8.1.2.1. Message Structure</h5>
+<div class="paragraph">
+<p>All messages on this interface shall conform to the following structure. Field definitions reference the data elements in <a href="#data-elements-definitions">Section 9.3</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-left valign-top">Offset (bytes)</th>
+<th class="tableblock halign-left valign-top">Size (bytes)</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message header containing sync pattern and message type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Length</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total message length including header and checksum (see DE-017)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique identifier for message type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timestamp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message generation time in milliseconds since epoch (see DE-005)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Payload</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message-specific data payload</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checksum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CRC-16 checksum of entire message (see DE-016)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+All multi-byte fields use big-endian byte ordering as specified in <a href="#data-elements-primitive">Section 9.2</a>. Implementers must ensure correct byte order conversion on little-endian systems.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_message_types">8.1.2.2. Message Types</h5>
+<div class="paragraph">
+<p>The following message types are supported on this interface. Each message type is described in detail in subsequent sections.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Message ID</th>
+<th class="tableblock halign-left valign-top">Message Name</th>
+<th class="tableblock halign-left valign-top">Direction</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Message Type 1]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provider &#8594; Consumer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Purpose and content description]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Message Type 2]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provider &#8594; Consumer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Purpose and content description]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Message Type 3]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Consumer &#8594; Provider</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Purpose and content description]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Message IDs are allocated from the global message catalog. Contact the ICWG to reserve additional message IDs.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_example_message_message_type_1_0x0001">8.1.2.3. Example Message: [Message Type 1] (0x0001)</h5>
+<div class="paragraph">
+<p><strong>Purpose:</strong> [Describe the purpose of this message type]</p>
+</div>
+<div class="paragraph">
+<p><strong>Frequency:</strong> [How often this message is sent]</p>
+</div>
+<div class="paragraph">
+<p><strong>Priority:</strong> [Message priority level]</p>
+</div>
+<div class="paragraph">
+<p><strong>Payload Structure:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-left valign-top">Offset</th>
+<th class="tableblock halign-left valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Field description]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Field description]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Field description]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">double</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Field description]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When implementing message encoders and decoders, verify field alignment and padding to ensure proper byte boundaries. Use the test vectors in <a href="#appendix-test">Appendix C</a> for validation.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-specifications-if001-timing">8.1.3. Timing Requirements</h4>
+<div class="paragraph">
+<p>Timing requirements are critical for real-time system operation. These requirements implement the performance constraints defined in <a href="#interface-requirements-if001-performance">Section 7.2.5</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Timing Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Rate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nominal transmission rate for periodic messages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[X Hz / X ms]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Conditions or notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response Time</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum time between request and response</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[X ms]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Conditions or notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Communication timeout period</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[X seconds]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Action taken on timeout]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jitter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum timing variation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[X ms]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Acceptable jitter range]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Timing violations may indicate system overload or communication faults. Implementations should monitor timing metrics and log violations for diagnostic purposes.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+System clock synchronization is assumed. Ensure all system clocks are synchronized to within [X ms] to maintain timing accuracy across interfaces.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="interface-specifications-if001-states">8.1.4. Interface States and Modes</h4>
+<div class="paragraph">
+<p>The interface state machine manages connection lifecycle and error handling. State transitions must be implemented according to the following specification.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">State</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Transitions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Idle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No active communication</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Idle &#8594; Active on connection request</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Active</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal operational state</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Active &#8594; Error on fault detection, Active &#8594; Idle on disconnect</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error condition detected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error &#8594; Active on recovery, Error &#8594; Idle on reset</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Interface states are independent of system operational modes defined in <a href="#data-elements-enumerated">Enumerated Types (DE-009)</a>. Both state and mode must be tracked separately.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Implement state timeout mechanisms to prevent indefinite blocking in transient states. See <a href="#interface-specifications-if001-timing">Section 8.1.3</a> for recommended timeout values.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-specifications-if002">8.2. Interface [IF-002]: [Interface Name] - Detailed Specification</h3>
+<div class="sect3">
+<h4 id="interface-specifications-if002-protocol">8.2.1. Protocol Specification</h4>
+
+</div>
+<div class="sect3">
+<h4 id="interface-specifications-if002-message-format">Message Format Specification</h4>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="data-elements">9. Data Element Definitions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="data-elements-introduction">9.1. Data Element Overview</h3>
+<div class="paragraph">
+<p>This section provides comprehensive definitions for all data elements used in the interfaces defined in this document. Each data element is defined with its identifier, name, data type, valid range, units, encoding, and usage notes.</p>
+</div>
+<div class="paragraph">
+<p>All interface specifications in <a href="#interface-specifications">Chapter 8</a> reference data elements defined in this section. When implementing interfaces, use these definitions to ensure data consistency and interoperability.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Data element definitions are under configuration control. Changes to data element types, ranges, or encoding require formal approval through the change control process in <a href="#interface-control-change">Section 10.1</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-elements-primitive">9.2. Primitive Data Types</h3>
+<div class="paragraph">
+<p>The following primitive data types are used as building blocks for data element definitions. All composite data types and message structures are constructed from these primitive types.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type Name</th>
+<th class="tableblock halign-left valign-top">Size (bits)</th>
+<th class="tableblock halign-left valign-top">Encoding</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned binary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned 8-bit integer (0 to 255)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two&#8217;s complement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Signed 8-bit integer (-128 to 127)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned binary, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned 16-bit integer (0 to 65535)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two&#8217;s complement, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Signed 16-bit integer (-32768 to 32767)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned binary, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned 32-bit integer (0 to 4294967295)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two&#8217;s complement, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Signed 32-bit integer (-2147483648 to 2147483647)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned binary, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unsigned 64-bit integer (0 to 18446744073709551615)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two&#8217;s complement, big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEEE 754 single precision</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32-bit floating point number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEEE 754 double precision</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64-bit floating point number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00 = false, 0x01 = true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value (false/true)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF-8 encoded</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Character string, length-prefixed or null-terminated</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All multi-byte numeric types use big-endian (network) byte order. Systems using little-endian architecture must perform byte order conversion.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Floating-point arithmetic is subject to rounding errors. When exact decimal representation is required, consider using scaled integer types instead of float32/float64.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+<div class="sect2">
+<h3 id="data-elements-definitions">9.3. Data Element Definitions</h3>
+<div class="paragraph">
+<p>This section defines all data elements used in interface messages. Each element has a unique identifier (DE-XXX) that is referenced throughout the document.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 20%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 10%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Element ID</th>
+<th class="tableblock halign-left valign-top">Element Name</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+<th class="tableblock halign-left valign-top">Units</th>
+<th class="tableblock halign-left valign-top">Range</th>
+<th class="tableblock halign-left valign-top">Resolution/Precision</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System operational status: 0=Offline, 1=Initializing, 2=Operational, 3=Error</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Temperature</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">degC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-50.0 to +85.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.1 degC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System temperature measurement</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Voltage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0 to 50.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.01V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Power supply voltage measurement</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Command Code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000-0xFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Command identifier code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timestamp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 to 2^64-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 ms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Milliseconds since Unix epoch (1970-01-01 00:00:00 UTC)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sequence Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 to 2^32-1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message sequence number, wraps to 0 after maximum</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-007</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data Rate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kbps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0 to 1000.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.01 kbps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current data transmission rate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-008</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error Code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000-0xFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error identifier: 0x0000=No Error, others per error table</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-009</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mode</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Operational mode selector</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Position X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-10000.0 to +10000.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.001 m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X-axis position coordinate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Position Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-10000.0 to +10000.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.001 m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y-axis position coordinate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-012</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Position Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-10000.0 to +10000.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.001 m</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z-axis position coordinate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-013</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Velocity X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-100.0 to +100.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.01 m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X-axis velocity component</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-014</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Velocity Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-100.0 to +100.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.01 m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y-axis velocity component</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-015</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Velocity Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-100.0 to +100.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.01 m/s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z-axis velocity component</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-016</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checksum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000-0xFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CRC-16-CCITT checksum value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-017</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message Length</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bytes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 to 65535</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total message length in bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-018</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol Version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-255</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol version number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-019</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Device ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000-0xFFFFFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique device identifier</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-020</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration Flags</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000000-0xFFFFFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 bit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bit field for configuration options</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When implementing data validation, verify that all values fall within the specified ranges and maintain the required precision. Out-of-range values should be flagged as errors per <a href="#data-elements-enumerated">Error Codes</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-elements-enumerated">9.4. Enumerated Types</h3>
+<div class="paragraph">
+<p>The following enumerated types define specific sets of valid values for data elements. Enumerated types restrict the valid values to a predefined set, enabling compact encoding while maintaining readability.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Only the enumerated values defined in this section are valid. Undefined values must be treated as errors by receiving systems.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_system_status_de_001">9.4.1. System Status (DE-001)</h4>
+<div class="paragraph">
+<p>This enumeration defines the operational status of a system or subsystem. It is used in status messages to report the current state.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OFFLINE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System is offline or powered down</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INITIALIZING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System is starting up and initializing</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPERATIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System is fully operational</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System has encountered an error condition</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Transition from ERROR to OPERATIONAL state requires explicit error recovery and may require operator intervention depending on the error severity.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_operational_mode_de_009">9.4.2. Operational Mode (DE-009)</h4>
+<div class="paragraph">
+<p>This enumeration defines the operational mode of the system. The mode determines which functions are active and how the system responds to commands.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STANDBY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System in standby mode, minimal activity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NORMAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal operational mode</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CALIBRATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System performing calibration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIAGNOSTIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System running diagnostics</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SAFE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System in safe mode with limited functionality</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5-15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved for future use</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Mode transitions may affect system behavior and interface availability. Ensure proper synchronization when commanding mode changes.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Request mode changes using the command interface described in <a href="#interface-requirements-if002">IF-002 Requirements</a>. Verify successful mode transition by monitoring status messages.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error_codes_de_008">9.4.3. Error Codes (DE-008)</h4>
+<div class="paragraph">
+<p>Error codes provide standardized identification of fault conditions. All errors must be logged and reported through the status interface.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NO_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No error present</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">COMM_TIMEOUT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Communication timeout occurred</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_CHECKSUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message checksum validation failed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_LENGTH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message length invalid or out of range</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INVALID_COMMAND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Command code not recognized</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PARAMETER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Invalid parameter value received</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0006</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SEQUENCE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message sequence number out of order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0007</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BUFFER_OVERFLOW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Receive buffer overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0008-0xFFFF</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved for system-specific errors</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Error conditions may require different recovery strategies. Critical errors (e.g., BUFFER_OVERFLOW) may necessitate interface reset, while transient errors (e.g., COMM_TIMEOUT) may be resolved by retry mechanisms.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+System-specific error codes (0x0008-0xFFFF) must be documented in implementation-specific supplements to this ICD.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-elements-bitfields">9.5. Bit Field Definitions</h3>
+<div class="paragraph">
+<p>Bit fields provide compact representation of multiple boolean flags within a single integer value. Each bit position has a specific meaning and must be set or cleared according to its definition.</p>
+</div>
+<div class="sect3">
+<h4 id="_configuration_flags_de_020">9.5.1. Configuration Flags (DE-020)</h4>
+<div class="paragraph">
+<p>The configuration flags control various system behaviors and features. Multiple flags can be set simultaneously by performing bitwise OR operations.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit Position</th>
+<th class="tableblock halign-left valign-top">Bit Mask</th>
+<th class="tableblock halign-left valign-top">Flag Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ENABLE_LOGGING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable data logging: 0=Disabled, 1=Enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ENABLE_TELEMETRY</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable telemetry transmission: 0=Disabled, 1=Enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VERBOSE_MODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable verbose output: 0=Normal, 1=Verbose</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x00000008</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DEBUG_MODE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable debug mode: 0=Disabled, 1=Enabled</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4-7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x000000F0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved for future use (set to 0)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8-15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0000FF00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">USER_FLAGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User-definable flags</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16-31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xFFFF0000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESERVED</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved for future use (set to 0)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Reserved bits must be set to 0 in transmitted messages and must be ignored on reception to ensure forward compatibility with future ICD versions.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Use bitwise operations to manipulate individual flags. For example, to enable logging: <code>flags |= 0x00000001</code>. To disable logging: <code>flags &amp;= ~0x00000001</code>. To test if logging is enabled: <code>if (flags &amp; 0x00000001)</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-elements-composite">9.6. Composite Data Types</h3>
+<div class="paragraph">
+<p>Composite data types combine multiple primitive data elements into structured units. These types are used in message payloads where related data elements are transmitted together.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Composite types are transmitted as a sequence of their component fields in the order specified. No padding or alignment bytes are inserted unless explicitly specified.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_position_vector">9.6.1. Position Vector</h4>
+<div class="paragraph">
+<p>Composite data type representing a 3D position coordinate in Cartesian space.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 33.3335%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-left valign-top">Element ID</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X-axis position</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y-axis position</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-012</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z-axis position</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Total Size:</strong> 24 bytes</p>
+</div>
+<div class="paragraph">
+<p><strong>Byte Offset:</strong> X at +0, Y at +8, Z at +16</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Position vectors use float64 for high precision. For applications requiring lower precision, consider defining a compact position type using float32 to reduce bandwidth requirements.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_velocity_vector">9.6.2. Velocity Vector</h4>
+<div class="paragraph">
+<p>Composite data type representing a 3D velocity vector in meters per second.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 33.3335%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-left valign-top">Element ID</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-013</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X-axis velocity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-014</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y-axis velocity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DE-015</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z-axis velocity</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Total Size:</strong> 12 bytes</p>
+</div>
+<div class="paragraph">
+<p><strong>Byte Offset:</strong> X at +0, Y at +4, Z at +8</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Velocity vectors use float32 as the precision is sufficient for most velocity measurements. This reduces message size compared to using float64.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="interface-control">10. Interface Control</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="interface-control-change">10.1. Interface Change Control</h3>
+<div class="sect3">
+<h4 id="_change_control_process">10.1.1. Change Control Process</h4>
+<div class="paragraph">
+<p>All changes to the interfaces defined in this document shall follow a formal change control process to ensure coordination between all affected parties.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Interface changes affect multiple stakeholders and systems. Uncoordinated changes can lead to incompatibilities, integration failures, and operational problems. All changes must be reviewed and approved by the ICWG.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The change control process described in this section applies to all interfaces in this ICD. For information on specific interface requirements, see <a href="#interface-requirements">Chapter 7</a>.</p>
+</div>
+<div class="sect4">
+<h5 id="_change_request_procedure">10.1.1.1. Change Request Procedure</h5>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Initiation:</strong> Any party may initiate an interface change request using the Interface Change Request (ICR) form (see <a href="#appendix-icr">Appendix A</a>)</p>
+</li>
+<li>
+<p><strong>Submission:</strong> Submit the ICR to the Interface Control Working Group (ICWG)</p>
+</li>
+<li>
+<p><strong>Review:</strong> ICWG reviews the ICR for technical feasibility and impact assessment</p>
+</li>
+<li>
+<p><strong>Approval:</strong> ICWG approves or rejects the ICR, or requests modifications</p>
+</li>
+<li>
+<p><strong>Implementation:</strong> Approved changes are implemented by affected parties according to agreed schedule</p>
+</li>
+<li>
+<p><strong>Verification:</strong> Changes are verified through testing and validation (see <a href="#interface-control-verification">Section 10.2</a>)</p>
+</li>
+<li>
+<p><strong>Documentation:</strong> This ICD is updated to reflect approved changes</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The ICR form template is provided in <a href="#appendix-icr">Appendix A</a>. Complete all sections to expedite the review process.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Engage with stakeholders early in the change process to identify potential impacts and gain consensus before formal submission.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_interface_change_classification">10.1.1.2. Interface Change Classification</h5>
+<div class="paragraph">
+<p>All interface changes are classified according to their impact level, which determines the required approval authority and review process.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Class</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Approval Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Critical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Changes that affect message formats, protocol behavior, or timing requirements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICWG Chair + Program Manager</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Major</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Changes that affect data element definitions, ranges, or non-critical timing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICWG Chair</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Changes to documentation, clarifications, or corrections with no technical impact</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICD Author</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Class 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Editorial</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Typographical corrections and formatting changes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ICD Author</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Class 1 changes require extensive coordination and may necessitate software updates, retesting, and revalidation of all affected systems. Plan adequate schedule and resources for Class 1 changes.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Even Class 3 and Class 4 changes should be communicated to all stakeholders to maintain awareness of document updates.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_impact_assessment">10.1.1.3. Impact Assessment</h5>
+<div class="paragraph">
+<p>All interface change requests shall include an assessment of the following impacts:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Technical Impact:</strong> Hardware, software, and system-level changes required</p>
+</li>
+<li>
+<p><strong>Schedule Impact:</strong> Timeline for implementation and verification</p>
+</li>
+<li>
+<p><strong>Cost Impact:</strong> Resources required for implementation</p>
+</li>
+<li>
+<p><strong>Risk Assessment:</strong> Risks associated with implementing or not implementing the change</p>
+</li>
+<li>
+<p><strong>Interoperability Impact:</strong> Effects on compatibility with existing systems</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_management">10.1.2. Configuration Management</h4>
+<div class="paragraph">
+<p>Interface baselines shall be maintained under configuration control. Each approved version of this ICD represents an interface baseline. All implementations must comply with the baseline version specified in their configuration management plan.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Baseline</th>
+<th class="tableblock halign-left valign-top">Version</th>
+<th class="tableblock halign-left valign-top">Date</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-01-12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Initial baseline release</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The baseline table is updated with each approved ICD revision. Systems should clearly document which ICD baseline they implement to ensure compatibility during integration.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When upgrading to a new ICD baseline, review the revision history in the document control section to understand what changed between versions.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-control-verification">10.2. Interface Verification</h3>
+<div class="sect3">
+<h4 id="_verification_approach">10.2.1. Verification Approach</h4>
+<div class="paragraph">
+<p>Interface verification ensures that the implemented interfaces comply with all requirements specified in this document. Verification shall be performed using the following methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Analysis:</strong> Review of design documentation and implementation code</p>
+</li>
+<li>
+<p><strong>Inspection:</strong> Visual examination of hardware interfaces and connections</p>
+</li>
+<li>
+<p><strong>Demonstration:</strong> Functional demonstration of interface capabilities</p>
+</li>
+<li>
+<p><strong>Test:</strong> Execution of formal test procedures</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Requirements to be verified are defined in <a href="#interface-requirements">Chapter 7</a>. Test procedures are detailed in <a href="#appendix-test">Appendix C</a>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Verification must be completed and documented before interfaces can be approved for operational use. All verification evidence must be retained for audit and certification purposes.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The verification method for each requirement is specified in the Requirements Compliance Matrix in <a href="#appendix-compliance">Appendix D</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_verification_requirements_matrix">10.2.2. Verification Requirements Matrix</h4>
+<div class="paragraph">
+<p>This matrix tracks the verification status of all interface requirements. It provides traceability from requirements to verification evidence.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Verification Method</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Verification Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All interfaces shall use the data formats and protocols defined in this document</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[TBV]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Test Report Reference]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All interfaces shall implement error detection and reporting mechanisms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[TBV]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Test Report Reference]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall transmit [data type] at [rate]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[TBV]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Test Report Reference]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface shall maintain maximum latency of [value]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[TBV]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Test Report Reference]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Update this matrix as verification activities progress. Use status codes: TBV (To Be Verified), InProgress, Verified, or Failed. Link to specific test reports or analysis documents in the Verification Evidence column.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_test_requirements">10.2.3. Test Requirements</h4>
+<div class="paragraph">
+<p>Test requirements define the specific tests that must be performed to verify interface compliance. Detailed test procedures for each test are provided in <a href="#appendix-test">Appendix C</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 16.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Test ID</th>
+<th class="tableblock halign-left valign-top">Test Description</th>
+<th class="tableblock halign-left valign-top">Acceptance Criteria</th>
+<th class="tableblock halign-left valign-top">Requirement Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEST-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify message format compliance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All messages conform to specified format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001, IF001-FREQ-001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEST-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify data element ranges</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All data elements within specified ranges</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEST-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify error detection mechanisms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Errors detected and reported correctly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEST-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify timing requirements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All timing requirements met under nominal conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEST-005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify protocol state transitions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">State transitions occur as specified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-002</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Test execution must be performed in a controlled environment that closely matches the operational environment to ensure representative results.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Automate test execution where possible to enable regression testing when interface changes are implemented. Document test automation scripts and tools used.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="interface-control-validation">10.3. Interface Validation</h3>
+<div class="sect3">
+<h4 id="_validation_approach">10.3.1. Validation Approach</h4>
+<div class="paragraph">
+<p>Interface validation ensures that the implemented interfaces meet the operational needs and perform correctly in the intended operational environment. Validation activities include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Integration Testing:</strong> Testing interfaces in integrated system configuration</p>
+</li>
+<li>
+<p><strong>End-to-End Testing:</strong> Verification of complete data flow from provider to consumer</p>
+</li>
+<li>
+<p><strong>Performance Testing:</strong> Validation of performance under realistic operational loads</p>
+</li>
+<li>
+<p><strong>Stress Testing:</strong> Validation of behavior under extreme conditions</p>
+</li>
+<li>
+<p><strong>Operational Scenario Testing:</strong> Validation against operational use cases</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>While verification confirms compliance with specifications (see <a href="#interface-control-verification">Section 10.2</a>), validation confirms that the interfaces meet actual operational needs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Validation is typically performed after successful verification and is conducted in a more realistic operational environment.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Involve end users and operators in validation activities to ensure that interfaces support actual operational workflows and use cases.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_validation_requirements">10.3.2. Validation Requirements</h4>
+<div class="paragraph">
+<p>Validation requirements define the operational scenarios and conditions under which interfaces must demonstrate correct behavior.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 16.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Validation ID</th>
+<th class="tableblock halign-left valign-top">Validation Description</th>
+<th class="tableblock halign-left valign-top">Acceptance Criteria</th>
+<th class="tableblock halign-left valign-top">Requirement Traceability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VAL-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validate interface operation in nominal scenario</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface operates correctly for nominal use cases</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All functional requirements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VAL-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validate interface performance under load</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performance requirements met under operational load</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All performance requirements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VAL-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validate error recovery mechanisms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">System recovers gracefully from error conditions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VAL-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Validate interface in operational environment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interface functions correctly in target environment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-CON-003</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Validation in the operational environment may require special safety precautions and coordination with operations staff. Obtain proper approvals before conducting validation activities in operational systems.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_acceptance_criteria">10.3.3. Acceptance Criteria</h4>
+<div class="paragraph">
+<p>The interfaces defined in this document shall be considered validated and accepted when:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All verification tests have been successfully completed (see <a href="#interface-control-verification">Interface Verification</a>)</p>
+</li>
+<li>
+<p>All validation activities have been successfully completed</p>
+</li>
+<li>
+<p>All test and validation results have been reviewed and approved</p>
+</li>
+<li>
+<p>All identified defects have been resolved or accepted as known limitations</p>
+</li>
+<li>
+<p>Interface operation has been demonstrated in the operational environment</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Interface acceptance requires formal sign-off from all stakeholder organizations. Do not proceed to operational use until acceptance criteria are met and documented.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Known limitations and workarounds must be documented in release notes or operational procedures if they are accepted as part of the interface baseline.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendices">11. Appendices</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix-icr">Appendix A: Appendix A: Interface Change Request Form</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_interface_change_request_icr">A.1. Interface Change Request (ICR)</h3>
+<div class="paragraph">
+<p><strong>ICR Number:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Date Submitted:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Submitted By:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Organization:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Contact Information:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="sect3">
+<h4 id="_change_description">A.1.1. Change Description</h4>
+<div class="paragraph">
+<p><strong>Title:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Interface(s) Affected:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em></em></p>
+</div>
+<div class="paragraph">
+<p><strong>Change Classification:</strong> [ ] Class 1 (Critical) [ ] Class 2 (Major) [ ] Class 3 (Minor) [ ] Class 4 (Editorial)</p>
+</div>
+<div class="paragraph">
+<p><strong>Description of Proposed Change:</strong></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Rationale for Change:</strong></p>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_impact_assessment_2">A.1.2. Impact Assessment</h4>
+<div class="paragraph">
+<p><strong>Technical Impact:</strong></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+<div class="paragraph">
+<p><strong>Schedule Impact:</strong></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Cost Impact:</strong></p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><strong>Risk Assessment:</strong></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+<div class="paragraph">
+<p><strong>Affected Requirements:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Affected Data Elements:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em></em></em><em><em></em></em></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_approval">A.1.3. Approval</h4>
+<div class="paragraph">
+<p><strong>ICWG Review Date:</strong> <em><em></em><em></em></em><em>_</em></p>
+</div>
+<div class="paragraph">
+<p><strong>ICWG Decision:</strong> [ ] Approved [ ] Approved with Modifications [ ] Rejected [ ] Deferred</p>
+</div>
+<div class="paragraph">
+<p><strong>ICWG Chair Signature:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em> <strong>Date:</strong> </em><em></em></em><em><em></em>__</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Program Manager Signature (if required):</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em> <strong>Date:</strong> </em><em></em></em><em><em></em>__</em></p>
+</div>
+<div class="paragraph">
+<p><strong>Implementation Schedule:</strong></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Verification Approach:</strong></p>
+</div>
+</blockquote>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix-diagrams">Appendix B: Appendix B: Interface Diagrams</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_signal_flow_diagram">B.1. Signal Flow Diagram</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_timing_diagram">Timing Diagram</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_sequence_diagram">Sequence Diagram</h3>
+<div class="paragraph">
+<p>The following sequence diagram illustrates the message exchange pattern between Provider and Consumer systems during a typical operational cycle.</p>
+</div>
+<div class="listingblock">
+<div class="title">Message Exchange Sequence (PlantUML)</div>
+<div class="content">
+<pre>@startuml
+participant "Provider System" as Provider
+participant "Transport Layer" as Transport
+participant "Consumer System" as Consumer
+
+Provider -&gt; Transport: Connect Request
+Transport -&gt; Consumer: Forward Connect Request
+Consumer -&gt; Transport: Connect Acknowledgment
+Transport -&gt; Provider: Forward Connect Ack
+
+Provider -&gt; Transport: Status Message (0x0001)
+Transport -&gt; Consumer: Forward Status Message
+Consumer -&gt; Transport: Acknowledgment
+Transport -&gt; Provider: Forward Ack
+
+Provider -&gt; Transport: Data Message (0x0002)
+Transport -&gt; Consumer: Forward Data Message
+Consumer -&gt; Consumer: Process Data
+Consumer -&gt; Transport: Response Message (0x0003)
+Transport -&gt; Provider: Forward Response
+
+Provider -&gt; Transport: Disconnect Request
+Transport -&gt; Consumer: Forward Disconnect
+Consumer -&gt; Transport: Disconnect Ack
+Transport -&gt; Provider: Forward Disconnect Ack
+
+@enduml</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Message Exchange Sequence (Mermaid)</div>
+<div class="content">
+<pre>sequenceDiagram
+    participant Provider as Provider System
+    participant Transport as Transport Layer
+    participant Consumer as Consumer System
+
+    Provider-&gt;&gt;Transport: Connect Request
+    Transport-&gt;&gt;Consumer: Forward Connect Request
+    Consumer-&gt;&gt;Transport: Connect Acknowledgment
+    Transport-&gt;&gt;Provider: Forward Connect Ack
+
+    Provider-&gt;&gt;Transport: Status Message (0x0001)
+    Transport-&gt;&gt;Consumer: Forward Status Message
+    Consumer-&gt;&gt;Transport: Acknowledgment
+    Transport-&gt;&gt;Provider: Forward Ack
+
+    Provider-&gt;&gt;Transport: Data Message (0x0002)
+    Transport-&gt;&gt;Consumer: Forward Data Message
+    Consumer-&gt;&gt;Consumer: Process Data
+    Consumer-&gt;&gt;Transport: Response Message (0x0003)
+    Transport-&gt;&gt;Provider: Forward Response
+
+    Provider-&gt;&gt;Transport: Disconnect Request
+    Transport-&gt;&gt;Consumer: Forward Disconnect
+    Consumer-&gt;&gt;Transport: Disconnect Ack
+    Transport-&gt;&gt;Provider: Forward Disconnect Ack</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_state_diagram">B.2. State Diagram</h3>
+<div class="paragraph">
+<p>The following state diagram shows the operational states of an interface and the conditions that trigger state transitions.</p>
+</div>
+<div class="listingblock">
+<div class="title">Interface State Machine (PlantUML)</div>
+<div class="content">
+<pre>@startuml
+[*] --&gt; Idle
+
+Idle --&gt; Active: Connection Request
+Active --&gt; Idle: Disconnect
+Active --&gt; Error: Fault Detected
+Error --&gt; Active: Recovery Successful
+Error --&gt; Idle: Reset Command
+Active --&gt; Transmitting: Data Available
+Transmitting --&gt; Active: Transmission Complete
+Transmitting --&gt; Error: Transmission Failure
+
+note right of Idle
+  No active communication
+  Waiting for connection
+end note
+
+note right of Active
+  Connection established
+  Ready to transmit/receive
+end note
+
+note right of Error
+  Fault condition detected
+  Attempting recovery
+end note
+
+@enduml</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Interface State Machine (Mermaid)</div>
+<div class="content">
+<pre>stateDiagram-v2
+    [*] --&gt; Idle
+
+    Idle --&gt; Active: Connection Request
+    Active --&gt; Idle: Disconnect
+    Active --&gt; Error: Fault Detected
+    Error --&gt; Active: Recovery Successful
+    Error --&gt; Idle: Reset Command
+    Active --&gt; Transmitting: Data Available
+    Transmitting --&gt; Active: Transmission Complete
+    Transmitting --&gt; Error: Transmission Failure
+
+    note right of Idle
+        No active communication
+        Waiting for connection
+    end note
+
+    note right of Active
+        Connection established
+        Ready to transmit/receive
+    end note
+
+    note right of Error
+        Fault condition detected
+        Attempting recovery
+    end note</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_flow_diagram">B.3. Data Flow Diagram</h3>
+<div class="paragraph">
+<p>The following diagram shows how data flows through the system components and is transformed at each stage.</p>
+</div>
+<div class="listingblock">
+<div class="title">Data Flow Through System (Mermaid)</div>
+<div class="content">
+<pre>flowchart TD
+    Start([Data Generation])
+    Format[Format Data&lt;br/&gt;into Message]
+    Encode[Encode Message&lt;br/&gt;with Protocol]
+    AddHeader[Add Header &amp;&lt;br/&gt;Checksum]
+    Transmit[Transmit via&lt;br/&gt;Transport Layer]
+    Receive[Receive Message]
+    Validate[Validate Checksum&lt;br/&gt;&amp; Format]
+    Decode[Decode Protocol]
+    Parse[Parse Message&lt;br/&gt;Contents]
+    Process[Process Data&lt;br/&gt;in Application]
+    End([Data Processing Complete])
+
+    Error[Error Handler]
+    Log[Log Error]
+
+    Start --&gt; Format
+    Format --&gt; Encode
+    Encode --&gt; AddHeader
+    AddHeader --&gt; Transmit
+    Transmit --&gt; Receive
+    Receive --&gt; Validate
+    Validate --&gt;|Valid| Decode
+    Validate --&gt;|Invalid| Error
+    Decode --&gt; Parse
+    Parse --&gt; Process
+    Process --&gt; End
+    Error --&gt; Log
+    Log --&gt; End
+
+    classDef processNode fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef errorNode fill:#d62728,stroke:#9a1d1f,color:#fff
+    classDef terminalNode fill:#2ca02c,stroke:#1e7a1e,color:#fff
+
+    class Format,Encode,AddHeader,Transmit,Receive,Validate,Decode,Parse,Process processNode
+    class Error,Log errorNode
+    class Start,End terminalNode</pre>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix-test">Appendix C: Appendix C: Test Procedures</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_interface_verification_test_procedure">C.1. Interface Verification Test Procedure</h3>
+<div class="sect3">
+<h4 id="_test_setup">C.1.1. Test Setup</h4>
+<div class="paragraph">
+<p><strong>Test Configuration:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Provider System: [Configuration details]</p>
+</li>
+<li>
+<p>Consumer System: [Configuration details]</p>
+</li>
+<li>
+<p>Test Equipment: [List of required test equipment]</p>
+</li>
+<li>
+<p>Test Environment: [Environmental conditions]</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_test_cases">C.1.2. Test Cases</h4>
+<div class="sect4">
+<h5 id="_test_case_1_message_format_verification">C.1.2.1. Test Case 1: Message Format Verification</h5>
+<div class="paragraph">
+<p><strong>Test ID:</strong> TEST-001</p>
+</div>
+<div class="paragraph">
+<p><strong>Objective:</strong> Verify that all interface messages conform to the specified format</p>
+</div>
+<div class="paragraph">
+<p><strong>Prerequisites:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Systems configured and operational</p>
+</li>
+<li>
+<p>Monitoring equipment connected</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Procedure:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure provider system to transmit test messages</p>
+</li>
+<li>
+<p>Capture transmitted messages using protocol analyzer</p>
+</li>
+<li>
+<p>Verify message header format matches specification</p>
+</li>
+<li>
+<p>Verify payload format matches specification</p>
+</li>
+<li>
+<p>Verify checksum calculation is correct</p>
+</li>
+<li>
+<p>Repeat for all message types</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Expected Results:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All messages conform to format specification</p>
+</li>
+<li>
+<p>All fields contain valid values</p>
+</li>
+<li>
+<p>Checksums are correct</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actual Results:</strong> [To be filled during test execution]</p>
+</div>
+<div class="paragraph">
+<p><strong>Pass/Fail:</strong> [ ] Pass [ ] Fail</p>
+</div>
+<div class="paragraph">
+<p><strong>Tester Signature:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em> <strong>Date:</strong> </em><em></em></em><em><em></em>__</em></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_test_case_2_timing_verification">C.1.2.2. Test Case 2: Timing Verification</h5>
+<div class="paragraph">
+<p><strong>Test ID:</strong> TEST-004</p>
+</div>
+<div class="paragraph">
+<p><strong>Objective:</strong> Verify that interface timing requirements are met</p>
+</div>
+<div class="paragraph">
+<p><strong>Prerequisites:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Systems configured and operational</p>
+</li>
+<li>
+<p>Precision timing measurement equipment available</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Procedure:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure systems for nominal operation</p>
+</li>
+<li>
+<p>Measure message transmission rates</p>
+</li>
+<li>
+<p>Measure response times for request/response messages</p>
+</li>
+<li>
+<p>Measure maximum latency from generation to reception</p>
+</li>
+<li>
+<p>Verify jitter is within acceptable range</p>
+</li>
+<li>
+<p>Record all timing measurements</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Expected Results:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Message rates meet specifications</p>
+</li>
+<li>
+<p>Response times within specified limits</p>
+</li>
+<li>
+<p>Latency within specified limits</p>
+</li>
+<li>
+<p>Jitter within acceptable range</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actual Results:</strong> [To be filled during test execution]</p>
+</div>
+<div class="paragraph">
+<p><strong>Pass/Fail:</strong> [ ] Pass [ ] Fail</p>
+</div>
+<div class="paragraph">
+<p><strong>Tester Signature:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em> <strong>Date:</strong> </em><em></em></em><em><em></em>__</em></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_test_case_3_error_handling_verification">C.1.2.3. Test Case 3: Error Handling Verification</h5>
+<div class="paragraph">
+<p><strong>Test ID:</strong> TEST-003</p>
+</div>
+<div class="paragraph">
+<p><strong>Objective:</strong> Verify error detection and handling mechanisms</p>
+</div>
+<div class="paragraph">
+<p><strong>Prerequisites:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Systems configured and operational</p>
+</li>
+<li>
+<p>Ability to inject errors into interface</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Procedure:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Inject checksum error and verify detection</p>
+</li>
+<li>
+<p>Inject invalid message length and verify rejection</p>
+</li>
+<li>
+<p>Inject invalid command code and verify error response</p>
+</li>
+<li>
+<p>Inject communication timeout and verify recovery</p>
+</li>
+<li>
+<p>Verify error reporting mechanisms</p>
+</li>
+<li>
+<p>Verify system recovery after errors</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Expected Results:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All errors correctly detected</p>
+</li>
+<li>
+<p>Appropriate error responses generated</p>
+</li>
+<li>
+<p>System recovers gracefully from errors</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Actual Results:</strong> [To be filled during test execution]</p>
+</div>
+<div class="paragraph">
+<p><strong>Pass/Fail:</strong> [ ] Pass [ ] Fail</p>
+</div>
+<div class="paragraph">
+<p><strong>Tester Signature:</strong> <em><em></em><em></em></em><em><em></em><em></em></em><em><em></em><em> <strong>Date:</strong> </em><em></em></em><em><em></em>__</em></p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix-compliance">Appendix D: Appendix D: Compliance Matrix</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_requirements_compliance_matrix">D.1. Requirements Compliance Matrix</h3>
+<div class="paragraph">
+<p>This matrix provides a comprehensive mapping of all interface requirements to their implementation status, verification method, and verification status. It serves as the primary tracking mechanism for interface compliance throughout the development lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>For detailed verification procedures, see <a href="#interface-control-verification">Interface Verification</a>. For validation approach, see <a href="#interface-control-validation">Section 10.3</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2858%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Requirement ID</th>
+<th class="tableblock halign-left valign-top">Requirement Description</th>
+<th class="tableblock halign-left valign-top">Implementation Status</th>
+<th class="tableblock halign-left valign-top">Verification Method</th>
+<th class="tableblock halign-left valign-top">Verification Status</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All interfaces shall use defined data formats and protocols</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Implemented/In Progress/Planned]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Verified/Not Verified/TBV]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error detection and reporting mechanisms required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-003</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Backwards compatibility required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Analysis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-004</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timing requirements shall be met</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GEN-REQ-005</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Documentation shall be maintained</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Inspection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-FREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Functional requirement description]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IF001-PREQ-001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Performance requirement description]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Status]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[Notes]</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This matrix should be maintained as a living document throughout the project lifecycle. Update regularly as implementation and verification progress.
+</td>
+</tr>
+</table>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="appendix-glossary">Appendix E: Appendix E: Glossary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This glossary defines technical terms used throughout this ICD. For data element definitions, see <a href="#data-elements">Chapter 9</a>. For enumerated type definitions, see <a href="#data-elements-enumerated">Section 9.4</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Term</th>
+<th class="tableblock halign-left valign-top">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big-endian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte ordering where the most significant byte is stored at the lowest memory address</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bit field</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A data structure that consists of one or more adjacent bits which have been allocated to hold a sequence of bits</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checksum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A small-sized datum derived from a block of digital data for the purpose of detecting errors</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CRC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cyclic Redundancy Check - an error-detecting code commonly used in digital networks and storage devices</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handshake</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An automated process of negotiation that dynamically sets parameters of a communications channel established between two entities</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IEEE 754</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Standard for floating-point arithmetic established by the Institute of Electrical and Electronics Engineers</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jitter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The deviation from true periodicity of a presumably periodic signal in electronics and telecommunications</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Latency</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The time interval between the stimulation and response, or, from a more general point of view, as a time delay between the cause and the effect of some physical change in the system</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LSB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Least Significant Bit - the bit position in a binary integer giving the units value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most Significant Bit - the bit position in a binary number having the greatest value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Payload</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The actual intended message in a transmitted data packet</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A set of rules or procedures for transmitting data between electronic devices</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Two&#8217;s complement</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A mathematical operation on binary numbers and a binary signed number representation based on this operation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0<br>
+Last updated 2026-01-12 12:00:41 +0400
+</div>
+</div>
+</body>
+</html>

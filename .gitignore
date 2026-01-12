@@ -1,11 +1,11 @@
 # Makefile build artifacts
 build/
 
-# AsciiDoc build outputs
-*.html
-*.pdf
-*.xml
-*.epub
+# AsciiDoc build outputs (except in build/ directory)
+/*.html
+/*.pdf
+/*.xml
+/*.epub
 
 # AsciiDoctor diagram cache
 .asciidoctor/

@@ -44,6 +44,8 @@ build:
     paths:
       - ${BUILD_DIR}/${PDF_OUTPUT}
       - ${BUILD_DIR}/${HTML_OUTPUT}
+      - ${BUILD_DIR}/images/*.png
+      - ${BUILD_DIR}/images/*.svg
     # Conditional expiration: never expire for master branch, 7 days for others
     expire_in: 7 days
   only:
