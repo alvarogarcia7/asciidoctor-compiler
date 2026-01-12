@@ -322,7 +322,7 @@ TIP: Use the table of contents on the left to navigate between sections. Cross-r
 
 WARNING: System context changes may impact multiple interface specifications. Coordinate all changes with the Interface Control Working Group (ICWG) per the process in <<interface-control-change>>.
 
-.System Context Diagram
+.System Context Diagram (PlantUML)
 [plantuml, system-context, svg]
 ----
 @startuml
@@ -338,6 +338,28 @@ Rel(provider, consumer, "Interface data", "Protocol")
 Rel(consumer, external, "Output data")
 
 @enduml
+----
+
+.System Context Diagram (Mermaid C4)
+[mermaid]
+----
+graph TB
+    User[User<br/>System operator]
+    Provider[Provider System<br/>Generates and transmits<br/>interface data]
+    Consumer[Consumer System<br/>Receives and processes<br/>interface data]
+    External[External System<br/>External dependencies]
+    
+    User -->|Configures and monitors| Provider
+    Provider -->|Interface data via Protocol| Consumer
+    Consumer -->|Output data| External
+    
+    classDef userClass fill:#08427b,stroke:#052e56,color:#fff
+    classDef systemClass fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef externalClass fill:#999,stroke:#666,color:#fff
+    
+    class User userClass
+    class Provider,Consumer systemClass
+    class External externalClass
 ----
 
 [[interface-overview-summary]]
@@ -383,7 +405,7 @@ The interface architecture follows a layered approach with clear separation betw
 
 NOTE: The architecture diagram below shows the conceptual layers. Physical implementation details are provided in the detailed specifications for each interface.
 
-.Interface Architecture Diagram
+.Interface Architecture Diagram (PlantUML)
 [plantuml, interface-architecture, svg]
 ----
 @startuml
@@ -401,6 +423,30 @@ Rel(transport, consumer_protocol, "Transmitted packets")
 Rel(consumer_protocol, consumer_app, "Parsed messages")
 
 @enduml
+----
+
+.Interface Architecture Diagram (Mermaid)
+[mermaid]
+----
+flowchart LR
+    PA[Provider Application<br/>Application Layer]
+    PP[Protocol Handler<br/>Protocol Layer]
+    TL[Transport Layer<br/>TCP/UDP/Serial]
+    CP[Protocol Handler<br/>Protocol Layer]
+    CA[Consumer Application<br/>Application Layer]
+    
+    PA -->|Data messages| PP
+    PP -->|Encoded packets| TL
+    TL -->|Transmitted packets| CP
+    CP -->|Parsed messages| CA
+    
+    classDef appLayer fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef protocolLayer fill:#438dd5,stroke:#2e6295,color:#fff
+    classDef transportLayer fill:#85bbf0,stroke:#5a8abd,color:#000
+    
+    class PA,CA appLayer
+    class PP,CP protocolLayer
+    class TL transportLayer
 ----
 
 <<<
@@ -1790,13 +1836,185 @@ ___________________________________________________________________________
 
 [Placeholder for timing diagram showing message sequencing, timing relationships, and protocol handshaking]
 
+=== Sequence Diagram
+
+The following sequence diagram illustrates the message exchange pattern between Provider and Consumer systems during a typical operational cycle.
+
+.Message Exchange Sequence (PlantUML)
+[plantuml, message-sequence, svg]
+----
+@startuml
+participant "Provider System" as Provider
+participant "Transport Layer" as Transport
+participant "Consumer System" as Consumer
+
+Provider -> Transport: Connect Request
+Transport -> Consumer: Forward Connect Request
+Consumer -> Transport: Connect Acknowledgment
+Transport -> Provider: Forward Connect Ack
+
+Provider -> Transport: Status Message (0x0001)
+Transport -> Consumer: Forward Status Message
+Consumer -> Transport: Acknowledgment
+Transport -> Provider: Forward Ack
+
+Provider -> Transport: Data Message (0x0002)
+Transport -> Consumer: Forward Data Message
+Consumer -> Consumer: Process Data
+Consumer -> Transport: Response Message (0x0003)
+Transport -> Provider: Forward Response
+
+Provider -> Transport: Disconnect Request
+Transport -> Consumer: Forward Disconnect
+Consumer -> Transport: Disconnect Ack
+Transport -> Provider: Forward Disconnect Ack
+
+@enduml
+----
+
+.Message Exchange Sequence (Mermaid)
+[mermaid]
+----
+sequenceDiagram
+    participant Provider as Provider System
+    participant Transport as Transport Layer
+    participant Consumer as Consumer System
+    
+    Provider->>Transport: Connect Request
+    Transport->>Consumer: Forward Connect Request
+    Consumer->>Transport: Connect Acknowledgment
+    Transport->>Provider: Forward Connect Ack
+    
+    Provider->>Transport: Status Message (0x0001)
+    Transport->>Consumer: Forward Status Message
+    Consumer->>Transport: Acknowledgment
+    Transport->>Provider: Forward Ack
+    
+    Provider->>Transport: Data Message (0x0002)
+    Transport->>Consumer: Forward Data Message
+    Consumer->>Consumer: Process Data
+    Consumer->>Transport: Response Message (0x0003)
+    Transport->>Provider: Forward Response
+    
+    Provider->>Transport: Disconnect Request
+    Transport->>Consumer: Forward Disconnect
+    Consumer->>Transport: Disconnect Ack
+    Transport->>Provider: Forward Disconnect Ack
+----
+
 === State Diagram
 
-[Placeholder for state diagram showing interface operational states and transitions]
+The following state diagram shows the operational states of an interface and the conditions that trigger state transitions.
+
+.Interface State Machine (PlantUML)
+[plantuml, interface-states, svg]
+----
+@startuml
+[*] --> Idle
+
+Idle --> Active: Connection Request
+Active --> Idle: Disconnect
+Active --> Error: Fault Detected
+Error --> Active: Recovery Successful
+Error --> Idle: Reset Command
+Active --> Transmitting: Data Available
+Transmitting --> Active: Transmission Complete
+Transmitting --> Error: Transmission Failure
+
+note right of Idle
+  No active communication
+  Waiting for connection
+end note
+
+note right of Active
+  Connection established
+  Ready to transmit/receive
+end note
+
+note right of Error
+  Fault condition detected
+  Attempting recovery
+end note
+
+@enduml
+----
+
+.Interface State Machine (Mermaid)
+[mermaid]
+----
+stateDiagram-v2
+    [*] --> Idle
+    
+    Idle --> Active: Connection Request
+    Active --> Idle: Disconnect
+    Active --> Error: Fault Detected
+    Error --> Active: Recovery Successful
+    Error --> Idle: Reset Command
+    Active --> Transmitting: Data Available
+    Transmitting --> Active: Transmission Complete
+    Transmitting --> Error: Transmission Failure
+    
+    note right of Idle
+        No active communication
+        Waiting for connection
+    end note
+    
+    note right of Active
+        Connection established
+        Ready to transmit/receive
+    end note
+    
+    note right of Error
+        Fault condition detected
+        Attempting recovery
+    end note
+----
 
 === Data Flow Diagram
 
-[Placeholder for data flow diagram showing how data moves through the system and is transformed]
+The following diagram shows how data flows through the system components and is transformed at each stage.
+
+.Data Flow Through System (Mermaid)
+[mermaid]
+----
+flowchart TD
+    Start([Data Generation])
+    Format[Format Data<br/>into Message]
+    Encode[Encode Message<br/>with Protocol]
+    AddHeader[Add Header &<br/>Checksum]
+    Transmit[Transmit via<br/>Transport Layer]
+    Receive[Receive Message]
+    Validate[Validate Checksum<br/>& Format]
+    Decode[Decode Protocol]
+    Parse[Parse Message<br/>Contents]
+    Process[Process Data<br/>in Application]
+    End([Data Processing Complete])
+    
+    Error[Error Handler]
+    Log[Log Error]
+    
+    Start --> Format
+    Format --> Encode
+    Encode --> AddHeader
+    AddHeader --> Transmit
+    Transmit --> Receive
+    Receive --> Validate
+    Validate -->|Valid| Decode
+    Validate -->|Invalid| Error
+    Decode --> Parse
+    Parse --> Process
+    Process --> End
+    Error --> Log
+    Log --> End
+    
+    classDef processNode fill:#1168bd,stroke:#0b4884,color:#fff
+    classDef errorNode fill:#d62728,stroke:#9a1d1f,color:#fff
+    classDef terminalNode fill:#2ca02c,stroke:#1e7a1e,color:#fff
+    
+    class Format,Encode,AddHeader,Transmit,Receive,Validate,Decode,Parse,Process processNode
+    class Error,Log errorNode
+    class Start,End terminalNode
+----
 
 <<<
 
