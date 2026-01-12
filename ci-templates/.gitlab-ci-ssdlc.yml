@@ -1,0 +1,371 @@
+# GitLab CI Template for SSDLC (Secure Software Development Lifecycle) Documentation
+# This template extends ICD template with security-focused stages and compliance validation
+
+# YAML Anchors for reusability
+.ruby_setup: &ruby_setup
+  image: ruby:3.2
+  before_script:
+    - gem install bundler
+    - bundle config set --local path 'vendor/bundle'
+    - bundle install
+
+.asciidoctor_setup: &asciidoctor_setup
+  image: asciidoctor/docker-asciidoctor:latest
+  before_script:
+    - mkdir -p ${BUILD_DIR}
+    - echo "Building ${DOCUMENT_FILE} to ${OUTPUT_NAME}"
+
+.security_setup: &security_setup
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git bash
+
+.artifact_policy: &artifact_policy
+  artifacts:
+    name: "${OUTPUT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - ${BUILD_DIR}/${OUTPUT_NAME}.pdf
+      - ${BUILD_DIR}/${OUTPUT_NAME}.html
+      - ${BUILD_DIR}/logs/
+      - ${BUILD_DIR}/reports/
+    expire_in: ${ARTIFACT_EXPIRATION}
+    reports:
+      dotenv: build.env
+
+.branch_rules: &branch_rules
+  only:
+    - branches
+    - tags
+    - merge_requests
+
+.master_rules: &master_rules
+  only:
+    - master
+    - main
+    - tags
+
+# Default variables - can be overridden per project
+variables:
+  DOCUMENT_FILE: "icd-template.adoc"
+  OUTPUT_NAME: "icd-template"
+  BUILD_DIR: "build"
+  ARTIFACT_EXPIRATION: "7 days"
+  SECURITY_SCAN_ENABLED: "true"
+  COMPLIANCE_CHECK_ENABLED: "true"
+
+# Pipeline stages
+stages:
+  - verify
+  - security
+  - build
+  - compliance
+  - deploy
+
+# Verify Stage - AsciiDoc syntax and structure validation
+verify:syntax:
+  <<: *ruby_setup
+  <<: *branch_rules
+  stage: verify
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Verifying ${DOCUMENT_FILE}"
+    - bundle exec make verify
+  allow_failure: false
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-gems
+    paths:
+      - vendor/bundle
+
+verify:structure:
+  <<: *ruby_setup
+  <<: *branch_rules
+  stage: verify
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Validating document structure for ${DOCUMENT_FILE}"
+    - chmod +x scripts/verify.sh
+    - ./scripts/verify.sh
+  allow_failure: false
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-gems
+    paths:
+      - vendor/bundle
+
+# Security Stage - Security scanning and sensitive data detection
+security:scan:
+  <<: *security_setup
+  <<: *branch_rules
+  stage: security
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Scanning ${DOCUMENT_FILE} for security issues"
+    - mkdir -p ${BUILD_DIR}/reports
+    - |
+      echo "Checking for sensitive data patterns..."
+      if grep -rE '(password|secret|token|api[_-]?key|private[_-]?key)' ${DOCUMENT_FILE} --color=never | grep -v '^\s*#' > ${BUILD_DIR}/reports/sensitive-data.log; then
+        echo "WARNING: Potential sensitive data found in ${DOCUMENT_FILE}"
+        cat ${BUILD_DIR}/reports/sensitive-data.log
+      else
+        echo "No sensitive data patterns detected"
+      fi
+    - echo "Security scan completed"
+  artifacts:
+    paths:
+      - ${BUILD_DIR}/reports/
+    expire_in: 30 days
+  allow_failure: true
+  needs:
+    - verify:syntax
+
+security:secrets:
+  <<: *security_setup
+  <<: *branch_rules
+  stage: security
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Checking for hardcoded secrets in ${DOCUMENT_FILE}"
+    - mkdir -p ${BUILD_DIR}/reports
+    - |
+      echo "Scanning for API keys, tokens, and credentials..."
+      if grep -rE '[A-Za-z0-9]{20,}' ${DOCUMENT_FILE} | grep -iE '(key|token|secret|password)' > ${BUILD_DIR}/reports/secrets-scan.log 2>&1; then
+        echo "WARNING: Potential secrets detected"
+        cat ${BUILD_DIR}/reports/secrets-scan.log
+      else
+        echo "No secrets detected"
+      fi
+    - echo "Secrets scan completed"
+  artifacts:
+    paths:
+      - ${BUILD_DIR}/reports/
+    expire_in: 30 days
+  allow_failure: true
+  needs:
+    - verify:syntax
+
+# Build Stage - Generate PDF and HTML outputs with security attributes
+build:pdf:
+  <<: *asciidoctor_setup
+  <<: *branch_rules
+  stage: build
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+    OUTPUT_NAME: "${OUTPUT_NAME}"
+    BUILD_DIR: "${BUILD_DIR}"
+    ARTIFACT_EXPIRATION: "${ARTIFACT_EXPIRATION}"
+  script:
+    - echo "Generating secure PDF from ${DOCUMENT_FILE}"
+    - mkdir -p ${BUILD_DIR}/logs
+    - |
+      asciidoctor-pdf ${DOCUMENT_FILE} \
+        -o ${BUILD_DIR}/${OUTPUT_NAME}.pdf \
+        -a allow-uri-read \
+        -a classification="UNCLASSIFIED" \
+        -a document-version="${CI_COMMIT_SHORT_SHA}" \
+        -a build-date="$(date +%Y-%m-%d)" \
+        2>&1 | tee ${BUILD_DIR}/logs/pdf-build.log
+    - ls -lh ${BUILD_DIR}/${OUTPUT_NAME}.pdf
+    - echo "PDF_OUTPUT=${BUILD_DIR}/${OUTPUT_NAME}.pdf" >> build.env
+  needs:
+    - verify:syntax
+    - verify:structure
+    - security:scan
+  <<: *artifact_policy
+
+build:html:
+  <<: *asciidoctor_setup
+  <<: *branch_rules
+  stage: build
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+    OUTPUT_NAME: "${OUTPUT_NAME}"
+    BUILD_DIR: "${BUILD_DIR}"
+    ARTIFACT_EXPIRATION: "${ARTIFACT_EXPIRATION}"
+  script:
+    - echo "Generating secure HTML from ${DOCUMENT_FILE}"
+    - mkdir -p ${BUILD_DIR}/logs
+    - |
+      asciidoctor ${DOCUMENT_FILE} \
+        -o ${BUILD_DIR}/${OUTPUT_NAME}.html \
+        -a allow-uri-read \
+        -a classification="UNCLASSIFIED" \
+        -a document-version="${CI_COMMIT_SHORT_SHA}" \
+        -a build-date="$(date +%Y-%m-%d)" \
+        2>&1 | tee ${BUILD_DIR}/logs/html-build.log
+    - ls -lh ${BUILD_DIR}/${OUTPUT_NAME}.html
+    - echo "HTML_OUTPUT=${BUILD_DIR}/${OUTPUT_NAME}.html" >> build.env
+  needs:
+    - verify:syntax
+    - verify:structure
+    - security:scan
+  <<: *artifact_policy
+
+# Build Stage - Matrix strategy for multiple document configurations
+build:matrix:
+  <<: *asciidoctor_setup
+  <<: *branch_rules
+  stage: build
+  parallel:
+    matrix:
+      - DOCUMENT_FILE: ["icd-template.adoc"]
+        OUTPUT_NAME: ["icd-template"]
+        FORMAT: ["pdf", "html"]
+        CLASSIFICATION: ["UNCLASSIFIED", "INTERNAL"]
+  variables:
+    BUILD_DIR: "${BUILD_DIR}"
+    ARTIFACT_EXPIRATION: "${ARTIFACT_EXPIRATION}"
+  script:
+    - echo "Building ${DOCUMENT_FILE} to ${OUTPUT_NAME}.${FORMAT} with classification ${CLASSIFICATION}"
+    - mkdir -p ${BUILD_DIR}/logs
+    - |
+      OUTPUT_FILE="${OUTPUT_NAME}-${CLASSIFICATION}.${FORMAT}"
+      if [ "${FORMAT}" = "pdf" ]; then
+        asciidoctor-pdf ${DOCUMENT_FILE} \
+          -o ${BUILD_DIR}/${OUTPUT_FILE} \
+          -a allow-uri-read \
+          -a classification="${CLASSIFICATION}" \
+          -a document-version="${CI_COMMIT_SHORT_SHA}" \
+          2>&1 | tee ${BUILD_DIR}/logs/${OUTPUT_NAME}-${CLASSIFICATION}-pdf-build.log
+      else
+        asciidoctor ${DOCUMENT_FILE} \
+          -o ${BUILD_DIR}/${OUTPUT_FILE} \
+          -a allow-uri-read \
+          -a classification="${CLASSIFICATION}" \
+          -a document-version="${CI_COMMIT_SHORT_SHA}" \
+          2>&1 | tee ${BUILD_DIR}/logs/${OUTPUT_NAME}-${CLASSIFICATION}-html-build.log
+      fi
+    - ls -lh ${BUILD_DIR}/${OUTPUT_FILE}
+    - echo "OUTPUT_FILE=${BUILD_DIR}/${OUTPUT_FILE}" >> build.env
+  needs:
+    - verify:syntax
+    - verify:structure
+  <<: *artifact_policy
+  when: manual
+
+# Compliance Stage - SSDLC compliance validation
+compliance:ssdlc:
+  <<: *security_setup
+  <<: *branch_rules
+  stage: compliance
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Validating SSDLC compliance for ${DOCUMENT_FILE}"
+    - mkdir -p ${BUILD_DIR}/reports
+    - |
+      echo "Checking for required SSDLC sections..."
+      REQUIRED_SECTIONS=(
+        "Security Requirements"
+        "Threat Model"
+        "Security Controls"
+        "Risk Assessment"
+      )
+      for section in "${REQUIRED_SECTIONS[@]}"; do
+        if grep -q "$section" ${DOCUMENT_FILE}; then
+          echo "✓ Found section: $section"
+        else
+          echo "✗ Missing section: $section" | tee -a ${BUILD_DIR}/reports/compliance-issues.log
+        fi
+      done
+    - echo "SSDLC compliance check completed"
+  artifacts:
+    paths:
+      - ${BUILD_DIR}/reports/
+    expire_in: 30 days
+  needs:
+    - build:pdf
+    - build:html
+  allow_failure: true
+
+compliance:traceability:
+  <<: *security_setup
+  <<: *branch_rules
+  stage: compliance
+  variables:
+    DOCUMENT_FILE: "${DOCUMENT_FILE}"
+  script:
+    - echo "Validating requirements traceability for ${DOCUMENT_FILE}"
+    - mkdir -p ${BUILD_DIR}/reports
+    - |
+      echo "Checking for requirement IDs and cross-references..."
+      if grep -oE '\[\[REQ-[0-9]+\]\]' ${DOCUMENT_FILE} > ${BUILD_DIR}/reports/requirements.log; then
+        echo "Found $(wc -l < ${BUILD_DIR}/reports/requirements.log) requirement IDs"
+        cat ${BUILD_DIR}/reports/requirements.log
+      else
+        echo "No formal requirement IDs found"
+      fi
+    - echo "Traceability check completed"
+  artifacts:
+    paths:
+      - ${BUILD_DIR}/reports/
+    expire_in: 30 days
+  needs:
+    - build:pdf
+    - build:html
+  allow_failure: true
+
+# Deploy Stage - Secure deployment with audit trail
+deploy:artifacts:
+  stage: deploy
+  <<: *master_rules
+  image: alpine:latest
+  variables:
+    OUTPUT_NAME: "${OUTPUT_NAME}"
+    BUILD_DIR: "${BUILD_DIR}"
+  script:
+    - echo "Deploying ${OUTPUT_NAME} artifacts securely"
+    - ls -lh ${BUILD_DIR}/
+    - |
+      echo "Deployment audit log:"
+      echo "User: ${GITLAB_USER_LOGIN}"
+      echo "Branch: ${CI_COMMIT_REF_NAME}"
+      echo "Commit: ${CI_COMMIT_SHA}"
+      echo "Time: $(date -Iseconds)"
+    - echo "Customize this job for your secure deployment target"
+  dependencies:
+    - build:pdf
+    - build:html
+  when: manual
+  environment:
+    name: production
+    action: start
+
+# Branch-specific artifact expiration with extended retention for master
+deploy:archive:
+  stage: deploy
+  <<: *master_rules
+  image: alpine:latest
+  variables:
+    OUTPUT_NAME: "${OUTPUT_NAME}"
+    BUILD_DIR: "${BUILD_DIR}"
+  script:
+    - echo "Archiving ${OUTPUT_NAME} with compliance metadata"
+    - echo "Branch: ${CI_COMMIT_REF_NAME}"
+    - mkdir -p ${BUILD_DIR}/archive
+    - |
+      cat > ${BUILD_DIR}/archive/metadata.txt << EOF
+      Document: ${OUTPUT_NAME}
+      Version: ${CI_COMMIT_SHORT_SHA}
+      Branch: ${CI_COMMIT_REF_NAME}
+      Build Date: $(date -Iseconds)
+      Pipeline ID: ${CI_PIPELINE_ID}
+      User: ${GITLAB_USER_LOGIN}
+      EOF
+    - cat ${BUILD_DIR}/archive/metadata.txt
+  dependencies:
+    - build:pdf
+    - build:html
+    - compliance:ssdlc
+    - compliance:traceability
+  artifacts:
+    name: "${OUTPUT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-archive"
+    paths:
+      - ${BUILD_DIR}/${OUTPUT_NAME}.pdf
+      - ${BUILD_DIR}/${OUTPUT_NAME}.html
+      - ${BUILD_DIR}/reports/
+      - ${BUILD_DIR}/archive/
+    expire_in: never
+  when: manual

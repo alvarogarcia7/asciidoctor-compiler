@@ -1,102 +1,328 @@
-# Implementation Summary: PlantUML and Mermaid Diagram Support
+# Repository Restructuring - Implementation Summary
 
 ## Overview
-Successfully implemented full support for both PlantUML and Mermaid diagrams in the AsciiDoc ICD template using the Kroki online rendering service.
 
-## Changes Made
+This document summarizes the implementation of the repository restructuring to support a framework-based multi-template system.
 
-### 1. Dependency Management (Gemfile)
-- Added `asciidoctor-kroki ~> 0.10` gem for online diagram rendering
-- Kept existing `asciidoctor` and `asciidoctor-diagram` gems
+## Files Created/Modified
 
-### 2. Document Configuration (icd-template.adoc)
-- Added Kroki server configuration attributes:
-  - `:kroki-fetch-diagram: true`
-  - `:kroki-server-url: https://kroki.io`
-  - `:plantuml-server-url: https://kroki.io`
-  - `:mermaid-server-url: https://kroki.io`
+### Migration Scripts
 
-### 3. PlantUML Diagram Updates
-- Simplified PlantUML diagrams to remove C4 model includes (not supported by Kroki)
-- Updated 4 PlantUML diagrams:
-  - System Context Diagram
-  - Interface Architecture Diagram  
-  - Message Exchange Sequence Diagram
-  - Interface State Machine Diagram
+1. **restructure.sh** - Shell script for Unix/Linux/macOS systems
+   - Creates directory structure
+   - Copies existing files to new locations
+   - Generates new configuration files
+   - Creates placeholder templates
 
-### 4. Mermaid Diagram Support
-- All 5 existing Mermaid diagrams work without modification:
-  - System Context (flowchart)
-  - Interface Architecture (flowchart)
-  - Message Exchange Sequence (sequenceDiagram)
-  - Interface State Machine (stateDiagram-v2)
-  - Data Flow (flowchart with styling)
+2. **restructure.py** - Python script for cross-platform support
+   - Same functionality as shell script
+   - Better error handling
+   - Cross-platform compatibility
 
-### 5. Encoding Fixes
-- Replaced Unicode characters with ASCII equivalents for Ruby 2.6 compatibility:
-  - `→` replaced with `->`
-  - `°C` replaced with `degC`
+### Documentation
 
-### 6. Build System Updates (Makefile)
-- Updated HTML target to use `asciidoctor-kroki` extension instead of `asciidoctor-diagram`
-- Updated PDF target to use `asciidoctor-kroki` (requires Ruby >= 2.7)
+1. **RESTRUCTURE_GUIDE.md** - Comprehensive migration guide
+   - Detailed directory structure explanation
+   - Step-by-step migration instructions
+   - Template structure guidelines
+   - Benefits and troubleshooting
 
-### 7. Additional Files Created
-- `build-pdf.sh`: Script with Ruby version check for PDF generation
-- `build/PDF_GENERATION_NOTE.txt`: Documentation explaining PDF generation requirements
-- `build_with_kroki.rb`: Alternative Ruby build script (for reference)
+2. **MIGRATION_README.md** - Quick start guide
+   - Simple instructions to run migration
+   - Post-migration verification steps
+   - Quick troubleshooting tips
 
-### 8. Git Configuration (.gitignore)
-- Modified to allow committing build outputs for demonstration
-- Changed from ignoring `build/` to only ignoring root-level output files
+3. **IMPLEMENTATION_SUMMARY.md** - This file
+   - Summary of what was implemented
+   - Files created/modified
+   - Next steps
 
-## Generated Outputs
+## New Structure
 
-### HTML Output
-- **File**: `build/icd-template.html` (168KB)
-- Successfully generated with all diagrams embedded
-- All 9 diagrams render correctly as inline SVG or referenced SVG files
+### Framework Directory (`framework/`)
 
-### Diagram Files
-All diagrams generated as SVG files in `build/images/`:
-1. `system-context-*.svg` (4.3KB) - PlantUML
-2. `diag-14f89e*.svg` (12KB) - Mermaid system context
-3. `interface-architecture-*.svg` (8.5KB) - PlantUML
-4. `diag-6f0690*.svg` (13KB) - Mermaid architecture
-5. `message-sequence-*.svg` (12KB) - PlantUML
-6. `diag-09d619*.svg` (26KB) - Mermaid sequence
-7. `interface-states-*.svg` (11KB) - PlantUML
-8. `diag-56d5b8*.svg` (111KB) - Mermaid state diagram
-9. `diag-949445*.svg` (160KB) - Mermaid data flow
+**Purpose**: Centralized build framework shared by all templates
 
-Total diagram size: ~360KB
+**Contents**:
+- `scripts/` - Build and verification scripts (copied from existing)
+- `themes/` - Visual themes for PDF and HTML (copied from existing)
+  - `html/` - CSS themes
+  - `pdf/` - YAML themes
+  - `README.md` - Theme documentation
+- `Dockerfile` - Docker image definition (copied from existing)
+- `docker-compose.yml` - Docker Compose config (copied from existing)
+- `Makefile.include` - Shared Makefile rules (NEW)
 
-## PDF Generation Status
+### Templates Directory (`templates/`)
 
-**Status**: Not generated in current environment
-**Reason**: Ruby 2.6.10 is installed; asciidoctor-pdf requires Ruby >= 2.7
+**Purpose**: Document templates that use the shared framework
 
-**Solutions Provided**:
-1. Docker-based generation: `docker-compose run asciidoctor make pdf`
-2. Ruby upgrade to 2.7+ with rbenv/rvm
-3. Print HTML to PDF from web browser
+**Contents**:
+- `icd/` - Interface Control Document template
+  - `icd-template.adoc` (copied from root)
+  - `Makefile` (NEW)
+- `ssdlc/` - Secure Software Development Lifecycle template
+  - `ssdlc-template.adoc` (NEW - placeholder)
+  - `Makefile` (NEW)
+- `generic/` - Generic document template
+  - `generic-template.adoc` (NEW - placeholder)
+  - `Makefile` (NEW)
 
-## Verification
+### Root Files
 
-All diagrams can be verified by:
-1. Opening `build/icd-template.html` in a web browser
-2. Checking that all 9 diagrams display correctly
-3. Verifying SVG files in `build/images/` directory
+- `Makefile.new` - New root Makefile that delegates to templates (NEW)
+- Existing files remain untouched until user decides to clean up
 
-## Git Commit
+## Key Features Implemented
 
-All changes committed with message:
-"Add PlantUML and Mermaid diagram support with Kroki"
+### 1. Shared Makefile Include
 
-**Files committed**:
-- Modified: `.gitignore`, `Gemfile`, `Makefile`, `icd-template.adoc`
-- Added: `build-pdf.sh`, `build_with_kroki.rb`
-- Added: `build/` directory with HTML output and all diagram SVG files
-- Added: `build/PDF_GENERATION_NOTE.txt`
+`framework/Makefile.include` provides:
+- Common build targets (all, pdf, html, clean, verify, watch)
+- Automatic bundler/asciidoctor detection
+- Docker build support
+- Configurable paths
+- Reusable across all templates
 
-Total: 17 files changed, 4698 insertions(+), 39 deletions(-)
+### 2. Template-Specific Makefiles
+
+Each template has its own Makefile that:
+- Includes the shared framework rules
+- Defines template-specific configuration
+- Specifies input/output filenames
+- Can override framework defaults
+
+### 3. SSDLC Template
+
+New Secure Software Development Lifecycle template with:
+- Cover page and document control
+- Executive summary
+- Security requirements section
+- Secure development process phases
+- Secure coding standards
+- Security testing procedures
+- Compliance and standards
+- Appendices with checklists and resources
+
+### 4. Generic Template
+
+New generic document template with:
+- Document information and revision history
+- Standard introduction sections
+- Placeholder content sections
+- References and appendices
+- Flexible structure for any document type
+
+### 5. Centralized Themes
+
+All themes moved to `framework/themes/` for:
+- Reusability across templates
+- Centralized maintenance
+- Consistent branding
+- Easy customization
+
+## Migration Process
+
+### Automated Migration
+
+Users can run either:
+```bash
+./restructure.sh
+```
+or
+```bash
+python3 restructure.py
+```
+
+Both scripts:
+1. Create new directory structure
+2. Copy existing files to new locations
+3. Generate new configuration files
+4. Create placeholder templates
+5. Provide summary and next steps
+
+### What Gets Preserved
+
+- Original `scripts/` directory (can be removed after migration)
+- Original `themes/` directory (can be removed after migration)  
+- Original `icd-template.adoc` (can be removed after migration)
+- Original `Dockerfile` and `docker-compose.yml` (can be removed after migration)
+- Original `Makefile` (renamed to `Makefile.new`)
+
+### What Gets Created
+
+- Complete `framework/` directory with all components
+- Complete `templates/` directory with three template types
+- `Makefile.new` for root-level builds
+- Documentation files
+
+## Building After Migration
+
+### From Template Directory
+
+```bash
+cd templates/icd
+make all        # Build both PDF and HTML
+make pdf        # Build PDF only
+make html       # Build HTML only
+make verify     # Run verification
+make clean      # Clean build artifacts
+```
+
+### From Root (after adopting Makefile.new)
+
+```bash
+make all        # Build all templates
+make icd        # Build ICD only
+make ssdlc      # Build SSDLC only
+make generic    # Build generic only
+make clean      # Clean all artifacts
+```
+
+## Path Updates Required
+
+### In AsciiDoc Files
+
+Theme paths need to be relative to template directory:
+```asciidoc
+:pdf-theme: ../../framework/themes/pdf/ecss-default-theme.yml
+:stylesheet: ../../framework/themes/html/ecss-default.css
+```
+
+### In Scripts
+
+Script paths accessed via framework:
+```bash
+../../framework/scripts/verify.sh
+```
+
+Or via Makefile targets:
+```bash
+make verify
+```
+
+## Benefits
+
+1. **Modularity**: Framework separate from content
+2. **Reusability**: Scripts and themes shared across templates
+3. **Scalability**: Easy to add new document types
+4. **Maintainability**: Single source for build infrastructure
+5. **Organization**: Clear separation of concerns
+6. **Flexibility**: Each template can customize as needed
+
+## Limitations & Considerations
+
+### Current Implementation
+
+- Migration scripts provided but NOT automatically executed
+- User must run migration script manually
+- Original files remain until user removes them
+- New root Makefile created as `Makefile.new` to avoid overwriting existing
+
+### Testing Required
+
+After migration, users should:
+1. Test building each template
+2. Verify PDF and HTML outputs
+3. Check theme application
+4. Validate cross-references
+5. Test Docker builds
+
+### Path Management
+
+- All paths are relative (no absolute paths)
+- Templates must be in `templates/` subdirectories
+- Framework must be at `framework/` from root
+- Build output goes to shared `build/` directory
+
+## Maintenance
+
+### Adding New Templates
+
+1. Create new directory in `templates/`
+2. Create template .adoc file
+3. Create Makefile that includes framework
+4. Add target to root Makefile (optional)
+
+### Updating Framework
+
+Changes to framework benefit all templates:
+- Update scripts in `framework/scripts/`
+- Update themes in `framework/themes/`
+- Update `framework/Makefile.include`
+
+### Customizing Templates
+
+Each template can:
+- Override framework variables
+- Add custom targets to its Makefile
+- Include additional dependencies
+- Use custom theme paths if needed
+
+## Future Enhancements
+
+Possible improvements:
+1. Add more template types (design docs, test plans, etc.)
+2. Create template wizard/generator script
+3. Add CI/CD pipeline templates
+4. Create Docker-based build service
+5. Add template validation tools
+6. Create theme preview tool
+7. Add multi-language support
+
+## Rollback Plan
+
+If migration needs to be reversed:
+1. Delete `framework/` and `templates/` directories
+2. Delete `Makefile.new`
+3. Delete documentation files
+4. Keep using original structure
+
+All original files remain untouched by migration scripts.
+
+## Documentation Updates Needed
+
+After migration, update:
+1. **AGENTS.md** - Update paths and build commands
+2. **README.md** - Reference new structure
+3. **CI/CD configs** - Update build paths
+4. **Developer docs** - Explain new structure
+
+## Support & Troubleshooting
+
+### Common Issues
+
+1. **Permission errors**: Run `chmod +x framework/scripts/*.sh`
+2. **Theme not found**: Check relative paths in .adoc files
+3. **Makefile errors**: Verify include path is correct
+4. **Build failures**: Check bundler installation and Gemfile
+
+### Getting Help
+
+- Review RESTRUCTURE_GUIDE.md for detailed instructions
+- Check MIGRATION_README.md for quick reference
+- Verify all files copied correctly
+- Check script output for errors
+
+## Success Criteria
+
+Migration is successful when:
+- [ ] All directories created
+- [ ] All files copied
+- [ ] ICD template builds successfully
+- [ ] SSDLC template builds successfully
+- [ ] Generic template builds successfully
+- [ ] Outputs appear in `build/` directory
+- [ ] Themes apply correctly
+- [ ] Verification scripts work
+
+## Conclusion
+
+The restructuring implementation provides:
+- Complete migration scripts (shell and Python)
+- Comprehensive documentation
+- Three ready-to-use templates
+- Shared framework for all templates
+- Clear path forward for expansion
+
+Users can migrate at their convenience and verify everything works before removing old files.
