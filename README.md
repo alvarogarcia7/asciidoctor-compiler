@@ -34,7 +34,7 @@ This template provides a production-ready structure for Interface Control Docume
 - Test and verification procedures
 - Data element definitions with primitive and composite types
 - Protocol specifications and message format templates
-- **Full PlantUML diagram support** with integrated rendering (diagrams included in template)
+- **Full diagram support** with PlantUML and Mermaid integrated rendering (diagrams included in template)
 - Professional document formatting with table of contents, cross-references, and page breaks
 
 ## Prerequisites
@@ -45,12 +45,14 @@ This template provides a production-ready structure for Interface Control Docume
 |------|---------|---------|
 | **asciidoctor** | 2.0+ | HTML generation from AsciiDoc |
 | **asciidoctor-pdf** | 2.3+ | PDF generation from AsciiDoc |
-| **asciidoctor-diagram** | 2.2+ | Diagram rendering (PlantUML, Graphviz, etc.) |
+| **asciidoctor-diagram** | 2.2+ | Diagram rendering (PlantUML, Mermaid, Graphviz, etc.) |
 | **Ruby** | 2.5+ | Required for asciidoctor gems |
 | **Bundler** | 2.0+ | Optional, for project-local gem management |
-| **PlantUML** | Latest | UML diagram generation (required for diagram rendering) |
+| **PlantUML** | Latest | UML diagram generation (required for PlantUML diagrams) |
+| **Mermaid CLI** | Latest | Modern diagram generation (required for Mermaid diagrams) |
 | **Graphviz** | Latest | Graph rendering (required dependency for PlantUML) |
 | **Java** | 8+ | Required to run PlantUML |
+| **Node.js** | 14+ | Required to run Mermaid CLI |
 
 ### Optional Tools
 
@@ -78,8 +80,9 @@ You may need `sudo` on some systems:
 sudo gem install asciidoctor asciidoctor-pdf asciidoctor-diagram
 ```
 
-For PlantUML diagram support, also install:
+For diagram support, also install:
 
+**PlantUML diagrams:**
 ```bash
 # macOS
 brew install plantuml graphviz
@@ -89,6 +92,18 @@ sudo apt-get install plantuml graphviz default-jre
 
 # Or download PlantUML manually and ensure Java is installed
 # Download from: https://plantuml.com/download
+```
+
+**Mermaid diagrams:**
+```bash
+# Using npm (requires Node.js)
+npm install -g @mermaid-js/mermaid-cli
+
+# Or using yarn
+yarn global add @mermaid-js/mermaid-cli
+
+# Verify installation
+mmdc --version
 ```
 
 ### Option 3: Bundler (Project-local Installation)
@@ -126,7 +141,7 @@ docker-compose run --rm asciidoctor make watch
 docker-compose run --rm asciidoctor bash
 ```
 
-The Docker setup includes all required dependencies (asciidoctor, asciidoctor-pdf, asciidoctor-diagram, PlantUML, Graphviz, Java, grep, inotify-tools for watch mode).
+The Docker setup includes all required dependencies (asciidoctor, asciidoctor-pdf, asciidoctor-diagram, PlantUML, Mermaid CLI, Graphviz, Java, Node.js, grep, inotify-tools for watch mode).
 
 ### Verify Installation
 
@@ -450,7 +465,231 @@ If your ICD doesn't need certain sections:
 - **Maintain Traceability**: Always link requirements to parent requirements
 - **Use Cross-references**: Link between sections using `<<section-id>>`
 - **Add Notes and Warnings**: Use `NOTE:`, `TIP:`, `IMPORTANT:`, `WARNING:`, `CAUTION:` admonitions
-- **Include Diagrams**: Use PlantUML for UML diagrams or include image files
+- **Include Diagrams**: Use PlantUML or Mermaid for diagrams, or include image files
+
+## Diagram Support
+
+This template supports multiple diagram types through the asciidoctor-diagram extension, which automatically detects and renders diagrams based on the block type. Both PlantUML and Mermaid diagrams are supported.
+
+### PlantUML Diagrams
+
+PlantUML provides comprehensive UML diagram support including sequence diagrams, class diagrams, component diagrams, and more.
+
+**Basic Syntax:**
+
+```asciidoc
+[plantuml, diagram-name, format=svg]
+----
+@startuml
+actor User
+participant "System A" as A
+participant "System B" as B
+
+User -> A: Request
+A -> B: Forward Request
+B --> A: Response
+A --> User: Final Response
+@enduml
+----
+```
+
+**Component Diagram Example:**
+
+```asciidoc
+[plantuml, component-diagram, format=svg]
+----
+@startuml
+package "System A" {
+  [Interface Controller]
+  [Data Handler]
+}
+
+package "System B" {
+  [Message Processor]
+  [Protocol Handler]
+}
+
+[Interface Controller] --> [Protocol Handler] : TCP/IP
+[Data Handler] <-- [Message Processor] : Data Elements
+@enduml
+----
+```
+
+**Requirements:**
+- Java runtime (8+)
+- PlantUML (installed via package manager or JAR file)
+- Graphviz (required for certain diagram types)
+
+### Mermaid Diagrams
+
+Mermaid provides a modern, JavaScript-based diagramming solution with simple syntax for flowcharts, sequence diagrams, class diagrams, Gantt charts, and more.
+
+**Sequence Diagram Example:**
+
+```asciidoc
+[mermaid, mermaid-sequence, format=svg]
+----
+sequenceDiagram
+    participant User
+    participant SystemA
+    participant SystemB
+    
+    User->>SystemA: Request
+    SystemA->>SystemB: Forward Request
+    SystemB-->>SystemA: Response
+    SystemA-->>User: Final Response
+----
+```
+
+**Flowchart Example:**
+
+```asciidoc
+[mermaid, mermaid-flowchart, format=svg]
+----
+flowchart TD
+    A[Initialize Interface] --> B{Connection OK?}
+    B -->|Yes| C[Send Data]
+    B -->|No| D[Retry Connection]
+    C --> E[Receive ACK]
+    D --> B
+    E --> F{Valid ACK?}
+    F -->|Yes| G[Complete]
+    F -->|No| H[Error Handler]
+----
+```
+
+**Class Diagram Example:**
+
+```asciidoc
+[mermaid, mermaid-class, format=svg]
+----
+classDiagram
+    class Interface {
+        +String id
+        +String type
+        +String protocol
+        +connect()
+        +disconnect()
+        +sendMessage()
+    }
+    
+    class DataElement {
+        +String id
+        +String dataType
+        +int size
+        +validate()
+        +encode()
+    }
+    
+    class Message {
+        +int messageId
+        +byte[] payload
+        +build()
+        +parse()
+    }
+    
+    Interface --> Message : sends
+    Message --> DataElement : contains
+----
+```
+
+**State Diagram Example:**
+
+```asciidoc
+[mermaid, interface-states, format=svg]
+----
+stateDiagram-v2
+    [*] --> Disconnected
+    Disconnected --> Connecting : connect()
+    Connecting --> Connected : success
+    Connecting --> Disconnected : failure
+    Connected --> Transmitting : send()
+    Transmitting --> Connected : complete
+    Connected --> Disconnected : disconnect()
+----
+```
+
+**Requirements:**
+- Node.js (14+)
+- Mermaid CLI (`@mermaid-js/mermaid-cli` package)
+
+### Automatic Detection and Rendering
+
+The asciidoctor-diagram extension automatically:
+
+1. **Detects diagram type** from the block attribute (`[plantuml]`, `[mermaid]`, etc.)
+2. **Invokes the appropriate tool** (PlantUML, Mermaid CLI, etc.)
+3. **Generates the diagram image** in the specified format (SVG, PNG, etc.)
+4. **Caches the result** for faster subsequent builds
+5. **Embeds the diagram** in the output document (HTML or PDF)
+
+### Block Attributes
+
+**Format:**
+```asciidoc
+[diagram-type, diagram-id, format=output-format, optional-attributes]
+----
+diagram source code
+----
+```
+
+**Parameters:**
+- `diagram-type`: Required. Specifies the diagram renderer (`plantuml`, `mermaid`, `graphviz`, etc.)
+- `diagram-id`: Optional. Unique identifier used for caching and output filename
+- `format`: Optional. Output format (`svg`, `png`, `pdf`). Default is `png`. **Recommendation: Use `svg` for scalable, high-quality diagrams**
+- Additional attributes: Depends on diagram type (e.g., `width`, `height`, `align`)
+
+**Examples:**
+```asciidoc
+[plantuml, format=svg]           # PlantUML with SVG output, auto-generated ID
+[mermaid, my-diagram, format=png] # Mermaid with PNG output, specific ID
+[plantuml, arch-diagram, format=svg, width=800] # With custom width
+```
+
+### Using Diagrams in Your ICD
+
+To include diagrams in your document:
+
+1. **Write the diagram code** directly in your `.adoc` file within the appropriate block
+2. **Run the build command** as usual:
+   ```bash
+   make all
+   # or
+   bundle exec make all
+   ```
+3. **The diagrams are automatically rendered** during document generation
+
+**Example in ICD:**
+
+```asciidoc
+=== Interface Architecture
+
+The following diagram shows the high-level architecture of the interface:
+
+[mermaid, if-architecture, format=svg]
+----
+flowchart LR
+    A[System A] -->|IF-001| B[Interface Layer]
+    B -->|IF-002| C[System B]
+    B -->|Status| D[Monitoring]
+----
+
+As shown in the architecture diagram, System A communicates with System B through
+a dedicated interface layer that provides protocol translation and monitoring.
+```
+
+### Comparison: PlantUML vs Mermaid
+
+| Feature | PlantUML | Mermaid |
+|---------|----------|---------|
+| **Syntax** | More verbose, Java-like | Concise, YAML-like |
+| **Diagram Types** | Comprehensive UML support | Modern diagrams, fewer UML types |
+| **Rendering** | Java-based (stable, mature) | JavaScript-based (modern, active development) |
+| **Installation** | Requires Java + PlantUML | Requires Node.js + npm package |
+| **Performance** | Fast for most diagrams | Fast, especially for simple diagrams |
+| **Best For** | Complex UML, formal diagrams | Flowcharts, simple sequences, modern style |
+
+**Recommendation:** Use PlantUML for comprehensive UML diagrams and complex system models. Use Mermaid for flowcharts, simple sequences, and when you prefer a more modern syntax and visual style.
 
 ## ECSS Compliance
 
@@ -678,9 +917,9 @@ gem install asciidoctor-pdf
 bundle install
 ```
 
-#### PlantUML diagrams not rendering
+#### Diagrams not rendering
 
-**Problem**: PlantUML or required dependencies are not installed.
+**Problem**: Diagram tools or required dependencies are not installed.
 
 **Solution**: 
 1. **Install asciidoctor-diagram gem**:
@@ -690,15 +929,25 @@ bundle install
    bundle install
    ```
 
-2. **Install PlantUML and dependencies**:
+2. **Install diagram tools**:
+   
+   For PlantUML diagrams:
    ```bash
    # macOS
    brew install plantuml graphviz
    
    # Ubuntu/Debian
    sudo apt-get install plantuml graphviz default-jre
+   ```
    
-   # Or use Docker (includes everything)
+   For Mermaid diagrams:
+   ```bash
+   # Using npm (requires Node.js)
+   npm install -g @mermaid-js/mermaid-cli
+   ```
+   
+   Or use Docker (includes everything):
+   ```bash
    docker-compose run --rm asciidoctor make all
    ```
 
