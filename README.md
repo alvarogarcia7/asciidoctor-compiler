@@ -503,6 +503,6 @@ This template framework is provided as-is for use in your projects. Customize fr
 
 ---
 
-**Version**: 2.0  
-**Last Updated**: 2024  
+**Version**: 0.1  
+**Last Updated**: 2026  
 **Status**: Active Development
