@@ -61,6 +61,21 @@ verify: ## Run verification script
 	fi
 .PHONY: verify
 
+test: ## Verify the project
+	@$(MAKE) test-shell-scripts
+	@$(MAKE) test-makefile
+.PHONY: test
+
+test-shell-scripts: ## Test shell scripts for syntax errors
+	@find . -iname "*.sh" -exec bash -n {} \+
+	@echo "All shell scripts passed syntax check."
+.PHONY: test-shell-scripts
+
+test-makefile: ## Test Makefile for syntax errors
+	@make -n all > /dev/null
+	@echo "Makefile syntax is valid."
+.PHONY: test-makefile
+
 clean: ## Remove build artifacts
 	@echo "Cleaning build artifacts..."
 	@rm -rf $(BUILD_DIR)
