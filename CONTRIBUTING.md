@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Thank you for your interest in improving the AsciiDoc Documentation Template Framework! This guide will help you contribute new templates, themes, features, and improvements.
+Thank you for your interest in improving the AsciiDoc Compiler! This guide will help you contribute new templates, themes, features, and improvements.
 
 ## Table of Contents
 
@@ -20,8 +20,8 @@ Thank you for your interest in improving the AsciiDoc Documentation Template Fra
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/your-username/asciidoc-template-framework.git
-   cd asciidoc-template-framework
+   git clone https://github.com/your-username/asciidoc-compiler.git
+   cd asciidoc-compiler
    ```
 
 2. **Install dependencies**
@@ -893,4 +893,4 @@ By contributing, you agree that your contributions will be licensed under the sa
 
 ---
 
-Thank you for contributing to the AsciiDoc Documentation Template Framework! Your efforts help make technical documentation better for everyone. 🎉
+Thank you for contributing to the AsciiDoc Compiler! Your efforts help make technical documentation better for everyone. 🎉

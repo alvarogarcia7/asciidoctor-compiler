@@ -1,4 +1,4 @@
-# AsciiDoc Documentation Template Framework
+# AsciiDoc Compiler
 
 A comprehensive framework for creating professional technical documentation using AsciiDoc, featuring multiple document templates, automated builds, and enterprise-ready tooling.
 
