@@ -1,5 +1,3 @@
-.PHONY: all pdf html verify clean watch help docker-build
-
 ASCIIDOC_FILE = icd-template.adoc
 PDF_OUTPUT = icd-template.pdf
 HTML_OUTPUT = icd-template.html
@@ -18,10 +16,13 @@ else
 endif
 
 all: pdf html
+.PHONY: all
 
 pdf: $(BUILD_DIR)/$(PDF_OUTPUT)
+.PHONY: pdf
 
 html: $(BUILD_DIR)/$(HTML_OUTPUT)
+.PHONY: html
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
@@ -58,11 +59,13 @@ verify:
 		chmod +x $(VERIFY_SCRIPT); \
 		./$(VERIFY_SCRIPT); \
 	fi
+.PHONY: verify
 
 clean:
 	@echo "Cleaning build artifacts..."
 	@rm -rf $(BUILD_DIR)
 	@echo "Build artifacts removed."
+.PHONY: clean
 
 watch:
 	@echo "Watching for changes to $(ASCIIDOC_FILE)..."
@@ -82,11 +85,13 @@ watch:
 		echo "  - entr: apt install entr or brew install entr"; \
 		exit 1; \
 	fi
+.PHONY: watch
 
 docker-build:
 	@echo "Building Docker image..."
 	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) .
 	@echo "Docker image built: $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
+.PHONY: docker-build
 
 help:
 	@echo "Available targets:"
@@ -98,3 +103,4 @@ help:
 	@echo "  make watch        - Auto-compile on changes (requires inotifywait or entr)"
 	@echo "  make docker-build - Build Docker image"
 	@echo "  make help         - Show this help message"
+.PHONY: help
