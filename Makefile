@@ -15,13 +15,13 @@ else
 	ASCIIDOCTOR_PDF = asciidoctor-pdf
 endif
 
-all: pdf html
+all: pdf html ## Compile both PDF and HTML (default)
 .PHONY: all
 
-pdf: $(BUILD_DIR)/$(PDF_OUTPUT)
+pdf: $(BUILD_DIR)/$(PDF_OUTPUT) ## Compile PDF only
 .PHONY: pdf
 
-html: $(BUILD_DIR)/$(HTML_OUTPUT)
+html: $(BUILD_DIR)/$(HTML_OUTPUT) ## Compile HTML only
 .PHONY: html
 
 $(BUILD_DIR):
@@ -37,7 +37,7 @@ $(BUILD_DIR)/$(HTML_OUTPUT): $(ASCIIDOC_FILE) | $(BUILD_DIR)
 	@$(ASCIIDOCTOR) -r asciidoctor-kroki -a source-highlighter=rouge $(ASCIIDOC_FILE) -o $(BUILD_DIR)/$(HTML_OUTPUT)
 	@echo "HTML generated: $(BUILD_DIR)/$(HTML_OUTPUT)"
 
-verify:
+verify: ## Run verification script
 	@if [ -f $(VERIFY_SCRIPT) ]; then \
 		echo "Running verification script..."; \
 		./$(VERIFY_SCRIPT); \
@@ -61,13 +61,13 @@ verify:
 	fi
 .PHONY: verify
 
-clean:
+clean: ## Remove build artifacts
 	@echo "Cleaning build artifacts..."
 	@rm -rf $(BUILD_DIR)
 	@echo "Build artifacts removed."
 .PHONY: clean
 
-watch:
+watch: ## Auto-compile on changes (requires inotifywait or entr)
 	@echo "Watching for changes to $(ASCIIDOC_FILE)..."
 	@if command -v inotifywait &> /dev/null; then \
 		echo "Using inotifywait for file monitoring..."; \
@@ -87,20 +87,14 @@ watch:
 	fi
 .PHONY: watch
 
-docker-build:
+docker-build: ## This builds a docker image.
 	@echo "Building Docker image..."
 	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) .
 	@echo "Docker image built: $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 .PHONY: docker-build
 
-help:
+help: ## Show this help message
 	@echo "Available targets:"
-	@echo "  make all          - Compile both PDF and HTML (default)"
-	@echo "  make pdf          - Compile PDF only"
-	@echo "  make html         - Compile HTML only"
-	@echo "  make verify       - Run verification script"
-	@echo "  make clean        - Remove build artifacts"
-	@echo "  make watch        - Auto-compile on changes (requires inotifywait or entr)"
-	@echo "  make docker-build - Build Docker image"
-	@echo "  make help         - Show this help message"
+	@grep -E '^[a-zA-Z0-9_.-]+:.*##' $(MAKEFILE_LIST) | \
+		awk -F':|##' '{printf "  %-18s - %s\n", $$1, $$3}'
 .PHONY: help
